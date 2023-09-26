@@ -1,5 +1,5 @@
 import React from "react";
-import { View, TouchableOpacity,Text, TextInput, Button, StyleSheet } from 'react-native';
+import { TouchableOpacity,Text, StyleSheet } from 'react-native';
 
 const AppButton = ({onPress,title}) =>(
     <TouchableOpacity onPress = {onPress} style = {styles.button}>
@@ -15,8 +15,9 @@ const styles = StyleSheet.create ({
         backgroundColor: '#88C9BF',
         width: 232,
         height: 40,
-        textAlign: 'bottom',
+        textAlign: 'center',
         alignSelf:'center',
+        paddingTop:10,
         
     },
 

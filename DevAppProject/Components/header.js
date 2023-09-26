@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
+import React from 'react';
+import { View, Text, StyleSheet } from 'react-native';
 
 const Header = () => {
 
@@ -12,8 +12,6 @@ const Header = () => {
     );
 
 };
-
-
 
 const styles = StyleSheet.create( {
 
@@ -29,10 +27,10 @@ const styles = StyleSheet.create( {
     },
 
     text: {
-        fontFamily: 'Roboto-Medium',
+        fontFamily: 'Roboto',
         fontSize: 20,
         textAlign: 'center',
-        marginLeft: 20, // Define a margem esquerda
+        marginLeft: 20,
     }
 
 });
