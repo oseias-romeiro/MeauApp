@@ -1,12 +1,17 @@
 import React from "react";
-import { TouchableOpacity,Text, StyleSheet } from 'react-native';
+import { TouchableOpacity,Text, StyleSheet, Linking} from 'react-native';
 
-const AppButton = ({onPress,title}) =>(
-    <TouchableOpacity onPress = {onPress} style = {styles.button}>
-        <Text style = {styles.button}>{title}</Text>
+const EntrarButton = ({onPress,title,url}) =>{
+
+
+   return ( 
+   
+   <TouchableOpacity onPress = {onPress} style = {styles.button}>
+        <Text style = {styles.buttonText}>{title}</Text>
     </TouchableOpacity>
+   )
 
-)
+   };
 
 const styles = StyleSheet.create ({
 
@@ -21,6 +26,11 @@ const styles = StyleSheet.create ({
         
     },
 
+    buttonText: {
+        textAlign: 'center',
+
+    }
+
 })
 
-export default AppButton
+export default EntrarButton;

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, TouchableOpacity,Text, TextInput, Button, StyleSheet } from 'react-native';
-import AppButton from './Components/customButton';
+import EntrarButton from './Components/customButton';
+import AppButton from './Components/social_media_button';
 
 const LoginScreen = () => {
 
@@ -37,12 +38,18 @@ const LoginScreen = () => {
             
             />
 
-            <AppButton title='Entrar' onPress={handleLogin} />
+            <EntrarButton title='Entrar' onPress={handleLogin} />
+
+            <AppButton title = 'Entrar com Facebook' url = 'https://pt-br.facebook.com/' tipo = 'facebook'/>
+
+            <AppButton title = 'Entrar com Google' url = 'https://www.google.com/' tipo = 'google' />
+
         </View>
+
 
         
 
-    );s
+    );
 
 };
 
@@ -64,6 +71,8 @@ const styles = StyleSheet.create({
       padding: 10,
       
     },
+
+
 
 
   });
