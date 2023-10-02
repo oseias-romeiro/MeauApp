@@ -3,7 +3,7 @@ import { StatusBar } from 'expo-status-bar';
 import { TouchableOpacity, StyleSheet, Text, ScrollView, SafeAreaView, View } from 'react-native';
 import { Feather, FontAwesome } from 'react-native-vector-icons';
 
-export default function App() {
+export default function Home() {
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar style="auto" />

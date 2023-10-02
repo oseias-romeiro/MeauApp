@@ -1,6 +1,6 @@
 import { TouchableOpacity, StyleSheet, Text, View } from 'react-native';
 
-const Cadastro = () => {
+const Cadastro = ({ navigation }) => {
   return (
     <View style={styles.content}>
       <Text style={styles.ops}>Ops!</Text>
@@ -12,7 +12,10 @@ const Cadastro = () => {
         <Text style={styles.btnText}>FAZER CADASTRO</Text>
       </TouchableOpacity>
       <Text style={styles.textContent}>Já possui cadastro?</Text>
-      <TouchableOpacity style={styles.btnContainer}>
+      <TouchableOpacity
+        style={styles.btnContainer}
+        onPress={() => navigation.navigate('Login')}
+      >
         <Text style={styles.btnText}>FAZER LOGIN</Text>
       </TouchableOpacity>
     </View>
