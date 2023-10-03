@@ -2,8 +2,12 @@ import React from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { TouchableOpacity, StyleSheet, Text, ScrollView, SafeAreaView, View } from 'react-native';
 import { Feather, FontAwesome } from 'react-native-vector-icons';
+import EditarPerfil from './Components/EditarPerfil';
+import { useNavigation } from '@react-navigation/native';
+
 
 export default function Home() {
+  const navigation = useNavigation();
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar style="auto" />
@@ -57,7 +61,7 @@ export default function Home() {
           </View>
           </View>
           <View>
-            <TouchableOpacity style={styles.btnContainer}>
+            <TouchableOpacity style={styles.btnContainer} onPress={() => navigation.navigate('EditarPerfil')}>
               <Text style={styles.btnText}>{"EDITAR PERFIL"}</Text>
             </TouchableOpacity>
           </View>

@@ -8,6 +8,7 @@ import Cadastro from "./Components/cadastro";
 import LoginScreen from "./Login";
 import Home from "./home";
 import CadastroForm from "./Components/CadastroForm";
+import EditarPerfil from "./Components/EditarPerfil";
 
 const Stack = createNativeStackNavigator();
 
@@ -39,6 +40,7 @@ export default function App() {
         <Stack.Screen name="Cadastro" component={CadastroTela} />
         <Stack.Screen name="CadastroForm" component={CadastroForm} />
         <Stack.Screen name="Login" component={LoginTela} />
+        <Stack.Screen name="EditarPerfil" component={EditarPerfil} />
         <Stack.Screen name="Home" component={Home} />
       </Stack.Navigator>
     </NavigationContainer>
