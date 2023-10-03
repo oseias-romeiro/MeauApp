@@ -21,6 +21,7 @@ const EditarPerfil = ({ navigation }) => {
 
   const handleSalvar = () => {
     // TODO: INTEGRAÇÃO COM BACKEND / BANCO DE DADOS
+    // REST API / ETC
     // VOLTANDO PARA A TELA DE PERFIL
     navigation.goBack();
   };
@@ -76,7 +77,6 @@ const EditarPerfil = ({ navigation }) => {
         value={historico}
         onChangeText={(text) => setHistorico(text)}
       />
-      {/* Adicione mais campos de edição aqui para outros atributos do perfil */}
       <TouchableOpacity style={styles.button} onPress={handleSalvar}>
         <Text style={styles.buttonText}>Salvar</Text>
       </TouchableOpacity>
