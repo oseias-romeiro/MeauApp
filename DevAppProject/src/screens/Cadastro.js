@@ -1,4 +1,4 @@
-import { TouchableOpacity, StyleSheet, Text, View } from 'react-native';
+import { TouchableOpacity, StyleSheet, Text, View } from "react-native";
 
 const Cadastro = ({ navigation }) => {
   return (
@@ -8,13 +8,16 @@ const Cadastro = ({ navigation }) => {
         Você não pode realizar esta ação{"\n"}
         sem possuir um cadastro.
       </Text>
-      <TouchableOpacity style={styles.btnContainer}>
+      <TouchableOpacity
+        style={styles.btnContainer}
+        onPress={() => navigation.navigate("CadastroForm")}
+      >
         <Text style={styles.btnText}>FAZER CADASTRO</Text>
       </TouchableOpacity>
       <Text style={styles.textContent}>Já possui cadastro?</Text>
       <TouchableOpacity
         style={styles.btnContainer}
-        onPress={() => navigation.navigate('Login')}
+        onPress={() => navigation.navigate("Login")}
       >
         <Text style={styles.btnText}>FAZER LOGIN</Text>
       </TouchableOpacity>
@@ -22,36 +25,35 @@ const Cadastro = ({ navigation }) => {
   );
 };
 
-
 const styles = StyleSheet.create({
   content: {
-    alignItems: 'center',
-    textAlign: 'center',
+    alignItems: "center",
+    textAlign: "center",
   },
   ops: {
     fontSize: 60,
-    fontStyle: 'italic',
+    fontStyle: "italic",
     paddingTop: 50,
     marginBottom: 30,
-    color: '#88C9BF',
+    color: "#88C9BF",
   },
   btnContainer: {
-    backgroundColor: '#88C9BF',
+    backgroundColor: "#88C9BF",
     minWidth: 232,
     minHeight: 40,
   },
   btnText: {
-    color: '#434343',
-    textAlign: 'center',
+    color: "#434343",
+    textAlign: "center",
     paddingTop: 13,
-    fontFamily: 'Roboto',
+    fontFamily: "Roboto",
     fontSize: 12,
   },
   textContent: {
     marginBottom: 10,
     marginTop: 40,
-    color: '#BDBDBD',
-    fontFamily: 'Roboto',
+    color: "#BDBDBD",
+    fontFamily: "Roboto",
     fontSize: 14,
   },
 });
