@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { View, TouchableOpacity,Text, TextInput, Button, StyleSheet } from 'react-native';
-import EntrarButton from './Components/customButton';
-import AppButton from './Components/social_media_button';
+import { View, TextInput, StyleSheet } from 'react-native';
+import EntrarButton from '../components/CustomButton/index';
+import AppButton from '../components/SocialMediaButton/index';
 
 const LoginScreen = ({ navigation }) => {
 
@@ -11,7 +11,7 @@ const LoginScreen = ({ navigation }) => {
     const handleLogin = () => {
 
         if (username == 'usuario' && password == 'senha'){
-            navigation.navigate('Home');
+            navigation.navigate('VisualizacaoPerfil');
         } else {
             alert('Login falhou.');
         }

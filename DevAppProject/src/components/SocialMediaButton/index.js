@@ -16,13 +16,13 @@ const AppButton = ({title, url, tipo}) => {
     let iconImage = null;
 
     if (tipo === 'facebook') {
-        iconImage = require('../assets/facebook_icon.png');
+        iconImage = require('../../../assets/facebook_icon.png');
         buttonStyle = styles.facebook_button;
     }
 
     else if (tipo === 'google') {
 
-        iconImage = require('../assets/google_icon.png');
+        iconImage = require('../../../assets/google_icon.png');
         buttonStyle = styles.google_button;
 
     }

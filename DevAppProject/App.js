@@ -3,12 +3,12 @@ import { StyleSheet, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
-import Header from "./Components/header";
-import Cadastro from "./Components/cadastro";
-import LoginScreen from "./Login";
-import Home from "./home";
-import CadastroForm from "./Components/CadastroForm";
-import EditarPerfil from "./Components/EditarPerfil";
+import Header from "./src/components/Header/index";
+import Cadastro from './src/screens/Cadastro.js'
+import LoginScreen from "./src/screens/Login.js";
+import VisualizacaoPerfil from "./src/screens/VisualizacaoPerfil.js";
+import CadastroForm from "./src/screens/CadastroForm.js";
+import EditarPerfil from "./src/screens/EditarPerfil.js";
 
 const Stack = createNativeStackNavigator();
 
@@ -41,7 +41,7 @@ export default function App() {
         <Stack.Screen name="CadastroForm" component={CadastroForm} />
         <Stack.Screen name="Login" component={LoginTela} />
         <Stack.Screen name="EditarPerfil" component={EditarPerfil} />
-        <Stack.Screen name="Home" component={Home} />
+        <Stack.Screen name="VisualizacaoPerfil" component={VisualizacaoPerfil} />
       </Stack.Navigator>
     </NavigationContainer>
   );
