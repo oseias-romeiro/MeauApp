@@ -6,6 +6,9 @@ import {
   TouchableOpacity,
   StyleSheet,
 } from "react-native";
+import {createUserWithEmailAndPassword} from "firebase/auth";
+
+import auth from '../config/index';
 
 const CadastroForm = ({ navigation }) => {
   const [email, setEmail] = useState("");
@@ -13,9 +16,13 @@ const CadastroForm = ({ navigation }) => {
   const [senha, setSenha] = useState("");
 
   const handleCadastro = () => {
-    // TODO: IMPLEMENTAÇÃO CADASTRO COM BACKEND, ETC.
-    // REDIRECIONAR PARA TELA DE LOGIN
-    navigation.navigate("Login");
+    createUserWithEmailAndPassword(auth, email, senha)
+      .then((userCredential) => {
+        navigation.navigate('Login');
+      })
+      .catch((error) => {
+        alert(error);
+      })
   };
 
   return (
