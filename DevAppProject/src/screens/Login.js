@@ -2,29 +2,39 @@ import React, { useState } from 'react';
 import { View, TextInput, StyleSheet } from 'react-native';
 import EntrarButton from '../components/CustomButton/index';
 import AppButton from '../components/SocialMediaButton/index';
+import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
+import auth from '../config/index';
 
 const LoginScreen = ({ navigation }) => {
 
-    const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    const handleLogin = () => {
+    const [signInWithEmailAndPassword] =
+    useSignInWithEmailAndPassword(auth);
 
-        if (username == 'usuario' && password == 'senha'){
-            navigation.navigate('VisualizacaoPerfil');
-        } else {
-            alert('Login falhou.');
+    const handleLogin = async () => {
+        try {
+            const authentication = await signInWithEmailAndPassword(email, password);
+            if (authentication) {
+                navigation.navigate('VisualizacaoPerfil');
+            }
+            else {
+                console.error('Usuário / Senha incorretos!');
+            }
+        } catch (error) {
+            console.error('Erro ao fazer o login', error);
         }
-
+        
     };
 
     return (
         <View style = {styles.container}>
             <TextInput
                 style = {styles.input}
-                placeholder = 'Nome de Usuário'
-                onChangeText = {text => setUsername(text)}
-                value = {username} 
+                placeholder = 'Email do Usuario'
+                onChangeText = {text => setEmail(text)}
+                value = {email} 
             />
 
             <TextInput
