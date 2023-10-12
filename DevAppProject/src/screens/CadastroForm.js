@@ -7,38 +7,34 @@ import {
   StyleSheet,
 } from "react-native";
 import {createUserWithEmailAndPassword} from "firebase/auth";
+import { addDoc, collection } from "firebase/firestore"
 
-import auth from '../config/index';
+import config from '../config/index';
 
 const CadastroForm = ({ navigation }) => {
   const [email, setEmail] = useState("");
-  const [login, setLogin] = useState("");
   const [senha, setSenha] = useState("");
 
   const handleCadastro = () => {
-    createUserWithEmailAndPassword(auth, email, senha)
+    createUserWithEmailAndPassword(config.auth, email, senha)
       .then((userCredential) => {
-        navigation.navigate('Login');
+        addDoc(collection(config.db, "users"), {email: email})
+          .then((docRef) => {navigation.navigate('Login');})
       })
       .catch((error) => {
         alert(error);
       })
+    ;
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Cadastro</Text>
+      <Text style={styles.title}>Cadastro Pessoal</Text>
       <TextInput
         placeholder="Email"
         style={styles.input}
         value={email}
         onChangeText={(text) => setEmail(text)}
-      />
-      <TextInput
-        placeholder="Login"
-        style={styles.input}
-        value={login}
-        onChangeText={(text) => setLogin(text)}
       />
       <TextInput
         placeholder="Senha"
