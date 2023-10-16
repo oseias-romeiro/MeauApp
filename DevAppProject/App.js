@@ -23,7 +23,6 @@ const CadastroTela = ({ navigation }) => {
 };
 
 const LoginTela = ({ navigation }) => {
-  console.log(navigation);
   return (
     <View style={styles.container}>
       <Header navigation={navigation} text="Login" />
@@ -33,12 +32,22 @@ const LoginTela = ({ navigation }) => {
   );
 };
 
+const CadastroFormTela = ({ navigation }) => {
+  return (
+    <View style={styles.container}>
+      <Header navigation={navigation} text="Cadastro Pessoal" />
+      <CadastroForm navigation={navigation}/>
+      <StatusBar style="auto" />
+    </View>
+  );
+}
+
 export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name="Cadastro" component={CadastroTela} />
-        <Stack.Screen name="CadastroForm" component={CadastroForm} />
+        <Stack.Screen name="CadastroForm" component={CadastroFormTela} />
         <Stack.Screen name="Login" component={LoginTela} />
         <Stack.Screen name="EditarPerfil" component={EditarPerfil} />
         <Stack.Screen name="VisualizacaoPerfil" component={VisualizacaoPerfil} />
