@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Header from "../components/Header";
 import {
   View,
   Text,
@@ -19,31 +20,29 @@ const CadastroForm = ({ navigation }) => {
   };
 
   return (
+    <><Header></Header>
     <View style={styles.container}>
       <Text style={styles.title}>Cadastro</Text>
       <TextInput
         placeholder="Email"
         style={styles.input}
         value={email}
-        onChangeText={(text) => setEmail(text)}
-      />
+        onChangeText={(text) => setEmail(text)} />
       <TextInput
         placeholder="Login"
         style={styles.input}
         value={login}
-        onChangeText={(text) => setLogin(text)}
-      />
+        onChangeText={(text) => setLogin(text)} />
       <TextInput
         placeholder="Senha"
         style={styles.input}
         secureTextEntry={true}
         value={senha}
-        onChangeText={(text) => setSenha(text)}
-      />
+        onChangeText={(text) => setSenha(text)} />
       <TouchableOpacity style={styles.button} onPress={handleCadastro}>
         <Text style={styles.buttonText}>Cadastrar</Text>
       </TouchableOpacity>
-    </View>
+    </View></>
   );
 };
 
