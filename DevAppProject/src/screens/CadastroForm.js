@@ -1,57 +1,185 @@
 import React, { useState } from "react";
+
 import Header from "../components/Header";
-import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  StyleSheet,
-} from "react-native";
+
+import { View, Text, TextInput, Pressable, StyleSheet } from "react-native";
+import {createUserWithEmailAndPassword} from "firebase/auth";
+import { addDoc, collection } from "firebase/firestore"
+import { getStorage, ref, uploadBytesResumable } from 'firebase/storage';
+import * as ImagePicker from 'expo-image-picker';
+import config from '../config/index';
+
 
 const CadastroForm = ({ navigation }) => {
+  const [nome_completo, setNomeCompleto] = useState("");
+  const [idade, setIdade] = useState("");
   const [email, setEmail] = useState("");
-  const [login, setLogin] = useState("");
+  const [estado, setEstado] = useState("");
+  const [cidade, setCidade] = useState("");
+  const [endereco, setEndereco] = useState("");
+  const [telefone, setTelefone] = useState("");
+  const [nome_perfil, setNomePerfil] = useState("");
   const [senha, setSenha] = useState("");
+  const [senha_confirm, setSenhaConfirm] = useState("");
+  const [image, setImage] = useState(null);
+
+  const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+  
+    console.log(result);
+  
+    if (!result.canceled) {
+      setImage(result.assets[0].uri);
+    }
+  };
 
   const handleCadastro = () => {
-    // TODO: IMPLEMENTAÇÃO CADASTRO COM BACKEND, ETC.
-    // REDIRECIONAR PARA TELA DE LOGIN
-    navigation.navigate("Login");
+    if (senha != senha_confirm) {
+      alert("As senhas não coincidem.");
+      return;
+    }
+    createUserWithEmailAndPassword(config.auth, email, senha)
+      .then((userCredential) => {
+        addDoc(collection(config.db, "users"),
+          {
+            nome_completo: nome_completo,
+            idade: idade,
+            email: email,
+            estado: estado,
+            cidade: cidade,
+            endereco: endereco,
+            telefone: telefone,
+            nome_perfil: nome_perfil
+          }
+        )
+        .then((docRef) => {
+          fetch(image)
+            .then((response) => { response.blob().then((blob) => {
+              console.log('imagem:', blob);
+              uploadBytesResumable(ref(getStorage(), `profilePhotos/${email}`), blob)
+              .then((snapshot) => {
+                navigation.navigate('Login');
+              });
+            });
+          });
+        });
+      })
+      .catch((error) => {
+        alert("Falha ao cadastrar usuario!");
+        return;
+      })
+    ;
   };
 
   return (
     <><Header></Header>
     <View style={styles.container}>
       <Text style={styles.title}>Cadastro</Text>
+    <View style={styles.content}>
+      <Text style={styles.msgCard}>As informações preenchidas serão divulgadas apenas para a pessoa com a qual você realizar o processo de adoção e/ou apadrinhamento, após a formalização do processo.</Text>
+      <Text style={styles.sectionText}>INFORMAÇÕES PESSOAIS</Text>
+      <TextInput
+        placeholder="Nome completo"
+        style={styles.input}
+        value={nome_completo}
+        onChangeText={(text) => setNomeCompleto(text)}
+      />
+      <TextInput
+        placeholder="Idade"
+        inputMode="numeric"
+        style={styles.input}
+        value={idade}
+        onChangeText={(text) => setIdade(text)}
+      />
       <TextInput
         placeholder="Email"
         style={styles.input}
         value={email}
         onChangeText={(text) => setEmail(text)} />
       <TextInput
-        placeholder="Login"
+        placeholder="Estado"
         style={styles.input}
         value={login}
         onChangeText={(text) => setLogin(text)} />
+
+        value={estado}
+        onChangeText={(text) => setEstado(text)}
+      />
+      <TextInput
+        placeholder="Cidade"
+        style={styles.input}
+        value={cidade}
+        onChangeText={(text) => setCidade(text)}
+      />
+      <TextInput
+        placeholder="Endereço"
+        style={styles.input}
+        value={endereco}
+        onChangeText={(text) => setEndereco(text)}
+      />
+      <TextInput
+        placeholder="Telefone"
+        inputMode="numeric"
+        style={styles.input}
+        value={telefone}
+        onChangeText={(text) => setTelefone(text)}
+      />
+      <Text style={styles.sectionText}>INFORMAÇÕES DE PERFIL</Text>
+      <TextInput
+        placeholder="Nome de usuário"
+        style={styles.input}
+        value={nome_perfil}
+        onChangeText={(text) => setNomePerfil(text)}
+      />
       <TextInput
         placeholder="Senha"
         style={styles.input}
         secureTextEntry={true}
         value={senha}
-        onChangeText={(text) => setSenha(text)} />
-      <TouchableOpacity style={styles.button} onPress={handleCadastro}>
-        <Text style={styles.buttonText}>Cadastrar</Text>
-      </TouchableOpacity>
+        onChangeText={(text) => setSenha(text)}
+      />
+      <TextInput
+        placeholder="Confirmação de senha"
+        style={styles.input}
+        secureTextEntry={true}
+        value={senha_confirm}
+        onChangeText={(text) => setSenhaConfirm(text)}
+      />
+      <Text style={styles.sectionText}>FOTO DE PERFIL</Text>
+      <Pressable style={styles.btnImage} onPress={pickImage}>
+        <Text style={styles.btnImageText}>adicionar foto</Text>
+      </Pressable>
+      <Pressable style={styles.button} onPress={handleCadastro}>
+        <Text style={styles.buttonText}>FAZER CADASTRO</Text>
+      </Pressable>
     </View></>
+
   );
 };
 
 const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
+    content: {
       padding: 16,
+      fontFamily: 'Roboto',
+    },
+    msgCard: {
+      backgroundColor: '#cfe9e5',
+      color: '#434343',
+      fontSize: 14,
+      borderRadius: 4,
+      height: 80,
+      width: 328,
+      marginBottom: 28,
+      padding: 10,
+    },
+    sectionText: {
+      marginBottom: 32,
+      color: '#88C9BF',
     },
     title: {
       fontSize: 24,
@@ -59,26 +187,42 @@ const styles = StyleSheet.create({
       marginBottom: 16,
     },
     input: {
-      width: '100%',
+      width: 328,
       height: 40,
-      borderColor: 'gray',
-      borderWidth: 1,
-      borderRadius: 8,
-      paddingHorizontal: 10,
-      marginBottom: 12,
+      borderBottomWidth: 1,
+      marginBottom: 20,
+      padding: 10,
+      color: '#bdbdbd',
+      fontSize: 14,
+      borderBlockEndColor: '#e6e7e8',
     },
     button: {
       width: '100%',
       height: 40,
       backgroundColor: '#88C9BF',
-      borderRadius: 8,
+      borderRadius: 4,
       justifyContent: 'center',
       alignItems: 'center',
     },
     buttonText: {
       color: '#434343',
-      fontSize: 16,
-      fontWeight: 'bold',
+      fontSize: 12,
+      fontFamily: 'Roboto',
+    },
+    btnImage: {
+      width: 128,
+      height: 128,
+      backgroundColor: '#e6e7e7',
+      borderRadius: 4,
+      marginBottom: 32,
+      alignSelf: 'center',
+      justifyContent: 'center',
+    },
+    btnImageText: {
+      color: '#757575',
+      fontSize: 14,
+      fontFamily: 'Roboto',
+      textAlign: 'center',
     },
   });
   

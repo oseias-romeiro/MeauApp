@@ -3,8 +3,9 @@ import { View, TextInput, StyleSheet } from 'react-native';
 import EntrarButton from '../components/CustomButton/index';
 import AppButton from '../components/SocialMediaButton/index';
 import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
-import auth from '../config/index';
+import config from '../config/index';
 
+const {auth} = config;
 const LoginScreen = ({ navigation }) => {
 
     const [email, setEmail] = useState('');
