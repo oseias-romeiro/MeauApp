@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 import Header from "../components/Header";
 
-import { View, Text, TextInput, Pressable, StyleSheet } from "react-native";
+import { ScrollView, View, Text, TextInput, Pressable, StyleSheet } from "react-native";
 import {createUserWithEmailAndPassword} from "firebase/auth";
 import { addDoc, collection } from "firebase/firestore"
 import { getStorage, ref, uploadBytesResumable } from 'firebase/storage';
@@ -70,6 +70,7 @@ const CadastroForm = ({ navigation }) => {
         });
       })
       .catch((error) => {
+        console.log(error);
         alert("Falha ao cadastrar usuario!");
         return;
       })
@@ -77,9 +78,11 @@ const CadastroForm = ({ navigation }) => {
   };
 
   return (
-    <><Header></Header>
-    <View style={styles.container}>
+    <ScrollView>
+      
+      <View style={styles.container}>
       <Text style={styles.title}>Cadastro</Text>
+    </View>
     <View style={styles.content}>
       <Text style={styles.msgCard}>As informações preenchidas serão divulgadas apenas para a pessoa com a qual você realizar o processo de adoção e/ou apadrinhamento, após a formalização do processo.</Text>
       <Text style={styles.sectionText}>INFORMAÇÕES PESSOAIS</Text>
@@ -104,12 +107,8 @@ const CadastroForm = ({ navigation }) => {
       <TextInput
         placeholder="Estado"
         style={styles.input}
-        value={login}
-        onChangeText={(text) => setLogin(text)} />
-
         value={estado}
-        onChangeText={(text) => setEstado(text)}
-      />
+        onChangeText={(text) => setEstado(text)} />
       <TextInput
         placeholder="Cidade"
         style={styles.input}
@@ -157,8 +156,10 @@ const CadastroForm = ({ navigation }) => {
       <Pressable style={styles.button} onPress={handleCadastro}>
         <Text style={styles.buttonText}>FAZER CADASTRO</Text>
       </Pressable>
-    </View></>
+    </View>
 
+    </ScrollView>
+    
   );
 };
 
