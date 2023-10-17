@@ -1,11 +1,14 @@
 import React, { useState } from "react";
+
+import Header from "../components/Header";
+
 import { View, Text, TextInput, Pressable, StyleSheet } from "react-native";
 import {createUserWithEmailAndPassword} from "firebase/auth";
 import { addDoc, collection } from "firebase/firestore"
 import { getStorage, ref, uploadBytesResumable } from 'firebase/storage';
 import * as ImagePicker from 'expo-image-picker';
-
 import config from '../config/index';
+
 
 const CadastroForm = ({ navigation }) => {
   const [nome_completo, setNomeCompleto] = useState("");
@@ -74,6 +77,9 @@ const CadastroForm = ({ navigation }) => {
   };
 
   return (
+    <><Header></Header>
+    <View style={styles.container}>
+      <Text style={styles.title}>Cadastro</Text>
     <View style={styles.content}>
       <Text style={styles.msgCard}>As informações preenchidas serão divulgadas apenas para a pessoa com a qual você realizar o processo de adoção e/ou apadrinhamento, após a formalização do processo.</Text>
       <Text style={styles.sectionText}>INFORMAÇÕES PESSOAIS</Text>
@@ -94,11 +100,13 @@ const CadastroForm = ({ navigation }) => {
         placeholder="Email"
         style={styles.input}
         value={email}
-        onChangeText={(text) => setEmail(text)}
-      />
+        onChangeText={(text) => setEmail(text)} />
       <TextInput
         placeholder="Estado"
         style={styles.input}
+        value={login}
+        onChangeText={(text) => setLogin(text)} />
+
         value={estado}
         onChangeText={(text) => setEstado(text)}
       />
@@ -149,7 +157,8 @@ const CadastroForm = ({ navigation }) => {
       <Pressable style={styles.button} onPress={handleCadastro}>
         <Text style={styles.buttonText}>FAZER CADASTRO</Text>
       </Pressable>
-    </View>
+    </View></>
+
   );
 };
 

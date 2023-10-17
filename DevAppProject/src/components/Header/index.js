@@ -2,13 +2,15 @@ import React from 'react';
 
 import { TouchableOpacity, StyleSheet, Text, View } from 'react-native';
 import { Icon } from 'react-native-elements'
+import { useNavigation } from '@react-navigation/native';
 
-const Header = ({navigation, text}) => {
+const Header = ({text}) => {
+    const navigation = useNavigation();
     return (
         <>
             <View style={ styles.topBar }></View>
             <View style={ styles.menuBar }>
-                <TouchableOpacity style={ styles.menuIcon } onPress={()=> navigation.navigate('Cadastro')}>
+                <TouchableOpacity style={ styles.menuIcon } onPress={()=> navigation.canGoBack? navigation.goBack() : navigation.navigate('Cadastro')}>
                     <Icon name='arrowleft' type='antdesign' color='#434343'/>
                 </TouchableOpacity>
                 <Text style={ styles.menuBarText }>{ text }</Text>

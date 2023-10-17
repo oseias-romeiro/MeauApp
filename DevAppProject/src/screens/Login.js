@@ -18,6 +18,7 @@ const LoginScreen = ({ navigation }) => {
         try {
             const authentication = await signInWithEmailAndPassword(email, password);
             if (authentication) {
+                alert('Sucesso!')
                 navigation.navigate('VisualizacaoPerfil');
             }
             else {

@@ -4,19 +4,22 @@ import { TouchableOpacity, StyleSheet, Text, ScrollView, SafeAreaView, View } fr
 import { Feather, FontAwesome } from 'react-native-vector-icons';
 import EditarPerfil from './EditarPerfil';
 import { useNavigation } from '@react-navigation/native';
-
+import Header from '../components/Header';
+import { Icon } from 'react-native-elements';
 
 export default function VisualizacaoPerfil() {
   const navigation = useNavigation();
   return (
+    <>
     <SafeAreaView style={styles.container}>
       <StatusBar style="auto" />
       <ScrollView>
         <View style={styles.topBar}></View>
         <View style={styles.menuBar}>
           <View style={styles.menuBarText}>
-            <TouchableOpacity>
-              <Feather name="menu" size={24} color="#434343" />
+            <TouchableOpacity onPress={() => navigation.goBack()}>
+            <Icon name='arrowleft' type='antdesign' color='#434343'/>
+              {/* <Feather name="menu" size={24} color="#434343" onPress={() => navigation.goBack()} /> */}
             </TouchableOpacity>
             <Text style={styles.texto1}>{"Meu perfil"}</Text>
           </View>
@@ -36,29 +39,29 @@ export default function VisualizacaoPerfil() {
           </View>
           <View>
             <View style={styles.campo}>
-            <Text style={styles.title}>{"EMAIL"}</Text>
-            <Text style={styles.textContent}>{"marília_martins@gmail.com"}</Text>
-          </View>
-          <View style={styles.campo}>
-            <Text style={styles.title}>{"LOCALIZAÇÃO"}</Text>
-            <Text style={styles.textContent}>{"Sobradinho - Distrito Federal"}</Text>
-          </View>
-          <View style={styles.campo}>
-            <Text style={styles.title}>{"ENDEREÇO"}</Text>
-            <Text style={styles.textContent}>{"Rua 203, conjunto B, casa 37"}</Text>
-          </View>
-          <View style={styles.campo}>
-            <Text style={styles.title}>{"TELEFONE"}</Text>
-            <Text style={styles.textContent}>{"(61) 98274-2947"}</Text>
-          </View>
-          <View style={styles.campo}>
-            <Text style={styles.title}>{"NOME DE USUÁRIO"}</Text>
-            <Text style={styles.textContent}>{"mari_martins"}</Text>
-          </View>
-          <View style={styles.campo}>
-            <Text style={styles.title}>{"HISTÓRICO"}</Text>
-            <Text style={styles.textContent}>{"Adotou 1 gato"}</Text>
-          </View>
+              <Text style={styles.title}>{"EMAIL"}</Text>
+              <Text style={styles.textContent}>{"marília_martins@gmail.com"}</Text>
+            </View>
+            <View style={styles.campo}>
+              <Text style={styles.title}>{"LOCALIZAÇÃO"}</Text>
+              <Text style={styles.textContent}>{"Sobradinho - Distrito Federal"}</Text>
+            </View>
+            <View style={styles.campo}>
+              <Text style={styles.title}>{"ENDEREÇO"}</Text>
+              <Text style={styles.textContent}>{"Rua 203, conjunto B, casa 37"}</Text>
+            </View>
+            <View style={styles.campo}>
+              <Text style={styles.title}>{"TELEFONE"}</Text>
+              <Text style={styles.textContent}>{"(61) 98274-2947"}</Text>
+            </View>
+            <View style={styles.campo}>
+              <Text style={styles.title}>{"NOME DE USUÁRIO"}</Text>
+              <Text style={styles.textContent}>{"mari_martins"}</Text>
+            </View>
+            <View style={styles.campo}>
+              <Text style={styles.title}>{"HISTÓRICO"}</Text>
+              <Text style={styles.textContent}>{"Adotou 1 gato"}</Text>
+            </View>
           </View>
           <View>
             <TouchableOpacity style={styles.btnContainer} onPress={() => navigation.navigate('EditarPerfil')}>
@@ -67,7 +70,7 @@ export default function VisualizacaoPerfil() {
           </View>
         </View>
       </ScrollView>
-    </SafeAreaView>
+    </SafeAreaView></>
   );
 }
 

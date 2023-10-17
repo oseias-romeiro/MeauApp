@@ -6,8 +6,10 @@ import {
   TouchableOpacity,
   StyleSheet,
 } from "react-native";
+import Header from "../components/Header";
 
 const EditarPerfil = ({ navigation }) => {
+
   const [nome, setNome] = useState("Marília Martins de Souza");
   const [idade, setIdade] = useState("27 anos");
   const [email, setEmail] = useState("marilia_martins@gmail.com");
@@ -27,60 +29,54 @@ const EditarPerfil = ({ navigation }) => {
   };
 
   return (
+    <>
+    <Header></Header>
     <View style={styles.container}>
       <Text style={styles.title}>Editar Perfil</Text>
       <TextInput
         placeholder="Nome Completo"
         style={styles.input}
         value={nome}
-        onChangeText={(text) => setNome(text)}
-      />
+        onChangeText={(text) => setNome(text)} />
       <TextInput
         placeholder="Idade"
         style={styles.input}
         value={idade}
-        onChangeText={(text) => setIdade(text)}
-      />
+        onChangeText={(text) => setIdade(text)} />
       <TextInput
         placeholder="Email"
         style={styles.input}
         value={email}
-        onChangeText={(text) => setEmail(text)}
-      />
+        onChangeText={(text) => setEmail(text)} />
       <TextInput
         placeholder="Localização"
         style={styles.input}
         value={localização}
-        onChangeText={(text) => setLocalização(text)}
-      />
+        onChangeText={(text) => setLocalização(text)} />
       <TextInput
         placeholder="Endereço"
         style={styles.input}
         value={endereco}
-        onChangeText={(text) => setEndereco(text)}
-      />
+        onChangeText={(text) => setEndereco(text)} />
       <TextInput
         placeholder="Telefone"
         style={styles.input}
         value={telefone}
-        onChangeText={(text) => setTelefone(text)}
-      />
+        onChangeText={(text) => setTelefone(text)} />
       <TextInput
         placeholder="Nome de usuário"
         style={styles.input}
         value={nomeUsuario}
-        onChangeText={(text) => setNomeUsuario(text)}
-      />
+        onChangeText={(text) => setNomeUsuario(text)} />
       <TextInput
         placeholder="Historico"
         style={styles.input}
         value={historico}
-        onChangeText={(text) => setHistorico(text)}
-      />
+        onChangeText={(text) => setHistorico(text)} />
       <TouchableOpacity style={styles.button} onPress={handleSalvar}>
         <Text style={styles.buttonText}>Salvar</Text>
       </TouchableOpacity>
-    </View>
+    </View></>
   );
 };
 
