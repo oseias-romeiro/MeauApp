@@ -6,8 +6,13 @@ import EditarPerfil from './EditarPerfil';
 import { useNavigation } from '@react-navigation/native';
 import Header from '../components/Header';
 import { Icon } from 'react-native-elements';
+import { useAuth } from '../config/auth';
 
 export default function VisualizacaoPerfil() {
+  
+  const { user } = useAuth();
+  console.log(user);
+
   const navigation = useNavigation();
   return (
     <>
@@ -40,7 +45,7 @@ export default function VisualizacaoPerfil() {
           <View>
             <View style={styles.campo}>
               <Text style={styles.title}>{"EMAIL"}</Text>
-              <Text style={styles.textContent}>{"marília_martins@gmail.com"}</Text>
+              <Text style={styles.textContent}>{ user.email }</Text>
             </View>
             <View style={styles.campo}>
               <Text style={styles.title}>{"LOCALIZAÇÃO"}</Text>
