@@ -47,6 +47,7 @@ const CadastroForm = ({ navigation }) => {
       .then((userCredential) => {
         addDoc(collection(config.db, "users"),
           {
+            uid: userCredential.user.uid,
             nome_completo: nome_completo,
             idade: idade,
             email: email,

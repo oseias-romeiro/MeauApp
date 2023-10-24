@@ -1,6 +1,6 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { TouchableOpacity, StyleSheet, Text, ScrollView, SafeAreaView, View } from 'react-native';
+import { TouchableOpacity, StyleSheet, Text, ScrollView, SafeAreaView, View, Image } from 'react-native';
 import { Feather, FontAwesome } from 'react-native-vector-icons';
 import EditarPerfil from './EditarPerfil';
 import { useNavigation } from '@react-navigation/native';
@@ -10,9 +10,9 @@ import { useAuth } from '../config/auth';
 
 export default function VisualizacaoPerfil() {
   
-  const { user } = useAuth();
-  console.log(user);
-
+  const { user, photoURL } = useAuth();
+  const [photo, setPhoto] = useState(null);
+  
   const navigation = useNavigation();
   return (
     <>
@@ -30,17 +30,17 @@ export default function VisualizacaoPerfil() {
           </View>
         </View>
         <View style={styles.content}>
-          <View style={styles.circle}>
-            <FontAwesome name="circle" size={250} color="#434343" />
+          <View>
+            <Image source={{uri: photoURL}} style={styles.profilePhoto} />
           </View>
-          <Text style={styles.texto2}>{"Marilia martins"}</Text>
+          <Text style={styles.texto2}>{ user.nome_perfil }</Text>
           <View style={styles.campo}>
             <Text style={styles.title}>{"NOME COMPLETO"}</Text>
-            <Text style={styles.textContent}>{"Marília Martins de Souza"}</Text>
+            <Text style={styles.textContent}>{ user.nome_completo }</Text>
           </View>
           <View style={styles.campo}>
             <Text style={styles.title}>{"IDADE"}</Text>
-            <Text style={styles.textContent}>{"27 anos"}</Text>
+            <Text style={styles.textContent}>{ user.idade }</Text>
           </View>
           <View>
             <View style={styles.campo}>
@@ -49,19 +49,19 @@ export default function VisualizacaoPerfil() {
             </View>
             <View style={styles.campo}>
               <Text style={styles.title}>{"LOCALIZAÇÃO"}</Text>
-              <Text style={styles.textContent}>{"Sobradinho - Distrito Federal"}</Text>
+              <Text style={styles.textContent}>{ user.estado }</Text>
             </View>
             <View style={styles.campo}>
               <Text style={styles.title}>{"ENDEREÇO"}</Text>
-              <Text style={styles.textContent}>{"Rua 203, conjunto B, casa 37"}</Text>
+              <Text style={styles.textContent}>{ user.endereco }</Text>
             </View>
             <View style={styles.campo}>
               <Text style={styles.title}>{"TELEFONE"}</Text>
-              <Text style={styles.textContent}>{"(61) 98274-2947"}</Text>
+              <Text style={styles.textContent}>{ user.telefone }</Text>
             </View>
             <View style={styles.campo}>
               <Text style={styles.title}>{"NOME DE USUÁRIO"}</Text>
-              <Text style={styles.textContent}>{"mari_martins"}</Text>
+              <Text style={styles.textContent}>{ user.nome_perfil }</Text>
             </View>
             <View style={styles.campo}>
               <Text style={styles.title}>{"HISTÓRICO"}</Text>
@@ -115,9 +115,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "flex-start",
   },
-  circle: {
-    marginBottom: 16, 
-  },
   textContent: {
     color: "#757575",
     fontSize: 14,
@@ -143,5 +140,12 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     paddingTop: 13,
     fontSize: 12,
-  }
+  },
+  profilePhoto: {
+    marginTop: 16,
+    marginBottom: 16,
+    width: 250,
+    height: 250,
+    borderRadius: 125,
+  },
 });

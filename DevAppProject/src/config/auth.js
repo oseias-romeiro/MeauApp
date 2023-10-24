@@ -1,13 +1,17 @@
 import React, { createContext, useState, useContext } from 'react';
 import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
-import config from '../config/index';
+import { where, collection, query, getDocs } from "firebase/firestore";
+import { getDownloadURL, ref, getStorage} from "firebase/storage";
 
+import config from '../config/index';
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
     const {auth} = config;
     const [user, setUser] = useState(null);
+    const [photoURL, setPhotoURL] = useState(null);
+
     const [signInWithEmailAndPassword] = useSignInWithEmailAndPassword(auth);
 
     const login = async(email, password) => {
@@ -15,10 +19,25 @@ export const AuthProvider = ({ children }) => {
         try {
             const authentication = await signInWithEmailAndPassword(email, password);
             if (authentication) {
-                // TODO: buscar no firestore o usuario e passar as informações
-                console.log('usuario logado:', authentication.user);
-                setUser(authentication.user);
-                return true;
+                const q = query(collection(config.db, 'users'), where('uid', '==', authentication.user.uid));
+                const querySnapshot = await getDocs(q);
+
+                if(querySnapshot.size > 0) {
+
+                    // set user data
+                    const user_data = querySnapshot.docs[0].data();
+                    console.log('user data:', user_data);
+                    setUser(user_data);
+
+                    // set photo url
+                    const url = await getDownloadURL(ref(getStorage(), `profilePhotos/${user_data.email}`))
+                    console.log('user photo url:', url);
+                    setPhotoURL(url);
+                    
+                    return true;
+                }else {
+                    console.log('Usuário não encontrado!');
+                }
             }
             else {
                 console.error('Usuário / Senha incorretos!');
@@ -26,7 +45,6 @@ export const AuthProvider = ({ children }) => {
         } catch (error) {
             console.error('Erro ao fazer o login', error);
         }
-        return false;
     };
 
     const logout = () => {
@@ -36,7 +54,7 @@ export const AuthProvider = ({ children }) => {
     };
 
     return (
-        <AuthContext.Provider value={{ user, login, logout }}>
+        <AuthContext.Provider value={{ user, photoURL, login, logout}}>
             {children}
         </AuthContext.Provider>
     );
