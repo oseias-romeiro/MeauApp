@@ -9,6 +9,8 @@ import LoginScreen from "./src/screens/Login.js";
 import VisualizacaoPerfil from "./src/screens/VisualizacaoPerfil.js";
 import CadastroForm from "./src/screens/CadastroForm.js";
 import EditarPerfil from "./src/screens/EditarPerfil.js";
+import Dashboard from "./src/screens/Dashboard";
+import CadastroAnimal from "./src/screens/CadastroAnimal";
 import { AuthProvider } from "./src/config/auth.js"
 
 const Stack = createNativeStackNavigator();
@@ -51,6 +53,8 @@ export default function App() {
           <Stack.Screen name="Cadastro" component={CadastroTela} />
           <Stack.Screen name="CadastroForm" component={CadastroFormTela} />
           <Stack.Screen name="Login" component={LoginTela} />
+          <Stack.Screen name="Dashboard" component={Dashboard} />
+          <Stack.Screen name="CadastroAnimal" component={CadastroAnimal} />
           <Stack.Screen name="EditarPerfil" component={EditarPerfil} />
           <Stack.Screen name="VisualizacaoPerfil" component={VisualizacaoPerfil} />
         </Stack.Navigator>

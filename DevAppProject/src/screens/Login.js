@@ -16,7 +16,7 @@ const LoginScreen = ({ navigation }) => {
         login(email, password)
             .then((response)=>{
                 if (response) {
-                    navigation.navigate('VisualizacaoPerfil');
+                    navigation.navigate('Dashboard');
                 }
             })
         ;
