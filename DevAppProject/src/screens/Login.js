@@ -1,33 +1,25 @@
 import React, { useState } from 'react';
 import { View, TextInput, StyleSheet } from 'react-native';
+
 import EntrarButton from '../components/CustomButton/index';
 import AppButton from '../components/SocialMediaButton/index';
-import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
-import config from '../config/index';
+import { useAuth } from '../config/auth';
 
-const {auth} = config;
 const LoginScreen = ({ navigation }) => {
+
+    const {login} = useAuth();
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    const [signInWithEmailAndPassword] =
-    useSignInWithEmailAndPassword(auth);
-
     const handleLogin = async () => {
-        try {
-            const authentication = await signInWithEmailAndPassword(email, password);
-            if (authentication) {
-                alert('Sucesso!')
-                navigation.navigate('VisualizacaoPerfil');
-            }
-            else {
-                console.error('Usuário / Senha incorretos!');
-            }
-        } catch (error) {
-            console.error('Erro ao fazer o login', error);
-        }
-        
+        login(email, password)
+            .then((response)=>{
+                if (response) {
+                    navigation.navigate('VisualizacaoPerfil');
+                }
+            })
+        ;
     };
 
     return (

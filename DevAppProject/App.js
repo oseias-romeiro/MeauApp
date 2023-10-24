@@ -9,6 +9,7 @@ import LoginScreen from "./src/screens/Login.js";
 import VisualizacaoPerfil from "./src/screens/VisualizacaoPerfil.js";
 import CadastroForm from "./src/screens/CadastroForm.js";
 import EditarPerfil from "./src/screens/EditarPerfil.js";
+import { AuthProvider } from "./src/config/auth.js"
 
 const Stack = createNativeStackNavigator();
 
@@ -45,13 +46,15 @@ const CadastroFormTela = ({ navigation }) => {
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="Cadastro" component={CadastroTela} />
-        <Stack.Screen name="CadastroForm" component={CadastroFormTela} />
-        <Stack.Screen name="Login" component={LoginTela} />
-        <Stack.Screen name="EditarPerfil" component={EditarPerfil} />
-        <Stack.Screen name="VisualizacaoPerfil" component={VisualizacaoPerfil} />
-      </Stack.Navigator>
+      <AuthProvider>
+        <Stack.Navigator screenOptions={{ headerShown: false }}>
+          <Stack.Screen name="Cadastro" component={CadastroTela} />
+          <Stack.Screen name="CadastroForm" component={CadastroFormTela} />
+          <Stack.Screen name="Login" component={LoginTela} />
+          <Stack.Screen name="EditarPerfil" component={EditarPerfil} />
+          <Stack.Screen name="VisualizacaoPerfil" component={VisualizacaoPerfil} />
+        </Stack.Navigator>
+      </AuthProvider>
     </NavigationContainer>
   );
 }

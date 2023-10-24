@@ -47,6 +47,7 @@ const CadastroForm = ({ navigation }) => {
       .then((userCredential) => {
         addDoc(collection(config.db, "users"),
           {
+            uid: userCredential.user.uid,
             nome_completo: nome_completo,
             idade: idade,
             email: email,
@@ -79,9 +80,7 @@ const CadastroForm = ({ navigation }) => {
 
   return (
     <ScrollView>
-      
       <View style={styles.container}>
-      <Text style={styles.title}>Cadastro</Text>
     </View>
     <View style={styles.content}>
       <Text style={styles.msgCard}>As informações preenchidas serão divulgadas apenas para a pessoa com a qual você realizar o processo de adoção e/ou apadrinhamento, após a formalização do processo.</Text>
