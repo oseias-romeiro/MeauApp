@@ -8,6 +8,7 @@ import { addDoc, collection } from "firebase/firestore"
 import { getStorage, ref, uploadBytesResumable } from 'firebase/storage';
 import * as ImagePicker from 'expo-image-picker';
 import config from '../config/index';
+import { FirebaseError } from "firebase/app";
 
 
 const CadastroForm = ({ navigation }) => {
@@ -44,7 +45,7 @@ const CadastroForm = ({ navigation }) => {
       return;
     }
     createUserWithEmailAndPassword(config.auth, email, senha)
-      .then((userCredential) => {
+      .then(async (userCredential) => {
         addDoc(collection(config.db, "users"),
           {
             uid: userCredential.user.uid,
@@ -58,21 +59,34 @@ const CadastroForm = ({ navigation }) => {
             nome_perfil: nome_perfil
           }
         )
-        .then((docRef) => {
+        .then(async (docRef) => {
           fetch(image)
-            .then((response) => { response.blob().then((blob) => {
+            .then(async (response) => { response.blob().then(async (blob) => {
               console.log('imagem:', blob);
               uploadBytesResumable(ref(getStorage(), `profilePhotos/${email}`), blob)
               .then((snapshot) => {
                 navigation.navigate('Login');
-              });
-            });
+              })
+              .catch((error) => {
+                console.log(error);
+                alert("Falha ao persistir a imagem!\n"+error);
+                return;
+              })
+            })
+            .catch((error) => {
+              console.log(error);
+              alert("Falha ao carregar a imagem!\n"+error);
+              return;
+            })
           });
-        });
+        }).catch((error) => {
+          console.log(error);
+          alert("Falha ao persistir os dados!\n"+error);
+          return;
+        })
       })
       .catch((error) => {
-        console.log(error);
-        alert("Falha ao cadastrar usuario!");
+        alert("Falha ao cadastrar usuario!\n"+error);
         return;
       })
     ;
