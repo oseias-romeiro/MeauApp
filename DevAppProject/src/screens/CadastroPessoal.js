@@ -1,17 +1,14 @@
 import React, { useState } from "react";
 
-import Header from "../components/Header";
-
 import { ScrollView, View, Text, TextInput, Pressable, StyleSheet } from "react-native";
 import {createUserWithEmailAndPassword} from "firebase/auth";
 import { addDoc, collection } from "firebase/firestore"
 import { getStorage, ref, uploadBytesResumable } from 'firebase/storage';
 import * as ImagePicker from 'expo-image-picker';
 import config from '../config/index';
-import { FirebaseError } from "firebase/app";
 
 
-const CadastroForm = ({ navigation }) => {
+const CadastroPessoal = ({ navigation }) => {
   const [nome_completo, setNomeCompleto] = useState("");
   const [idade, setIdade] = useState("");
   const [email, setEmail] = useState("");
@@ -186,7 +183,6 @@ const styles = StyleSheet.create({
       color: '#434343',
       fontSize: 14,
       borderRadius: 4,
-      height: 80,
       width: 328,
       marginBottom: 28,
       padding: 10,
@@ -240,4 +236,4 @@ const styles = StyleSheet.create({
     },
   });
   
-  export default CadastroForm;
+  export default CadastroPessoal;

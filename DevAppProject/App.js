@@ -7,7 +7,7 @@ import Header from "./src/components/Header/index";
 import Cadastro from './src/screens/Cadastro.js'
 import LoginScreen from "./src/screens/Login.js";
 import VisualizacaoPerfil from "./src/screens/VisualizacaoPerfil.js";
-import CadastroForm from "./src/screens/CadastroForm.js";
+import CadastroPessoal from "./src/screens/CadastroPessoal.js";
 import EditarPerfil from "./src/screens/EditarPerfil.js";
 import Dashboard from "./src/screens/Dashboard";
 import CadastroAnimal from "./src/screens/CadastroAnimal";
@@ -35,11 +35,11 @@ const LoginTela = ({ navigation }) => {
   );
 };
 
-const CadastroFormTela = ({ navigation }) => {
+const CadastroPessoalTela = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <Header navigation={navigation} text="Cadastro Pessoal" />
-      <CadastroForm navigation={navigation}/>
+      <CadastroPessoal navigation={navigation}/>
       <StatusBar style="auto" />
     </View>
   );
@@ -51,7 +51,7 @@ export default function App() {
       <AuthProvider>
         <Stack.Navigator screenOptions={{ headerShown: false }}>
           <Stack.Screen name="Cadastro" component={CadastroTela} />
-          <Stack.Screen name="CadastroForm" component={CadastroFormTela} />
+          <Stack.Screen name="CadastroPessoal" component={CadastroPessoalTela} />
           <Stack.Screen name="Login" component={LoginTela} />
           <Stack.Screen name="Dashboard" component={Dashboard} />
           <Stack.Screen name="CadastroAnimal" component={CadastroAnimal} />
@@ -68,7 +68,5 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#FAFAFA",
     minHeight: 360,
-    // alignItems: 'center',
-    // flexDirection: 'column',
   },
 });
