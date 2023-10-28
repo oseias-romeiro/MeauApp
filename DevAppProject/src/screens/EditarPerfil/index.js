@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { ScrollView, View, Text, TextInput, Pressable, StyleSheet } from "react-native";
 import { updateEmail, updatePassword } from "firebase/auth";
-import { addDoc, collection, updateDoc } from "firebase/firestore"
+import { doc, collection, updateDoc, getDoc, getFirestore } from "firebase/firestore"
 import { getStorage, ref, uploadBytesResumable } from 'firebase/storage';
 import * as ImagePicker from 'expo-image-picker';
 
@@ -13,18 +13,17 @@ import { useAuth } from "../../config/auth";
 
 const EditarPerfil = ({ navigation }) => {
 
-  const { user } = useAuth();
+  const { user, login } = useAuth();
 
   const [nome_completo, setNomeCompleto] = useState(user.nome_completo);
   const [idade, setIdade] = useState(user.idade);
-  const [email, setEmail] = useState(user.email);
+  const email = user.email;
   const [estado, setEstado] = useState(user.estado);
   const [cidade, setCidade] = useState(user.cidade);
   const [endereco, setEndereco] = useState(user.endereco);
   const [telefone, setTelefone] = useState(user.telefone);
   const [nome_perfil, setNomePerfil] = useState(user.nome_perfil);
   const [senha, setSenha] = useState("");
-  const [senha_confirm, setSenhaConfirm] = useState("");
   const [image, setImage] = useState(null);
 
   const pickImage = async () => {
@@ -42,39 +41,35 @@ const EditarPerfil = ({ navigation }) => {
     }
   };
 
-  const handleEdit = () => {
-    if (senha != senha_confirm) {
-      alert("As senhas não coincidem.");
-      return;
-    }
-    updateEmail(config.auth.currentUser, email)
-      .then(() => {
-        updatePassword(config.auth.currentUser, senha)
-          .then(()=>{
-            updateDoc(collection(config.db, "users"), {
-              nome_completo: nome_completo,
-              idade: idade,
-              email: email,
-              estado: estado,
-              cidade: cidade,
-              endereco: endereco,
-              telefone: telefone,
-              nome_perfil: nome_perfil
+  const handleEdit = async () => {
+    updateDoc(doc(collection(config.db, "users"), user.docId), {
+      nome_completo: nome_completo,
+      idade: idade,
+      estado: estado,
+      cidade: cidade,
+      endereco: endereco,
+      telefone: telefone,
+      nome_perfil: nome_perfil
+    })
+      .then(async (data) => {
+        if (image != null) {
+          fetch(image)
+          .then(async (response) => { response.blob().then(async (blob) => {
+            console.log('imagem:', blob);
+            uploadBytesResumable(ref(getStorage(), `profilePhotos/${email}`), blob)
+            .then((snapshot) => {
+              login(email, senha).then((res) =>{
+                if (res) navigation.goBack()
+              });
             })
-              .then(async (docRef) => {
-                fetch(image)
-                  .then(async (response) => { response.blob().then(async (blob) => {
-                    console.log('imagem:', blob);
-                    uploadBytesResumable(ref(getStorage(), `profilePhotos/${email}`), blob)
-                    .then((snapshot) => {
-                      navigation.goBack();
-                    })
-                    })
-                  })
-              })
-            
+            })
           })
-        })
+        }else {
+          login(email, senha).then((res) =>{
+            if (res) navigation.goBack()
+          });
+        }
+      })
   };
 
   return (
@@ -100,7 +95,10 @@ const EditarPerfil = ({ navigation }) => {
           placeholder="Email"
           style={styles.input}
           value={email}
-          onChangeText={(text) => setEmail(text)} />
+          editable={false}
+          selectTextOnFocus={false}
+          /*onChangeText={(text) => setEmail(text)}*/
+        />
         <TextInput
           placeholder="Estado"
           style={styles.input}
@@ -138,13 +136,6 @@ const EditarPerfil = ({ navigation }) => {
           secureTextEntry={true}
           value={senha}
           onChangeText={(text) => setSenha(text)}
-        />
-        <TextInput
-          placeholder="Confirmação de senha"
-          style={styles.input}
-          secureTextEntry={true}
-          value={senha_confirm}
-          onChangeText={(text) => setSenhaConfirm(text)}
         />
         <Text style={styles.sectionText}>FOTO DE PERFIL</Text>
         <Pressable style={styles.btnImage} onPress={pickImage}>
