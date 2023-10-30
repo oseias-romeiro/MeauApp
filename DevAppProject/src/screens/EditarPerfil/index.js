@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { ScrollView, View, Text, TextInput, Pressable, StyleSheet } from "react-native";
+import { ScrollView, View, Text, TextInput, Pressable, Image } from "react-native";
 import { updateEmail, updatePassword } from "firebase/auth";
-import { doc, collection, updateDoc, getDoc, getFirestore } from "firebase/firestore"
+import { doc, collection, updateDoc } from "firebase/firestore"
 import { getStorage, ref, uploadBytesResumable } from 'firebase/storage';
 import * as ImagePicker from 'expo-image-picker';
 
@@ -13,11 +13,11 @@ import { useAuth } from "../../config/auth";
 
 const EditarPerfil = ({ navigation }) => {
 
-  const { user, login } = useAuth();
+  const { user, login, photoURL } = useAuth();
 
   const [nome_completo, setNomeCompleto] = useState(user.nome_completo);
   const [idade, setIdade] = useState(user.idade);
-  const email = user.email;
+  const [email, setEmail] = useState(user.email);
   const [estado, setEstado] = useState(user.estado);
   const [cidade, setCidade] = useState(user.cidade);
   const [endereco, setEndereco] = useState(user.endereco);
@@ -42,6 +42,8 @@ const EditarPerfil = ({ navigation }) => {
   };
 
   const handleEdit = async () => {
+    updateEmail(user.userCredential.user, email).then(() => {
+    updatePassword(user.userCredential.user, senha).then(() => {
     updateDoc(doc(collection(config.db, "users"), user.docId), {
       nome_completo: nome_completo,
       idade: idade,
@@ -49,7 +51,8 @@ const EditarPerfil = ({ navigation }) => {
       cidade: cidade,
       endereco: endereco,
       telefone: telefone,
-      nome_perfil: nome_perfil
+      nome_perfil: nome_perfil,
+      email: email,
     })
       .then(async (data) => {
         if (image != null) {
@@ -70,6 +73,8 @@ const EditarPerfil = ({ navigation }) => {
           });
         }
       })
+    }).catch((error) => alert(error));
+    }).catch((error) => alert(error));
   };
 
   return (
@@ -95,9 +100,8 @@ const EditarPerfil = ({ navigation }) => {
           placeholder="Email"
           style={styles.input}
           value={email}
-          editable={false}
           selectTextOnFocus={false}
-          /*onChangeText={(text) => setEmail(text)}*/
+          onChangeText={(text) => setEmail(text)}
         />
         <TextInput
           placeholder="Estado"
@@ -138,8 +142,18 @@ const EditarPerfil = ({ navigation }) => {
           onChangeText={(text) => setSenha(text)}
         />
         <Text style={styles.sectionText}>FOTO DE PERFIL</Text>
-        <Pressable style={styles.btnImage} onPress={pickImage}>
-          <Text style={styles.btnImageText}>mudar foto</Text>
+        <Pressable onPress={pickImage}>
+          <Image source={{uri: photoURL}} style={
+              {
+                width: 128,
+                height: 128,
+                borderRadius: 125,
+                alignSelf: 'center',
+                justifyContent: 'center',
+                backgroundColor: '#e6e7e7',
+                marginBottom: 32,
+              }
+            } />
         </Pressable>
         <Pressable style={styles.button} onPress={handleEdit}>
           <Text style={styles.buttonText}>EDITAR PERFIL</Text>
