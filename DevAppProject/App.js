@@ -2,6 +2,8 @@ import { StatusBar } from "expo-status-bar";
 import { StyleSheet, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import MyDrawer from "./src/components/Drawer";
+
 
 import Header from "./src/components/Header/index";
 import Cadastro from './src/screens/Cadastro.js'
@@ -19,6 +21,7 @@ import DetalhesAnimal from "./src/screens/DetalhesAnimal/index";
 
 const Stack = createNativeStackNavigator();
 
+
 const CadastroTela = ({ navigation }) => {
   return (
     <View style={styles.container}>
@@ -33,6 +36,7 @@ const CadastroTela = ({ navigation }) => {
 export default function App() {
   return (
     <NavigationContainer>
+      <MyDrawer />
       <AuthProvider>
         <Stack.Navigator screenOptions={{ headerShown: false }}>
           <Stack.Screen name="Cadastro" component={CadastroTela} />
