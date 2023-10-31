@@ -2,7 +2,8 @@ import { StatusBar } from "expo-status-bar";
 import { StyleSheet, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import MyDrawer from "./src/components/Drawer";
+import { createDrawerNavigator } from '@react-navigation/drawer';
+import 'react-native-reanimated';
 
 
 import Header from "./src/components/Header/index";
@@ -14,6 +15,7 @@ import EditarPerfil from "./src/screens/EditarPerfil.js";
 import Dashboard from "./src/screens/Dashboard";
 import CadastroAnimal from "./src/screens/CadastroAnimal";
 import { AuthProvider } from "./src/config/auth.js"
+import MyDrawer from "./src/components/Drawer";
 
 const Stack = createNativeStackNavigator();
 
@@ -48,20 +50,13 @@ const CadastroFormTela = ({ navigation }) => {
   );
 }
 
+
+
 export default function App() {
   return (
-    <NavigationContainer>
-      <MyDrawer />
+    <NavigationContainer independent = {true}>
       <AuthProvider>
-        <Stack.Navigator screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="Cadastro" component={CadastroTela} />
-          <Stack.Screen name="CadastroForm" component={CadastroFormTela} />
-          <Stack.Screen name="Login" component={LoginTela} />
-          <Stack.Screen name="Dashboard" component={Dashboard} />
-          <Stack.Screen name="CadastroAnimal" component={CadastroAnimal} />
-          <Stack.Screen name="EditarPerfil" component={EditarPerfil} />
-          <Stack.Screen name="VisualizacaoPerfil" component={VisualizacaoPerfil} />
-        </Stack.Navigator>
+      <MyDrawer />
       </AuthProvider>
     </NavigationContainer>
   );

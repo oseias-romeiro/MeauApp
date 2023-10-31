@@ -1,9 +1,10 @@
 import { TouchableOpacity, StyleSheet, Text, View } from "react-native";
 
+
 const Cadastro = ({ navigation }) => {
   return (
     <View style={styles.content}>
-      <Text style={styles.ops}>Ops!</Text>
+         <Text style={styles.ops}>Ops!</Text>
       <Text style={styles.textContent}>
         Você não pode realizar esta ação{"\n"}
         sem possuir um cadastro.
