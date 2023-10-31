@@ -43,7 +43,10 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   button: {
-    marginBottom: 10, // Adiciona espaçamento inferior de 10 unidades entre os botões
+    paddingTop:"30px",
+    marginTop: "30px",
+    paddingBottom: "30px",
+    marginBottom: "30px", // Adiciona espaçamento inferior de 10 unidades entre os botões
   },
 });
 
