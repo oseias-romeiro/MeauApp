@@ -12,6 +12,7 @@ import EditarPerfil from "./src/screens/EditarPerfil";
 import Dashboard from "./src/screens/Dashboard";
 import CadastroAnimal from "./src/screens/CadastroAnimal";
 import { AuthProvider } from "./src/config/auth.js"
+import TelaSucessoAnimal from "./src/screens/TelaSucessoAnimal/index";
 
 const Stack = createNativeStackNavigator();
 

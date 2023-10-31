@@ -47,14 +47,12 @@ const styles = StyleSheet.create({
     color: "#434343",
     textAlign: "center",
     paddingTop: 13,
-    fontFamily: "Roboto",
     fontSize: 12,
   },
   textContent: {
     marginBottom: 10,
     marginTop: 40,
     color: "#BDBDBD",
-    fontFamily: "Roboto",
     fontSize: 14,
   },
 });
