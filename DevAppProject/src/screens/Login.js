@@ -1,83 +1,78 @@
-import React, { useState } from 'react';
-import { View, TextInput, StyleSheet } from 'react-native';
+import React, { useState } from "react";
+import { View, TextInput, StyleSheet } from "react-native";
 
-import EntrarButton from '../components/CustomButton/index';
-import AppButton from '../components/SocialMediaButton/index';
-import { useAuth } from '../config/auth';
+import EntrarButton from "../components/CustomButton/index";
+import AppButton from "../components/SocialMediaButton/index";
+import { useAuth } from "../config/auth";
+import Header from "../components/Header";
 
 const LoginScreen = ({ navigation }) => {
+  const { login } = useAuth();
 
-    const {login} = useAuth();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+  const handleLogin = async () => {
+    login(email, password).then((response) => {
+      if (response) {
+        navigation.navigate("Dashboard");
+      }
+    });
+  };
 
-    const handleLogin = async () => {
-        login(email, password)
-            .then((response)=>{
-                if (response) {
-                    navigation.navigate('Dashboard');
-                }
-            })
-        ;
-    };
-
-    return (
-        <View style = {styles.container}>
-            <TextInput
-                style = {styles.input}
-                placeholder = 'Email do Usuario'
-                onChangeText = {text => setEmail(text)}
-                value = {email} 
-            />
-
-            <TextInput
-            
-                style = {styles.input}
-                placeholder = 'Senha'
-                onChangeText = {text => setPassword(text)}
-                value = {password}
-                secureTextEntry
-            
-            />
-
-            <EntrarButton title='Entrar' onPress={handleLogin} />
-
-            <AppButton title = 'Entrar com Facebook' url = 'https://pt-br.facebook.com/' tipo = 'facebook'/>
-
-            <AppButton title = 'Entrar com Google' url = 'https://www.google.com/' tipo = 'google' />
-
-        </View>
-
-
+  return (
+    <>
+      <Header text={"Login"} backgroundColor={"#cfe9e5"} topBarColor={"#88c9bf"}>
         
+      </Header>
+      <View style={styles.container}>
+        <TextInput
+          style={styles.input}
+          placeholder="Email do Usuario"
+          onChangeText={(text) => setEmail(text)}
+          value={email}
+        />
 
-    );
+        <TextInput
+          style={styles.input}
+          placeholder="Senha"
+          onChangeText={(text) => setPassword(text)}
+          value={password}
+          secureTextEntry
+        />
 
+        <EntrarButton title="Entrar" onPress={handleLogin} />
+
+        <AppButton
+          title="Entrar com Facebook"
+          url="https://pt-br.facebook.com/"
+          tipo="facebook"
+        />
+
+        <AppButton
+          title="Entrar com Google"
+          url="https://www.google.com/"
+          tipo="google"
+        />
+      </View>
+    </>
+  );
 };
 
-
-
 const styles = StyleSheet.create({
-    container: {
-      width: '100%',
-      justifyContent: 'center',
-      alignItems:'center',
-      marginTop: 50,
-    
-    },
-    input: {
-      width: 300,
-      height: 40,
-      borderBottomWidth: 1,
-      marginBottom: 20,
-      padding: 10,
-      
-    },
+  container: {
+    width: "100%",
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 50,
+  },
+  input: {
+    width: 300,
+    height: 40,
+    borderBottomWidth: 1,
+    marginBottom: 20,
+    padding: 10,
+  },
+});
 
-
-
-
-  });
-
-  export default LoginScreen;
+export default LoginScreen;

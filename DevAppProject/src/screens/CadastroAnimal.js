@@ -50,9 +50,8 @@ const CadastroPetForm = ({ navigation }) => {
 
   return (
     <>
-      <Header style={{ backgroundColor: "#ffd358" }} />
+      <Header text={"Cadastro de Animal"} backgroundColor={"#fee29b"} topBarColor={"#ffd358"} />
       <View style={styles.container}>
-        <Text style={styles.title}>Cadastro de Animal</Text>
         <TextInput
           placeholder="Nome do Pet"
           style={styles.input}

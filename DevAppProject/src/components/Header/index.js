@@ -4,16 +4,16 @@ import { TouchableOpacity, StyleSheet, Text, View } from 'react-native';
 import { Icon } from 'react-native-elements'
 import { useNavigation } from '@react-navigation/native';
 
-const Header = ({text}) => {
+const Header = ({text, backgroundColor, topBarColor}) => {
     const navigation = useNavigation();
     return (
         <>
-            <View style={ styles.topBar }></View>
-            <View style={ styles.menuBar }>
-                <TouchableOpacity style={ styles.menuIcon } onPress={()=> navigation.canGoBack? navigation.goBack() : navigation.navigate('Cadastro')}>
-                    <Icon name='arrowleft' type='antdesign' color='#434343'/>
-                </TouchableOpacity>
-                <Text style={ styles.menuBarText }>{ text }</Text>
+            <View style={ [styles.topBar , {backgroundColor: topBarColor}]}></View>
+            <View style={ [styles.menuBar, {backgroundColor: backgroundColor}]}>
+                {text !== " " && <><TouchableOpacity style={styles.menuIcon} onPress={() => navigation.canGoBack ? navigation.goBack() : navigation.navigate('Cadastro')}>
+                    <Icon name='arrowleft' type='antdesign' color='#434343' />
+                </TouchableOpacity><Text style={styles.menuBarText}>{text}</Text></>}
+                
             </View>
         </>
       );
@@ -21,11 +21,11 @@ const Header = ({text}) => {
 
 const styles = StyleSheet.create({
     topBar: {
-        backgroundColor: '#88C9BF',
         height: 24,
+        textAlign: 'center',
     },
     menuBar: {
-        backgroundColor: '#CFE9E5',
+        textAlign: 'center',
         minHeight: 56,
         flexDirection: 'row',
         paddingTop: 16,

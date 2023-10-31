@@ -1,8 +1,9 @@
 import { TouchableOpacity, StyleSheet, Text, View } from "react-native";
+import Header from "../components/Header";
 
 const Cadastro = ({ navigation }) => {
   return (
-    <View style={styles.content}>
+    <><Header text={" "} backgroundColor={"#cfe9e5"} topBarColor={"#88c9bf"}></Header><View style={styles.content}>
       <Text style={styles.ops}>Ops!</Text>
       <Text style={styles.textContent}>
         Você não pode realizar esta ação{"\n"}
@@ -21,7 +22,7 @@ const Cadastro = ({ navigation }) => {
       >
         <Text style={styles.btnText}>FAZER LOGIN</Text>
       </TouchableOpacity>
-    </View>
+    </View></>
   );
 };
 

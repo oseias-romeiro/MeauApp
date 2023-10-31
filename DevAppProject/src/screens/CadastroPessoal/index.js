@@ -94,7 +94,7 @@ const CadastroPessoal = ({ navigation }) => {
 
   return (
     <Container>
-      <Header navigation={navigation} text="Cadastro Pessoal"/>
+      <Header navigation={navigation} text={"Cadastro Pessoal"}  backgroundColor={"#cfe9e5"} topBarColor={"#88c9bf"}/>
       <ScrollView>
         <View style={styles.container}>
       </View>
