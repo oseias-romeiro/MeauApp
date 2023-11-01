@@ -26,6 +26,8 @@ export const AuthProvider = ({ children }) => {
 
                     // set user data
                     const user_data = querySnapshot.docs[0].data();
+                    user_data['docId'] = querySnapshot.docs[0].ref.id;
+                    user_data['userCredential'] = authentication;
                     console.log('user data:', user_data);
                     setUser(user_data);
 

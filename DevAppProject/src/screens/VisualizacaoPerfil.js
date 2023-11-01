@@ -11,7 +11,6 @@ import { useAuth } from '../config/auth';
 export default function VisualizacaoPerfil() {
   
   const { user, photoURL } = useAuth();
-  const [photo, setPhoto] = useState(null);
   
   const navigation = useNavigation();
   return (

@@ -10,7 +10,7 @@ const Cadastro = ({ navigation }) => {
       </Text>
       <TouchableOpacity
         style={styles.btnContainer}
-        onPress={() => navigation.navigate("CadastroForm")}
+        onPress={() => navigation.navigate("CadastroPessoal")}
       >
         <Text style={styles.btnText}>FAZER CADASTRO</Text>
       </TouchableOpacity>
