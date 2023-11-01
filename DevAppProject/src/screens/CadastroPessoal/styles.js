@@ -3,7 +3,6 @@ import { StyleSheet } from "react-native";
 const styles = StyleSheet.create({
     content: {
         padding: 16,
-        fontFamily: 'Roboto',
     },
     msgCard: {
         backgroundColor: '#cfe9e5',
@@ -44,7 +43,6 @@ const styles = StyleSheet.create({
     buttonText: {
         color: '#434343',
         fontSize: 12,
-        fontFamily: 'Roboto',
     },
     btnImage: {
         width: 128,
@@ -58,7 +56,6 @@ const styles = StyleSheet.create({
     btnImageText: {
         color: '#757575',
         fontSize: 14,
-        fontFamily: 'Roboto',
         textAlign: 'center',
     },
 });

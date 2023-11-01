@@ -1,80 +1,81 @@
-import React, {useState} from 'react';
-import { StatusBar } from 'expo-status-bar';
-import { TouchableOpacity, StyleSheet, Text, ScrollView, SafeAreaView, View, Image } from 'react-native';
-import { Feather, FontAwesome } from 'react-native-vector-icons';
-import EditarPerfil from './EditarPerfil';
-import { useNavigation } from '@react-navigation/native';
-import Header from '../components/Header';
-import { Icon } from 'react-native-elements';
-import { useAuth } from '../config/auth';
+import React, { useState } from "react";
+import { StatusBar } from "expo-status-bar";
+import {
+  TouchableOpacity,
+  StyleSheet,
+  Text,
+  ScrollView,
+  SafeAreaView,
+  View,
+  Image,
+} from "react-native";
+import { Feather, FontAwesome } from "react-native-vector-icons";
+import EditarPerfil from "./EditarPerfil";
+import { useNavigation } from "@react-navigation/native";
+import Header from "../components/Header";
+import { Icon } from "react-native-elements";
+import { useAuth } from "../config/auth";
 
 export default function VisualizacaoPerfil() {
-  
   const { user, photoURL } = useAuth();
-  
+
   const navigation = useNavigation();
   return (
     <>
-    <SafeAreaView style={styles.container}>
-      <StatusBar style="auto" />
       <ScrollView>
-        <View style={styles.topBar}></View>
-        <View style={styles.menuBar}>
-          <View style={styles.menuBarText}>
-            <TouchableOpacity onPress={() => navigation.goBack()}>
-            <Icon name='arrowleft' type='antdesign' color='#434343'/>
-              {/* <Feather name="menu" size={24} color="#434343" onPress={() => navigation.goBack()} /> */}
-            </TouchableOpacity>
-            <Text style={styles.texto1}>{"Meu perfil"}</Text>
-          </View>
-        </View>
-        <View style={styles.content}>
-          <View>
-            <Image source={{uri: photoURL}} style={styles.profilePhoto} />
-          </View>
-          <Text style={styles.texto2}>{ user.nome_perfil }</Text>
-          <View style={styles.campo}>
-            <Text style={styles.title}>{"NOME COMPLETO"}</Text>
-            <Text style={styles.textContent}>{ user.nome_completo }</Text>
-          </View>
-          <View style={styles.campo}>
-            <Text style={styles.title}>{"IDADE"}</Text>
-            <Text style={styles.textContent}>{ user.idade }</Text>
-          </View>
-          <View>
+        <SafeAreaView style={styles.container}>
+          <Header text={"Meu Perfil"}backgroundColor={"#cfe9e5"} topBarColor={"#88c9bf"}></Header>
+          <View style={styles.content}>
+            <View>
+              <Image source={{ uri: photoURL }} style={styles.profilePhoto} />
+            </View>
+            <Text style={styles.texto2}>{user.nome_perfil}</Text>
             <View style={styles.campo}>
-              <Text style={styles.title}>{"EMAIL"}</Text>
-              <Text style={styles.textContent}>{ user.email }</Text>
+              <Text style={styles.title}>{"NOME COMPLETO"}</Text>
+              <Text style={styles.textContent}>{user.nome_completo}</Text>
             </View>
             <View style={styles.campo}>
-              <Text style={styles.title}>{"LOCALIZAÇÃO"}</Text>
-              <Text style={styles.textContent}>{ user.estado }</Text>
+              <Text style={styles.title}>{"IDADE"}</Text>
+              <Text style={styles.textContent}>{user.idade}</Text>
             </View>
-            <View style={styles.campo}>
-              <Text style={styles.title}>{"ENDEREÇO"}</Text>
-              <Text style={styles.textContent}>{ user.endereco }</Text>
+            <View>
+              <View style={styles.campo}>
+                <Text style={styles.title}>{"EMAIL"}</Text>
+                <Text style={styles.textContent}>{user.email}</Text>
+              </View>
+              <View style={styles.campo}>
+                <Text style={styles.title}>{"LOCALIZAÇÃO"}</Text>
+                <Text style={styles.textContent}>{user.estado}</Text>
+              </View>
+              <View style={styles.campo}>
+                <Text style={styles.title}>{"ENDEREÇO"}</Text>
+                <Text style={styles.textContent}>{user.endereco}</Text>
+              </View>
+              <View style={styles.campo}>
+                <Text style={styles.title}>{"TELEFONE"}</Text>
+                <Text style={styles.textContent}>{user.telefone}</Text>
+              </View>
+              <View style={styles.campo}>
+                <Text style={styles.title}>{"NOME DE USUÁRIO"}</Text>
+                <Text style={styles.textContent}>{user.nome_perfil}</Text>
+              </View>
+              <View style={styles.campo}>
+                <Text style={styles.title}>{"HISTÓRICO"}</Text>
+                <Text style={styles.textContent}>{"Adotou 1 gato"}</Text>
+              </View>
             </View>
-            <View style={styles.campo}>
-              <Text style={styles.title}>{"TELEFONE"}</Text>
-              <Text style={styles.textContent}>{ user.telefone }</Text>
-            </View>
-            <View style={styles.campo}>
-              <Text style={styles.title}>{"NOME DE USUÁRIO"}</Text>
-              <Text style={styles.textContent}>{ user.nome_perfil }</Text>
-            </View>
-            <View style={styles.campo}>
-              <Text style={styles.title}>{"HISTÓRICO"}</Text>
-              <Text style={styles.textContent}>{"Adotou 1 gato"}</Text>
+            <View>
+              <TouchableOpacity
+                style={styles.btnContainer}
+                onPress={() => navigation.navigate("EditarPerfil")}
+              >
+                <Text style={styles.btnText}>{"EDITAR PERFIL"}</Text>
+              </TouchableOpacity>
             </View>
           </View>
-          <View>
-            <TouchableOpacity style={styles.btnContainer} onPress={() => navigation.navigate('EditarPerfil')}>
-              <Text style={styles.btnText}>{"EDITAR PERFIL"}</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
+        </SafeAreaView>
       </ScrollView>
-    </SafeAreaView></>
+    </>
   );
 }
 
@@ -106,7 +107,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     width: "100%",
     justifyContent: "flex-start",
-    alignItems: "center", 
+    alignItems: "center",
     gap: 30,
   },
   content: {
@@ -130,13 +131,13 @@ const styles = StyleSheet.create({
     marginBottom: 36,
   },
   btnContainer: {
-    backgroundColor: '#88C9BF',
+    backgroundColor: "#88C9BF",
     minWidth: 232,
     minHeight: 40,
   },
   btnText: {
-    color: '#434343',
-    textAlign: 'center',
+    color: "#434343",
+    textAlign: "center",
     paddingTop: 13,
     fontSize: 12,
   },

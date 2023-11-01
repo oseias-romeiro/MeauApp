@@ -13,7 +13,7 @@ const Dashboard = ({ navigation }) => {
   };
 
   const navigateToCadastroForm = () => {
-    navigation.navigate("CadastroForm");
+    navigation.navigate("CadastroPessoal");
   };
 
   const navigateToEditarPerfil = () => {
@@ -21,7 +21,7 @@ const Dashboard = ({ navigation }) => {
   };
 
   return (
-    <><Header> </Header><View style={styles.container}>
+    <><Header text={"Dashboard do aplicativo"} backgroundColor={"#cfe9e5"} topBarColor={"#88c9bf"}> </Header><View style={styles.container}>
       <Text style={styles.heading}>Dashboard</Text>
       <EntrarButton title="Cadastrar Animal" onPress={navigateToCadastroAnimal} style={styles.button} />
       <EntrarButton title="Visualizar Perfil" onPress={navigateToVisualizacaoPerfil} style={styles.button} />
@@ -43,7 +43,10 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   button: {
-    marginBottom: 10, // Adiciona espaçamento inferior de 10 unidades entre os botões
+    paddingTop:"30px",
+    marginTop: "30px",
+    paddingBottom: "30px",
+    marginBottom: "30px", // Adiciona espaçamento inferior de 10 unidades entre os botões
   },
 });
 

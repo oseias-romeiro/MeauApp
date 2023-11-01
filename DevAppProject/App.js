@@ -12,28 +12,20 @@ import EditarPerfil from "./src/screens/EditarPerfil";
 import Dashboard from "./src/screens/Dashboard";
 import CadastroAnimal from "./src/screens/CadastroAnimal";
 import { AuthProvider } from "./src/config/auth.js"
+import TelaSucessoAnimal from "./src/screens/TelaSucessoAnimal/index";
 
 const Stack = createNativeStackNavigator();
 
 const CadastroTela = ({ navigation }) => {
   return (
     <View style={styles.container}>
-      <Header navigation={navigation} text="Cadastro" />
       <Cadastro navigation={navigation} />
       <StatusBar style="auto" />
     </View>
   );
 };
 
-const LoginTela = ({ navigation }) => {
-  return (
-    <View style={styles.container}>
-      <Header navigation={navigation} text="Login" />
-      <LoginScreen navigation={navigation} />
-      <StatusBar style="auto" />
-    </View>
-  );
-};
+
 
 export default function App() {
   return (
@@ -42,7 +34,7 @@ export default function App() {
         <Stack.Navigator screenOptions={{ headerShown: false }}>
           <Stack.Screen name="Cadastro" component={CadastroTela} />
           <Stack.Screen name="CadastroPessoal" component={CadastroPessoal} />
-          <Stack.Screen name="Login" component={LoginTela} />
+          <Stack.Screen name="Login" component={LoginScreen} />
           <Stack.Screen name="Dashboard" component={Dashboard} />
           <Stack.Screen name="CadastroAnimal" component={CadastroAnimal} />
           <Stack.Screen name="EditarPerfil" component={EditarPerfil} />
