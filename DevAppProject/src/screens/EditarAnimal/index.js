@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { View, Text, TouchableOpacity, Button, TextInput } from "react-native";
 import { useState } from "react";
-import { addDoc, collection, getDoc,doc } from "firebase/firestore";
+import { addDoc, collection, getDoc,doc, updateDoc } from "firebase/firestore";
 import { Alert } from "react-native";
 
 import Header from "../../components/Header";
@@ -9,7 +9,7 @@ import config from "../../config/index";
 import styles from "./style";
 
 const EditarAnimalForm = (props) => {
-  const animalData = props.route.params.animalData;
+  const animalData = props.route.params.animalDoc.data();
 
   const [nomePet, setNomePet] = useState(animalData.nomePet);
   const [tipo, setTipo] = useState(animalData.tipo);
@@ -24,26 +24,23 @@ const EditarAnimalForm = (props) => {
   
 
   const handleEdit = async () => {
-    // modelar o banco animal
-    const animalRef = doc(collection(config.db, "animais"), animalData.docId);
-    const animalData = await getDoc(animalRef);
-    if (animalData.exists()) {
-      await addDoc(collection(config.db, "animais"), {
-        nomePet: nomePet,
-        tipo: tipo,
-        porte: porte,
-        idade: idade,
-        raca: raca,
-        peso: peso,
-        descricao: descricao,
-        sexo: sexo,
-        adocao: adocao,
-        vacinado: vacinado,
-      });
-      Alert.alert("Sucesso!", "Animal editado com sucesso!");
-    } else {
-      Alert.alert("Erro!", "Erro ao editar animal!");
-    }
+    updateDoc(props.route.params.animalDoc.ref, {
+      nomePet: nomePet,
+      tipo: tipo,
+      porte: porte,
+      idade: idade,
+      raca: raca,
+      peso: peso,
+      descricao: descricao,
+      sexo: sexo,
+      adocao: adocao,
+      vacinado: vacinado,
+    }).then(() => {
+      props.navigation.navigate("Dashboard");
+      console.log("Animal editado com sucesso!");
+    }).catch((error) => {
+      console.log("Erro ao editar animal: ", error);
+    });
   };
 
   return (

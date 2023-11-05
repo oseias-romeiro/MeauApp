@@ -25,9 +25,11 @@ const Dashboard = ({ navigation }) => {
   };
 
   const navigateToEditarAnimal = () => {
-    getDoc(doc(collection(config.db, "animais"), "FqmCQ5gQeBoq1xTqaxaj")).then((animalData)=>{
-      console.log("animalData:", animalData.data());
-      navigation.navigate("EditarAnimal", { animalData: animalData.data() });
+    // id do animal constante // TODO: mudar para pegar o id do animal selecionado
+    const animalUID = "FqmCQ5gQeBoq1xTqaxaj";
+    getDoc(doc(collection(config.db, "animais"), animalUID)).then((animalDoc)=>{
+      console.log("animal:", animalDoc.data());
+      navigation.navigate("EditarAnimal", { animalDoc: animalDoc });
     });
   };
 
