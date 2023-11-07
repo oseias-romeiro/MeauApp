@@ -7,6 +7,7 @@ import {
   Button,
   TextInput,
   Pressable,
+  ScrollView
 } from "react-native";
 
 import { useState } from "react";
@@ -17,7 +18,6 @@ import { getStorage, ref, uploadBytesResumable } from "firebase/storage";
 import * as ImagePicker from "expo-image-picker";
 import { getAuth } from "firebase/auth";
 import { Alert } from "react-native";
-import { ScrollView } from "react-native-web";
 
 const CadastroPetForm = ({ navigation }) => {
   const [nomePet, setNomePet] = useState("");
