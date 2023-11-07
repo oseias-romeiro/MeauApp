@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, FlatList, TouchableOpacity } from "react-native";
 import { collection, getDocs, where, query } from "firebase/firestore";
+import { getDownloadURL, ref } from "firebase/storage";
 import config from "../../config";
 import { getAuth, useAuth } from "firebase/auth";
 import { ScrollView } from "react-native-web";
 import Header from "../../components/Header";
+import AnimalCard from "../../components/AnimalCard";
 
 const VisualizacaoAnimaisUsuario = ({ navigation }) => {
   const [animais, setAnimais] = useState([]);
@@ -26,15 +28,28 @@ const VisualizacaoAnimaisUsuario = ({ navigation }) => {
       const animaisSnapshot = await getDocs(animaisQuery);
 
       const animaisData = [];
-      animaisSnapshot.forEach((doc) => {
-        animaisData.push({ id: doc.id, ...doc.data() });
-      });
+      for (const doc of animaisSnapshot.docs) {
+        const data = doc.data();
+        const imageUrl = await getAnimalImageUrl(doc.id);
+        animaisData.push({ id: doc.id, ...data, imageUrl });
+      }
 
       setAnimais(animaisData);
     };
 
     fetchMeusAnimais();
   }, [user]);
+
+  const getAnimalImageUrl = async (animalId) => {
+    const imageRef = ref(config.storage, `animaisPhoto/${animalId}`);
+    try {
+      return await getDownloadURL(imageRef);
+    } catch (error) {
+      console.error("Erro ao obter a URL da imagem:", error);
+      return null;
+    }
+  };
+
   return (
     <>
       <Header
@@ -46,9 +61,6 @@ const VisualizacaoAnimaisUsuario = ({ navigation }) => {
       </Header>
       <ScrollView>
         <View>
-          <Text style={{ fontSize: 24, textAlign: "center" }}>
-            Meus Animais
-          </Text>
           <FlatList
             data={animais}
             keyExtractor={(item) => item.id}
@@ -58,19 +70,7 @@ const VisualizacaoAnimaisUsuario = ({ navigation }) => {
                   navigation.navigate("DetalhesAnimal", { animalId: item.id });
                 }}
               >
-                <View
-                  style={{
-                    borderColor: "gray",
-                    borderWidth: 1,
-                    borderRadius: 8,
-                    padding: 16,
-                    margin: 8,
-                  }}
-                >
-                  <Text>Nome: {item.nomePet}</Text>
-                  <Text>Tipo: {item.tipo}</Text>
-                  <Text>Porte: {item.porte}</Text>
-                </View>
+                <AnimalCard animal={item} />
               </TouchableOpacity>
             )}
           />

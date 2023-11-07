@@ -2,7 +2,6 @@ import React from "react";
 import { View, Text, Button, StyleSheet } from "react-native";
 import Header from "../components/Header";
 import EntrarButton from "../components/CustomButton";
-import EditarAnimalForm from "./EditarAnimal";
 
 import config from "../config/index";
 import { collection, getDoc, doc } from "firebase/firestore";
@@ -25,16 +24,16 @@ const Dashboard = ({ navigation }) => {
     navigation.navigate("EditarPerfil");
   };
 
-  const navigateToEditarAnimal = () => {
-    // id do animal constante // TODO: mudar para pegar o id do animal selecionado
-    const animalUID = "FqmCQ5gQeBoq1xTqaxaj";
-    getDoc(doc(collection(config.db, "animais"), animalUID)).then(
-      (animalDoc) => {
-        console.log("animal:", animalDoc.data());
-        navigation.navigate("EditarAnimal", { animalDoc: animalDoc });
-      }
-    );
-  };
+  // const navigateToEditarAnimal = () => {
+  //   // id do animal constante // TODO: mudar para pegar o id do animal selecionado
+  //   const animalUID = "FqmCQ5gQeBoq1xTqaxaj";
+  //   getDoc(doc(collection(config.db, "animais"), animalUID)).then(
+  //     (animalDoc) => {
+  //       console.log("animal:", animalDoc.data());
+  //       navigation.navigate("EditarAnimal", { animalDoc: animalDoc });
+  //     }
+  //   );
+  // };
 
   const navigateToVisualizacaoAnimais = () => {
     navigation.navigate("VisualizacaoAnimais");
@@ -74,11 +73,6 @@ const Dashboard = ({ navigation }) => {
           <EntrarButton
             title="Editar Perfil"
             onPress={navigateToEditarPerfil}
-            style={styles.button}
-          />
-          <EntrarButton
-            title="Editar Animal"
-            onPress={navigateToVisualizacaoAnimais}
             style={styles.button}
           />
           <EntrarButton

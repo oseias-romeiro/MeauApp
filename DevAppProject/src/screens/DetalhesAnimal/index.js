@@ -47,39 +47,77 @@ const DetalhesAnimal = ({ route }) => {
 
       <ScrollView>
         {animal && (
-          <View style={{ alignItems: "center" }}>
-            {imageUrl && (
-              <Image source={{ uri: imageUrl }} style={{ width: 360, height: 184 }} />
+          <View
+            style={{ alignItems: "center", justifyContent: "center", flex: 1 }}
+          >
+            {animal && (
+              <>
+                {imageUrl && (
+                  <Image
+                    source={{ uri: imageUrl }}
+                    style={{
+                      width: 160,
+                      height: 160,
+                      borderRadius: 80, // Faz a imagem circular
+                      marginTop: 16,
+                    }}
+                  />
+                )}
+                <Text style={{ fontSize: 14, color: "#757575" }}>NOME</Text>
+                <Text style={{ fontSize: 20, color: "#434343" }}>
+                  {animal.nomePet}
+                </Text>
+                <Text style={{ fontSize: 14, color: "#757575" }}>TIPO</Text>
+                <Text
+                  style={{ fontSize: 16, color: "#434343", marginBottom: 12 }}
+                >
+                  {animal.tipo}
+                </Text>
+
+                <Text style={{ fontSize: 14, color: "#757575" }}>RAÇA</Text>
+                <Text
+                  style={{ fontSize: 16, color: "#434343", marginBottom: 12 }}
+                >
+                  {animal.raca}
+                </Text>
+
+                <Text style={{ fontSize: 14, color: "#757575", marginBottom: 12 }}>
+                  SEXO
+                </Text>
+                <Text style={{ fontSize: 16, color: "#434343" }}>
+                  {animal.sexo}
+                </Text>
+
+                <Text style={{ fontSize: 14, color: "#757575", marginBottom: 12 }}>PORTE</Text>
+                <Text style={{ fontSize: 16, color: "#434343" }}>
+                  {animal.porte}
+                </Text>
+
+                <Text style={{ fontSize: 14, color: "#757575", marginBottom: 12 }}>IDADE</Text>
+                <Text style={{ fontSize: 16, color: "#434343" }}>
+                  {animal.idade}
+                </Text>
+
+                <Text style={{ fontSize: 14, color: "#757575", marginBottom: 12 }}>PESO</Text>
+                <Text style={{ fontSize: 16, color: "#434343" }}>
+                  {animal.peso}
+                </Text>
+
+                <Text style={{ fontSize: 14, color: "#757575", marginBottom: 12 }}>VACINADO</Text>
+                <Text style={{ fontSize: 16, color: "#434343" }}>
+                  {animal.vacinado}
+                </Text>
+
+                <Text style={{ fontSize: 14, color: "#757575", marginBottom: 12 }}>
+                  DESCRIÇÃO
+                </Text>
+                <Text style={{ fontSize: 16, color: "#434343" }}>
+                  {animal.descricao}
+                </Text>
+
+                {/* Adicione outros campos aqui */}
+              </>
             )}
-            <Text style={{ fontSize: 20, color: "#434343", marginTop: 16 }}>
-              {animal.nomePet}
-            </Text>
-
-            <Text style={{ fontSize: 16, color: "#434343" }}>
-              {animal.localizacao}
-            </Text>
-
-            <Text style={{ fontSize: 16, color: "#434343" }}>
-              {animal.horario}
-            </Text>
-
-            {/* Outras informações do animal */}
-            <Text style={{ fontSize: 14, color: "#757575", marginTop: 16 }}>
-              SEXO
-            </Text>
-            <Text style={{ fontSize: 16, color: "#434343" }}>
-              {animal.sexo}
-            </Text>
-
-            <Text style={{ fontSize: 14, color: "#757575" }}>PORTE</Text>
-            <Text style={{ fontSize: 16, color: "#434343" }}>
-              {animal.porte}
-            </Text>
-
-            <Text style={{ fontSize: 14, color: "#757575" }}>IDADE</Text>
-            <Text style={{ fontSize: 16, color: "#434343" }}>
-              {animal.idade}
-            </Text>
           </View>
         )}
       </ScrollView>

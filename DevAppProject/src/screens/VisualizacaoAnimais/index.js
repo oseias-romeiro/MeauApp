@@ -1,9 +1,18 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, FlatList, TouchableOpacity } from "react-native";
-import { collection, getDocs } from "firebase/firestore";
+import {
+  View,
+  Text,
+  FlatList,
+  TouchableOpacity,
+  Image,
+  StyleSheet,
+} from "react-native";
+import { collection, getDocs, query, where } from "firebase/firestore";
+import { getDownloadURL, ref } from "firebase/storage";
 import config from "../../config";
 import { ScrollView } from "react-native-web";
 import Header from "../../components/Header";
+import AnimalCard from "../../components/AnimalCard";
 
 const VisualizacaoAnimais = ({ navigation }) => {
   const [animais, setAnimais] = useState([]);
@@ -11,12 +20,15 @@ const VisualizacaoAnimais = ({ navigation }) => {
   useEffect(() => {
     const fetchAnimais = async () => {
       const animaisCollection = collection(config.db, "animais");
-      const animaisSnapshot = await getDocs(animaisCollection);
+      const q = query(animaisCollection, where("adocao", "==", "Sim"));
+      const animaisSnapshot = await getDocs(q);
 
       const animaisData = [];
-      animaisSnapshot.forEach((doc) => {
-        animaisData.push({ id: doc.id, ...doc.data() });
-      });
+      for (const doc of animaisSnapshot.docs) {
+        const data = doc.data();
+        const imageUrl = await getAnimalImageUrl(doc.id);
+        animaisData.push({ id: doc.id, ...data, imageUrl });
+      }
 
       setAnimais(animaisData);
     };
@@ -24,10 +36,20 @@ const VisualizacaoAnimais = ({ navigation }) => {
     fetchAnimais();
   }, []);
 
+  const getAnimalImageUrl = async (animalId) => {
+    const imageRef = ref(config.storage, `animaisPhoto/${animalId}`);
+    try {
+      return await getDownloadURL(imageRef);
+    } catch (error) {
+      console.error("Erro ao obter a URL da imagem:", error);
+      return null;
+    }
+  };
+
   return (
     <>
       <Header
-        text={"Todos os Animais"}
+        text={"Animais disponíveis para doação"}
         backgroundColor={"#cfe9e5"}
         topBarColor={"#88c9bf"}
       >
@@ -35,9 +57,6 @@ const VisualizacaoAnimais = ({ navigation }) => {
       </Header>
       <ScrollView>
         <View>
-          <Text style={{ fontSize: 24, textAlign: "center" }}>
-            Visualização de Animais
-          </Text>
           <FlatList
             data={animais}
             keyExtractor={(item) => item.id}
@@ -47,20 +66,7 @@ const VisualizacaoAnimais = ({ navigation }) => {
                   navigation.navigate("DetalhesAnimal", { animalId: item.id });
                 }}
               >
-                <View
-                  style={{
-                    borderColor: "gray",
-                    borderWidth: 1,
-                    borderRadius: 8,
-                    padding: 16,
-                    margin: 8,
-                  }}
-                >
-                  <Text>Nome: {item.nomePet}</Text>
-                  <Text>Tipo: {item.tipo}</Text>
-                  <Text>Porte: {item.porte}</Text>
-                 
-                </View>
+                <AnimalCard animal={item} />
               </TouchableOpacity>
             )}
           />
@@ -69,5 +75,7 @@ const VisualizacaoAnimais = ({ navigation }) => {
     </>
   );
 };
+
+
 
 export default VisualizacaoAnimais;
