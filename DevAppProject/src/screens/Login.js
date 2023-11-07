@@ -15,7 +15,10 @@ const LoginScreen = ({ navigation }) => {
   const handleLogin = async () => {
     login(email, password).then((response) => {
       if (response) {
-        navigation.navigate("Dashboard");
+        navigation.reset({
+          index: 0,
+          routes: [{ name: 'Dashboard' }],
+        });
       }
     });
   };
