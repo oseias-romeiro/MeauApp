@@ -13,6 +13,7 @@ import Dashboard from "./src/screens/Dashboard";
 import CadastroAnimal from "./src/screens/CadastroAnimal";
 import { AuthProvider } from "./src/config/auth.js"
 import TelaSucessoAnimal from "./src/screens/TelaSucessoAnimal/index";
+import EditarAnimalForm from "./src/screens/EditarAnimal";
 
 const Stack = createNativeStackNavigator();
 
@@ -39,6 +40,7 @@ export default function App() {
           <Stack.Screen name="CadastroAnimal" component={CadastroAnimal} />
           <Stack.Screen name="EditarPerfil" component={EditarPerfil} />
           <Stack.Screen name="VisualizacaoPerfil" component={VisualizacaoPerfil} />
+          <Stack.Screen name="EditarAnimal" component={EditarAnimalForm} />
         </Stack.Navigator>
       </AuthProvider>
     </NavigationContainer>

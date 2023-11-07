@@ -6,17 +6,22 @@ import {
   StyleSheet,
   Button,
   TextInput,
+  Pressable,
 } from "react-native";
 
 import { useState } from "react";
 import Header from "../components/Header";
 import config from "../config/index";
 import { addDoc, collection } from "firebase/firestore";
+import { getStorage, ref, uploadBytesResumable } from "firebase/storage";
+import * as ImagePicker from "expo-image-picker";
+import { getAuth } from "firebase/auth";
 import { Alert } from "react-native";
+import { ScrollView } from "react-native-web";
 
 const CadastroPetForm = ({ navigation }) => {
   const [nomePet, setNomePet] = useState("");
-  const [tipo, setTipo] = useState(""); 
+  const [tipo, setTipo] = useState("");
   const [porte, setPorte] = useState("");
   const [idade, setIdade] = useState("");
   const [raca, setRaca] = useState("");
@@ -25,150 +30,203 @@ const CadastroPetForm = ({ navigation }) => {
   const [sexo, setSexo] = useState("");
   const [adocao, setAdocao] = useState("");
   const [vacinado, setVacinado] = useState("");
+  const [imagemPerfilAnimal, setImagemPerfilAnimal] = useState(null);
+
+  const auth = getAuth();
+
+  const selecionarImagemPerfilAnimal = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    console.log(result);
+
+    if (!result.cancelled) {
+      setImagemPerfilAnimal(result.assets[0].uri);
+    }
+  };
 
   const handleCadastro = async () => {
-    const animalData = {
-      nomePet: nomePet,
-      tipo: tipo,
-      idade: idade,
-      raca: raca,
-      adocao: adocao,
-      vacinado: vacinado,
-      peso: peso,
-      descricao: descricao,
-      sexo: sexo,
-      porte: porte,
-    };
-    try {
-      await addDoc(collection(config.db, "animais"), animalData);
-      Alert.alert("Animal criado com sucesso!");
-      navigation.navigate("Dashboard");
-    } catch (e) {
-      console.error("Erro ao cadastrar animal:", error);
-      Alert.alert("Falha ao cadastrar o animal!");
-      navigation.navigate("Dashboard");
+    const user = auth.currentUser;
+    console.log(user);
+
+    if (user) {
+      const animalData = {
+        nomePet: nomePet,
+        tipo: tipo,
+        idade: idade,
+        raca: raca,
+        adocao: adocao,
+        vacinado: vacinado,
+        peso: peso,
+        descricao: descricao,
+        sexo: sexo,
+        porte: porte,
+        dono: user.uid,
+      };
+      try {
+        const docRef = await addDoc(
+          collection(config.db, "animais"),
+          animalData
+        );
+        if (imagemPerfilAnimal) {
+          const response = await fetch(imagemPerfilAnimal);
+          const blob = await response.blob();
+          await uploadBytesResumable(
+            ref(getStorage(), `animaisPhoto/${docRef.id}`),
+            blob
+          );
+        }
+        Alert.alert("Animal criado com sucesso!");
+        navigation.navigate("Dashboard");
+      } catch (e) {
+        console.error("Erro ao cadastrar animal:", e);
+        Alert.alert("Falha ao cadastrar o animal!");
+        navigation.navigate("Dashboard");
+      }
+    } else {
+      Alert.alert("Usuário não autenticado, por favor se autentique");
+      navigation.navigate("Login");
     }
   };
 
   return (
     <>
-      <Header text={"Cadastro de Animal"} backgroundColor={"#fee29b"} topBarColor={"#ffd358"} />
-      <View style={styles.container}>
-        <TextInput
-          placeholder="Nome do Pet"
-          style={styles.input}
-          value={nomePet}
-          onChangeText={(text) => setNomePet(text)}
-        />
+      <Header
+        text={"Cadastro de Animal"}
+        backgroundColor={"#fee29b"}
+        topBarColor={"#ffd358"}
+      />
+      <ScrollView>
+        <View style={styles.container}>
+          <Pressable
+            style={styles.btnImage}
+            onPress={selecionarImagemPerfilAnimal}
+          >
+            <Text style={styles.btnImageText}>
+              Adicionar foto de perfil de Animal
+            </Text>
+          </Pressable>
 
-        <View style={styles.buttonContainer}>
-          <Text>Tipo</Text>
-          <Button
-            title="Gato"
-            onPress={() => setTipo("Gato")}
-            color={tipo === "Gato" ? "#ffd358" : "gray"}
+          <TextInput
+            placeholder="Nome do Pet"
+            style={styles.input}
+            value={nomePet}
+            onChangeText={(text) => setNomePet(text)}
           />
-          <Button
-            title="Cachorro"
-            onPress={() => setTipo("Cachorro")}
-            color={tipo === "Cachorro" ? "#ffd358" : "gray"}
+
+          <View style={styles.buttonContainer}>
+            <Text>Tipo</Text>
+            <Button
+              title="Gato"
+              onPress={() => setTipo("Gato")}
+              color={tipo === "Gato" ? "#ffd358" : "gray"}
+            />
+            <Button
+              title="Cachorro"
+              onPress={() => setTipo("Cachorro")}
+              color={tipo === "Cachorro" ? "#ffd358" : "gray"}
+            />
+          </View>
+
+          <View style={styles.buttonContainer}>
+            <Text>Porte</Text>
+            <Button
+              title="Pequeno"
+              onPress={() => setPorte("Pequeno")}
+              color={porte === "Pequeno" ? "#ffd358" : "gray"}
+            />
+            <Button
+              title="Médio"
+              onPress={() => setPorte("Médio")}
+              color={porte === "Médio" ? "#ffd358" : "gray"}
+            />
+            <Button
+              title="Grande"
+              onPress={() => setPorte("Grande")}
+              color={porte === "Grande" ? "#ffd358" : "gray"}
+            />
+          </View>
+
+          <TextInput
+            placeholder="Idade do Pet"
+            style={styles.input}
+            value={idade}
+            onChangeText={(text) => setIdade(text)}
           />
+          <TextInput
+            placeholder="Raça do Pet"
+            style={styles.input}
+            value={raca}
+            onChangeText={(text) => setRaca(text)}
+          />
+          <TextInput
+            placeholder="Peso do Pet"
+            style={styles.input}
+            value={peso}
+            onChangeText={(text) => setPeso(text)}
+          />
+
+          <View style={styles.buttonContainer}>
+            <Text>Adoção</Text>
+            <Button
+              title="Sim"
+              onPress={() => setAdocao("Sim")}
+              color={adocao === "Sim" ? "#ffd358" : "gray"}
+            />
+            <Button
+              title="Não"
+              onPress={() => setAdocao("Não")}
+              color={adocao === "Não" ? "#ffd358" : "gray"}
+            />
+          </View>
+
+          <View style={styles.buttonContainer}>
+            <Text>Sexo</Text>
+            <Button
+              title="Macho"
+              onPress={() => setSexo("Macho")}
+              color={sexo === "Macho" ? "#ffd358" : "gray"}
+            />
+            <Button
+              title="Fêmea"
+              onPress={() => setSexo("Fêmea")}
+              color={sexo === "Fêmea" ? "#ffd358" : "gray"}
+            />
+          </View>
+
+          <View style={styles.buttonContainer}>
+            <Text>Vacinado</Text>
+            <Button
+              title="Sim"
+              onPress={() => setVacinado("Sim")}
+              color={vacinado === "Sim" ? "#ffd358" : "gray"}
+            />
+            <Button
+              title="Não"
+              onPress={() => setVacinado("Não")}
+              color={vacinado === "Não" ? "#ffd358" : "gray"}
+            />
+          </View>
+
+          <TextInput
+            placeholder="Descrição"
+            style={styles.input}
+            value={descricao}
+            onChangeText={(text) => setDescricao(text)}
+          />
+
+          <TouchableOpacity
+            style={[styles.button, { backgroundColor: "#ffd358" }]}
+            onPress={handleCadastro}
+          >
+            <Text style={styles.buttonText}>Cadastrar</Text>
+          </TouchableOpacity>
         </View>
-
-        <View style={styles.buttonContainer}>
-          <Text>Porte</Text>
-          <Button
-            title="Pequeno"
-            onPress={() => setPorte("Pequeno")}
-            color={porte === "Pequeno" ? "#ffd358" : "gray"}
-          />
-          <Button
-            title="Médio"
-            onPress={() => setPorte("Médio")}
-            color={porte === "Médio" ? "#ffd358" : "gray"}
-          />
-          <Button
-            title="Grande"
-            onPress={() => setPorte("Grande")}
-            color={porte === "Grande" ? "#ffd358" : "gray"}
-          />
-        </View>
-
-        <TextInput
-          placeholder="Idade do Pet"
-          style={styles.input}
-          value={idade}
-          onChangeText={(text) => setIdade(text)}
-        />
-        <TextInput
-          placeholder="Raça do Pet"
-          style={styles.input}
-          value={raca}
-          onChangeText={(text) => setRaca(text)}
-        />
-        <TextInput
-          placeholder="Peso do Pet"
-          style={styles.input}
-          value={peso}
-          onChangeText={(text) => setPeso(text)}
-        />
-
-        <View style={styles.buttonContainer}>
-          <Text>Adoção</Text>
-          <Button
-            title="Sim"
-            onPress={() => setAdocao("Sim")}
-            color={adocao === "Sim" ? "#ffd358" : "gray"}
-          />
-          <Button
-            title="Não"
-            onPress={() => setAdocao("Não")}
-            color={adocao === "Não" ? "#ffd358" : "gray"}
-          />
-        </View>
-
-        <View style={styles.buttonContainer}>
-          <Text>Sexo</Text>
-          <Button
-            title="Macho"
-            onPress={() => setSexo("Macho")}
-            color={sexo === "Macho" ? "#ffd358" : "gray"}
-          />
-          <Button
-            title="Fêmea"
-            onPress={() => setSexo("Fêmea")}
-            color={sexo === "Fêmea" ? "#ffd358" : "gray"}
-          />
-        </View>
-
-        <View style={styles.buttonContainer}>
-          <Text>Vacinado</Text>
-          <Button
-            title="Sim"
-            onPress={() => setVacinado("Sim")}
-            color={vacinado === "Sim" ? "#ffd358" : "gray"}
-          />
-          <Button
-            title="Não"
-            onPress={() => setVacinado("Não")}
-            color={vacinado === "Não" ? "#ffd358" : "gray"}
-          />
-        </View>
-
-        <TextInput
-          placeholder="Descrição"
-          style={styles.input}
-          value={descricao}
-          onChangeText={(text) => setDescricao(text)}
-        />
-
-        <TouchableOpacity
-          style={[styles.button, { backgroundColor: "#ffd358" }]}
-          onPress={handleCadastro}
-        >
-          <Text style={styles.buttonText}>Cadastrar</Text>
-        </TouchableOpacity>
-      </View>
+      </ScrollView>
     </>
   );
 };
@@ -212,6 +270,20 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     width: "100%",
     marginBottom: 12,
+  },
+  btnImage: {
+    width: 128,
+    height: 128,
+    backgroundColor: "#e6e7e7",
+    borderRadius: 4,
+    marginBottom: 32,
+    alignSelf: "center",
+    justifyContent: "center",
+  },
+  btnImageText: {
+    color: "#757575",
+    fontSize: 14,
+    textAlign: "center",
   },
 });
 
