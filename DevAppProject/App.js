@@ -14,6 +14,9 @@ import CadastroAnimal from "./src/screens/CadastroAnimal";
 import { AuthProvider } from "./src/config/auth.js"
 import TelaSucessoAnimal from "./src/screens/TelaSucessoAnimal/index";
 import EditarAnimalForm from "./src/screens/EditarAnimal";
+import VisualizacaoAnimais from "./src/screens/VisualizacaoAnimais/index";
+import VisualizacaoAnimaisUsuario from "./src/screens/VisualizacaoAnimaisUsuario/index";
+import DetalhesAnimal from "./src/screens/DetalhesAnimal/index";
 
 const Stack = createNativeStackNavigator();
 
@@ -41,6 +44,9 @@ export default function App() {
           <Stack.Screen name="EditarPerfil" component={EditarPerfil} />
           <Stack.Screen name="VisualizacaoPerfil" component={VisualizacaoPerfil} />
           <Stack.Screen name="EditarAnimal" component={EditarAnimalForm} />
+          <Stack.Screen name="VisualizacaoAnimais" component={VisualizacaoAnimais} />
+          <Stack.Screen name="MeusAnimais" component={VisualizacaoAnimaisUsuario} />
+          <Stack.Screen name="DetalhesAnimal" component={DetalhesAnimal} />
         </Stack.Navigator>
       </AuthProvider>
     </NavigationContainer>
