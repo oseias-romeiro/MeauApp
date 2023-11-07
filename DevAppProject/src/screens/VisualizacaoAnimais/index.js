@@ -6,11 +6,11 @@ import {
   TouchableOpacity,
   Image,
   StyleSheet,
+  ScrollView
 } from "react-native";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { getDownloadURL, ref } from "firebase/storage";
 import config from "../../config";
-import { ScrollView } from "react-native-web";
 import Header from "../../components/Header";
 import AnimalCard from "../../components/AnimalCard";
 

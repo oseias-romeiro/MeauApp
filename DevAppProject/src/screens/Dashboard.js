@@ -1,11 +1,11 @@
 import React from "react";
-import { View, Text, Button, StyleSheet } from "react-native";
+import { View, Text, Button, StyleSheet, ScrollView } from "react-native";
 import Header from "../components/Header";
 import EntrarButton from "../components/CustomButton";
 
 import config from "../config/index";
 import { collection, getDoc, doc } from "firebase/firestore";
-import { ScrollView } from "react-native-web";
+
 
 const Dashboard = ({ navigation }) => {
   const navigateToCadastroAnimal = () => {

@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, FlatList, TouchableOpacity } from "react-native";
+import { View, Text, FlatList, TouchableOpacity, ScrollView } from "react-native";
 import { collection, getDocs, where, query } from "firebase/firestore";
 import { getDownloadURL, ref } from "firebase/storage";
 import config from "../../config";
 import { getAuth, useAuth } from "firebase/auth";
-import { ScrollView } from "react-native-web";
 import Header from "../../components/Header";
 import AnimalCard from "../../components/AnimalCard";
 
