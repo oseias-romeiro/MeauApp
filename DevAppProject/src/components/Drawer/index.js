@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Image } from 'react-native';
 import { createDrawerNavigator, DrawerItem, DrawerContentScrollView } from '@react-navigation/drawer';
 import { NavigationContainer } from "@react-navigation/native";
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
-import firebase from 'firebase/app';
-import { auth } from ''
+import config from '../../config';
 import 'firebase/auth';
+
 import { signOut } from 'firebase/auth';
 
 import LoginScreen from '../../screens/Login';
@@ -24,33 +24,58 @@ const CustomDrawerContentLogout = ({ navigation }) => {
   return (
     <DrawerContentScrollView>
       <View style ={styles.drawerHeader}>
-        <Text style={styles.text}>Seu Nome</Text>
+        <Image source={require('../../../assets/Meau_Icone.png')} style={styles.drawerImage} />
+        <Text style={styles.text}>Aplicativo</Text>
       </View>
-      <DrawerItem label="Login" onPress={() => navigation.navigate('Login')}/>
-      <DrawerItem label="Cadastro" onPress={() => navigation.navigate('CadastroForm')}/>
+      <DrawerItem 
+      label= {() => (<Text style ={styles.customLabel}>Login</Text>)} 
+      onPress={() => navigation.navigate('Login')}
+      style ={styles.drawerItem}
+      />
+      <DrawerItem 
+      label={() => (<Text style ={styles.customLabel}>Cadastro</Text>)} 
+      onPress={() => navigation.navigate('CadastroForm')}
+      style ={styles.drawerItem}
+      />
     </DrawerContentScrollView>
   )
 }
 
 const CustomDrawerContentLogin = ({ navigation }) => {
 
-  const { logout } = useAuth();
-
   const handleLogout = async () => {
+    const auth = getAuth(config.firebaseApp); 
+  
     try {
-      await signOut(auth);
-      logout();
-    } catch(error){
-      console.error('Erro ao fazer logout: ', error);
+      await signOut(auth); 
+      console.log('Logout bem-sucedido!');
+    } catch (error) {
+      console.error('Erro ao fazer logout:', error);
     }
+    navigation.navigate('Login')
   }
-
   return (
     <DrawerContentScrollView>
-      <DrawerItem label='Visualização do Perfil' onPress={() => navigation.navigate('VisualizacaoPerfil')} />
-      <DrawerItem label='Cadastro do Animal' onPress={() => navigation.navigate('CadastroAnimal')} />
-      <DrawerItem label='Editar Perfil' onPress={() => navigation.navigate('EditarPerfil')} />
-      <DrawerItem label='Logout' onPress={handleLogout} />
+      <View style ={styles.drawerHeader}>
+        <Image source={require('../../../assets/Meau_Icone.png')} style={styles.drawerImage} />
+        <Text style={styles.text}>Seu Nome</Text>
+      </View>
+      <DrawerItem 
+        label={() => (<Text style ={styles.customLabel}>Visualização do Perfil</Text>)} 
+        onPress={() => navigation.navigate('VisualizacaoPerfil')}
+        style ={styles.drawerItem} />
+      <DrawerItem 
+        label= {() => (<Text style ={styles.customLabel}>Cadastro do Animal</Text>)} 
+        onPress={() => navigation.navigate('CadastroAnimal')}
+        style ={styles.drawerItem} />
+      <DrawerItem 
+        label={() => (<Text style ={styles.customLabel}>Editar Perfil</Text>)} 
+        onPress={() => navigation.navigate('EditarPerfil')}
+        style ={styles.drawerItem} />
+      <DrawerItem 
+        label={() => (<Text style ={styles.customLabel}>Logout</Text>)} 
+        onPress={handleLogout}
+        style ={styles.drawerItemLogout} />
     </DrawerContentScrollView>
 
   )
@@ -92,9 +117,33 @@ const styles = StyleSheet.create({
     padding: 20, 
     backgroundColor: '#88c9bf',
     height:172,
+    justifyContent: 'space-between',
   },
   text:{
     color: 'white',
-    fontSize: 18,
-  }
+    fontSize: 24,
+    
+  },
+  drawerImage:{
+    width: 70,
+    height: 70,
+    borderRadius: 25,
+    marginRight: 10,
+  
+  },
+  drawerItem: {
+    borderBottomWidth: 1, // Adicione borda inferior
+    borderColor: '#ccc', // Cor da borda
+    backgroundColor: '#fff', // Cor de fundo
+  },
+  drawerItemLogout: {
+    borderBottomWidth: 1, // Adicione borda inferior
+    borderColor: '#ccc', // Cor da borda
+    backgroundColor: '#88c9bf', // Cor de fundo
+  },
+  customLabel: {
+    color: '#434343', // Cor do texto
+    fontSize: 14, // Tamanho da fonte
+    padding: 10, // Preenchimento
+  },
 })
