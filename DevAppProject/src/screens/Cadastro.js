@@ -2,10 +2,16 @@ import { TouchableOpacity, StyleSheet, Text, View } from "react-native";
 import Header from "../components/Header";
 
 
+
 const Cadastro = ({ navigation }) => {
   return (
+<<<<<<< HEAD
     <><Header text={" "} backgroundColor={"#cfe9e5"} topBarColor={"#88c9bf"}></Header><View style={styles.content}>
       <Text style={styles.ops}>Ops!</Text>
+=======
+    <View style={styles.content}>
+         <Text style={styles.ops}>Ops!</Text>
+>>>>>>> b73feee2bd4458c39e7d6ab3b3569b76c0e1dfe3
       <Text style={styles.textContent}>
         Você não pode realizar esta ação{"\n"}
         sem possuir um cadastro.

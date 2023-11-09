@@ -33,6 +33,8 @@ const CadastroTela = ({ navigation }) => {
 
 
 
+
+
 export default function App() {
   return (
     <NavigationContainer independent = {true}>
