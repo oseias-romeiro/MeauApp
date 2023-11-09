@@ -5,9 +5,12 @@ import EntrarButton from "../components/CustomButton";
 
 import config from "../config/index";
 import { collection, getDoc, doc } from "firebase/firestore";
-
+import { useAuth } from "../config/auth";
 
 const Dashboard = ({ navigation }) => {
+
+  const { logout } = useAuth();
+
   const navigateToCadastroAnimal = () => {
     navigation.navigate("CadastroAnimal");
   };
@@ -41,6 +44,14 @@ const Dashboard = ({ navigation }) => {
 
   const navigateToMeusAnimais = () => {
     navigation.navigate("MeusAnimais");
+  };
+
+  const exit = () => {
+    navigation.reset({
+      index: 0,
+      routes: [{name: 'Cadastro'}],
+    });
+    logout();
   };
 
   return (
@@ -83,6 +94,11 @@ const Dashboard = ({ navigation }) => {
           <EntrarButton
             title="Meus Animais"
             onPress={navigateToMeusAnimais}
+            style={styles.button}
+          />
+          <EntrarButton
+            title="Logout"
+            onPress={exit}
             style={styles.button}
           />
         </View>
