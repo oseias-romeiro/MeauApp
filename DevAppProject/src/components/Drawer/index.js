@@ -9,9 +9,14 @@ import 'firebase/auth';
 
 import { signOut } from 'firebase/auth';
 
+import VisualizacaoAnimaisUsuario from '../../screens/VisualizacaoAnimaisUsuario';
+import VisualizacaoAnimais from '../../screens/VisualizacaoAnimais';
+import DetalhesAnimal from '../../screens/DetalhesAnimal';
+
+import TelaSucessoAnimal from '../../screens/TelaSucessoAnimal';
 import LoginScreen from '../../screens/Login';
 import VisualizacaoPerfil from '../../screens/VisualizacaoPerfil';
-import CadastroForm from '../../screens/CadastroForm';
+import CadastroPessoal from '../../screens/CadastroPessoal';
 import Cadastro from '../../screens/Cadastro';
 import Dashboard from '../../screens/Dashboard';
 import CadastroPetForm from '../../screens/CadastroAnimal';
@@ -72,6 +77,14 @@ const CustomDrawerContentLogin = ({ navigation }) => {
         label={() => (<Text style ={styles.customLabel}>Editar Perfil</Text>)} 
         onPress={() => navigation.navigate('EditarPerfil')}
         style ={styles.drawerItem} />
+        <DrawerItem 
+        label={() => (<Text style ={styles.customLabel}>Meus Animais</Text>)} 
+        onPress={() => navigation.navigate('MeusAnimais')}
+        style ={styles.drawerItem} />
+        <DrawerItem 
+        label={() => (<Text style ={styles.customLabel}>Ver Animais</Text>)} 
+        onPress={() => navigation.navigate('VisualizacaoAnimais')}
+        style ={styles.drawerItem} />
       <DrawerItem 
         label={() => (<Text style ={styles.customLabel}>Logout</Text>)} 
         onPress={handleLogout}
@@ -97,14 +110,18 @@ export default function MyDrawer() {
 
   return (
     <NavigationContainer independent={true}>
-      <Drawer.Navigator drawerContent={(props) => (user ? <CustomDrawerContentLogin {...props} /> : <CustomDrawerContentLogout{...props} />)}>
+      <Drawer.Navigator screenOptions={{headerShown: false}} drawerContent={(props) => (user ? <CustomDrawerContentLogin {...props} /> : <CustomDrawerContentLogout{...props} />)}>
         <Drawer.Screen name="Login" component={LoginScreen} />
-        <Drawer.Screen name="CadastroForm" component={CadastroForm} />
+        <Drawer.Screen name="CadastroForm" component={CadastroPessoal} />
         <Drawer.Screen name="VisualizacaoPerfil" component={VisualizacaoPerfil} />
         <Drawer.Screen name="Dashboard" component={Dashboard} />
         <Drawer.Screen name="CadastroAnimal" component={CadastroPetForm} />
         <Drawer.Screen name="Cadastro" component={Cadastro} />
         <Drawer.Screen name="EditarPerfil" component={EditarPerfil} />
+        <Drawer.Screen name='SucessoAnimal' component={TelaSucessoAnimal} />
+        <Drawer.Screen name='VisualizacaoAnimais' component={VisualizacaoAnimais} />
+        <Drawer.Screen name='MeusAnimais' component={VisualizacaoAnimaisUsuario} />
+        <Drawer.Screen name='DetalhesAnimal' component={DetalhesAnimal} />
       </Drawer.Navigator>
     </NavigationContainer>
   );
