@@ -1,6 +1,7 @@
 import { TouchableOpacity, StyleSheet, Text, View } from "react-native";
 import Header from "../components/Header";
 
+
 const Cadastro = ({ navigation }) => {
   return (
     <><Header text={" "} backgroundColor={"#cfe9e5"} topBarColor={"#88c9bf"}></Header><View style={styles.content}>
