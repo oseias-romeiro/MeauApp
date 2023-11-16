@@ -1,7 +1,9 @@
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, Text, Button } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import * as Notifications from 'expo-notifications';
+import { useEffect, useState, useRef } from 'react';
 
 import Header from "./src/components/Header/index";
 import Cadastro from './src/screens/Cadastro.js'
@@ -16,6 +18,7 @@ import TelaSucessoAnimal from "./src/screens/TelaSucessoAnimal/index";
 import VisualizacaoAnimais from "./src/screens/VisualizacaoAnimais/index";
 import VisualizacaoAnimaisUsuario from "./src/screens/VisualizacaoAnimaisUsuario/index";
 import DetalhesAnimal from "./src/screens/DetalhesAnimal/index";
+import { handleNotification, registerForPushNotificationsAsync } from "./src/config/notifications.js";
 
 const Stack = createNativeStackNavigator();
 
@@ -28,9 +31,31 @@ const CadastroTela = ({ navigation }) => {
   );
 };
 
-
+Notifications.setNotificationHandler({handleNotification: handleNotification,});
 
 export default function App() {
+  const [expoPushToken, setExpoPushToken] = useState('');
+  const [notification, setNotification] = useState(false);
+  const notificationListener = useRef();
+  const responseListener = useRef();
+
+  useEffect(() => {
+    registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
+
+    notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
+      setNotification(notification);
+    });
+
+    responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
+      console.log(response);
+    });
+
+    return () => {
+      Notifications.removeNotificationSubscription(notificationListener.current);
+      Notifications.removeNotificationSubscription(responseListener.current);
+    };
+  }, []);
+
   return (
     <NavigationContainer>
       <AuthProvider>
