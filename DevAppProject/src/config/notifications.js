@@ -42,3 +42,14 @@ export async function registerForPushNotificationsAsync() {
 
     return token.data;
 }
+
+export async function schedulePushNotification(title, body) {
+    await Notifications.scheduleNotificationAsync({
+      content: {
+        title: title,
+        body: body
+      },
+      trigger: { seconds: 2 },
+    });
+}
+  

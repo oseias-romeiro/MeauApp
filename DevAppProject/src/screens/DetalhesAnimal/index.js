@@ -11,11 +11,21 @@ import { doc, getDoc } from "firebase/firestore";
 import { getDownloadURL, ref } from "firebase/storage";
 import config from "../../config";
 import Header from "../../components/Header";
+import EntrarButton from "../../components/CustomButton";
+import { schedulePushNotification } from "../../config/notifications";
+import { useAuth } from "../../config/auth";
+
 
 const DetalhesAnimal = ({ route }) => {
   const { animalId } = route.params;
   const [animal, setAnimal] = useState(null);
   const [imageUrl, setImageUrl] = useState(null);
+  const {user} = useAuth();
+
+  const handleAdotar = ()=>{
+    schedulePushNotification(title="Adoção", body=`${user.nome_perfil} deseja adotar seu pet!`);
+    Alert.alert("Solicitação enviada!")
+  }
 
   useEffect(() => {
     const fetchAnimalDetails = async () => {
@@ -114,7 +124,8 @@ const DetalhesAnimal = ({ route }) => {
                 <Text style={{ fontSize: 16, color: "#434343" }}>
                   {animal.descricao}
                 </Text>
-
+                
+                <EntrarButton title="Adotar" onPress={handleAdotar}/>
                 {/* Adicione outros campos aqui */}
               </>
             )}
