@@ -10,7 +10,6 @@ import {
 import { doc, getDoc } from "firebase/firestore";
 import { getDownloadURL, ref } from "firebase/storage";
 import config from "../../config";
-import Header from "../../components/Header";
 
 const DetalhesAnimal = ({ route }) => {
   const { animalId } = route.params;
@@ -39,12 +38,6 @@ const DetalhesAnimal = ({ route }) => {
 
   return (
     <>
-      <Header
-        text={"Detalhes do Animal"}
-        backgroundColor={"#cfe9e5"}
-        topBarColor={"#88c9bf"}
-      />
-
       <ScrollView>
         {animal && (
           <View

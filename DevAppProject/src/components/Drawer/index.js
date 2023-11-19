@@ -9,25 +9,18 @@ import 'firebase/auth';
 
 import { signOut } from 'firebase/auth';
 
-<<<<<<< HEAD
 import VisualizacaoAnimaisUsuario from '../../screens/VisualizacaoAnimaisUsuario';
 import VisualizacaoAnimais from '../../screens/VisualizacaoAnimais';
 import DetalhesAnimal from '../../screens/DetalhesAnimal';
-
 import TelaSucessoAnimal from '../../screens/TelaSucessoAnimal';
 import LoginScreen from '../../screens/Login';
 import VisualizacaoPerfil from '../../screens/VisualizacaoPerfil';
 import CadastroPessoal from '../../screens/CadastroPessoal';
-=======
-import LoginScreen from '../../screens/Login';
-import VisualizacaoPerfil from '../../screens/VisualizacaoPerfil';
-import CadastroForm from '../../screens/CadastroForm';
->>>>>>> b73feee2bd4458c39e7d6ab3b3569b76c0e1dfe3
 import Cadastro from '../../screens/Cadastro';
 import Dashboard from '../../screens/Dashboard';
 import CadastroPetForm from '../../screens/CadastroAnimal';
 import EditarPerfil from '../../screens/EditarPerfil';
-import { useAuth } from '../../config/auth';
+import { screenOptions, styles } from "./styles.js"
 
 const Drawer = createDrawerNavigator();
 
@@ -83,17 +76,14 @@ const CustomDrawerContentLogin = ({ navigation }) => {
         label={() => (<Text style ={styles.customLabel}>Editar Perfil</Text>)} 
         onPress={() => navigation.navigate('EditarPerfil')}
         style ={styles.drawerItem} />
-<<<<<<< HEAD
-        <DrawerItem 
+      <DrawerItem 
         label={() => (<Text style ={styles.customLabel}>Meus Animais</Text>)} 
         onPress={() => navigation.navigate('MeusAnimais')}
         style ={styles.drawerItem} />
-        <DrawerItem 
+      <DrawerItem 
         label={() => (<Text style ={styles.customLabel}>Ver Animais</Text>)} 
         onPress={() => navigation.navigate('VisualizacaoAnimais')}
         style ={styles.drawerItem} />
-=======
->>>>>>> b73feee2bd4458c39e7d6ab3b3569b76c0e1dfe3
       <DrawerItem 
         label={() => (<Text style ={styles.customLabel}>Logout</Text>)} 
         onPress={handleLogout}
@@ -119,66 +109,19 @@ export default function MyDrawer() {
 
   return (
     <NavigationContainer independent={true}>
-<<<<<<< HEAD
-      <Drawer.Navigator screenOptions={{headerShown: false}} drawerContent={(props) => (user ? <CustomDrawerContentLogin {...props} /> : <CustomDrawerContentLogout{...props} />)}>
+      <Drawer.Navigator screenOptions={screenOptions} drawerContent={(props) => (user ? <CustomDrawerContentLogin {...props} /> : <CustomDrawerContentLogout{...props} />)}>
+        <Drawer.Screen name="Cadastro" component={Cadastro} />
         <Drawer.Screen name="Login" component={LoginScreen} />
         <Drawer.Screen name="CadastroForm" component={CadastroPessoal} />
-=======
-      <Drawer.Navigator drawerContent={(props) => (user ? <CustomDrawerContentLogin {...props} /> : <CustomDrawerContentLogout{...props} />)}>
-        <Drawer.Screen name="Login" component={LoginScreen} />
-        <Drawer.Screen name="CadastroForm" component={CadastroForm} />
->>>>>>> b73feee2bd4458c39e7d6ab3b3569b76c0e1dfe3
         <Drawer.Screen name="VisualizacaoPerfil" component={VisualizacaoPerfil} />
         <Drawer.Screen name="Dashboard" component={Dashboard} />
         <Drawer.Screen name="CadastroAnimal" component={CadastroPetForm} />
-        <Drawer.Screen name="Cadastro" component={Cadastro} />
         <Drawer.Screen name="EditarPerfil" component={EditarPerfil} />
-<<<<<<< HEAD
         <Drawer.Screen name='SucessoAnimal' component={TelaSucessoAnimal} />
         <Drawer.Screen name='VisualizacaoAnimais' component={VisualizacaoAnimais} />
         <Drawer.Screen name='MeusAnimais' component={VisualizacaoAnimaisUsuario} />
         <Drawer.Screen name='DetalhesAnimal' component={DetalhesAnimal} />
-=======
->>>>>>> b73feee2bd4458c39e7d6ab3b3569b76c0e1dfe3
       </Drawer.Navigator>
     </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  drawerHeader: {
-    flexDirection: 'column',
-    alignItems: 'flex-start', 
-    padding: 20, 
-    backgroundColor: '#88c9bf',
-    height:172,
-    justifyContent: 'space-between',
-  },
-  text:{
-    color: 'white',
-    fontSize: 24,
-    
-  },
-  drawerImage:{
-    width: 70,
-    height: 70,
-    borderRadius: 25,
-    marginRight: 10,
-  
-  },
-  drawerItem: {
-    borderBottomWidth: 1, // Adicione borda inferior
-    borderColor: '#ccc', // Cor da borda
-    backgroundColor: '#fff', // Cor de fundo
-  },
-  drawerItemLogout: {
-    borderBottomWidth: 1, // Adicione borda inferior
-    borderColor: '#ccc', // Cor da borda
-    backgroundColor: '#88c9bf', // Cor de fundo
-  },
-  customLabel: {
-    color: '#434343', // Cor do texto
-    fontSize: 14, // Tamanho da fonte
-    padding: 10, // Preenchimento
-  },
-})

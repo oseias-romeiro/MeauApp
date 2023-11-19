@@ -4,7 +4,6 @@ import { View, TextInput, StyleSheet } from "react-native";
 import EntrarButton from "../components/CustomButton/index";
 import AppButton from "../components/SocialMediaButton/index";
 import { useAuth } from "../config/auth";
-import Header from "../components/Header";
 
 const LoginScreen = ({ navigation }) => {
   const { login } = useAuth();
@@ -17,7 +16,7 @@ const LoginScreen = ({ navigation }) => {
       if (response) {
         navigation.reset({
           index: 0,
-          routes: [{ name: 'Dashboard' }],
+          routes: [{ name: 'VisualizacaoPerfil' }],
         });
       }
     });
@@ -25,9 +24,6 @@ const LoginScreen = ({ navigation }) => {
 
   return (
     <>
-      <Header text={"Login"} backgroundColor={"#cfe9e5"} topBarColor={"#88c9bf"}>
-        
-      </Header>
       <View style={styles.container}>
         <TextInput
           style={styles.input}

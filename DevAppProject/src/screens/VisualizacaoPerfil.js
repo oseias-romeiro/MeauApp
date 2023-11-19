@@ -12,7 +12,6 @@ import {
 import { Feather, FontAwesome } from "react-native-vector-icons";
 import EditarPerfil from "./EditarPerfil";
 import { useNavigation } from "@react-navigation/native";
-import Header from "../components/Header";
 import { Icon } from "react-native-elements";
 import { useAuth } from "../config/auth";
 
@@ -24,7 +23,6 @@ export default function VisualizacaoPerfil() {
     <>
       <ScrollView>
         <SafeAreaView style={styles.container}>
-          <Header text={"Meu Perfil"}backgroundColor={"#cfe9e5"} topBarColor={"#88c9bf"}></Header>
           <View style={styles.content}>
             <View>
               <Image source={{ uri: photoURL }} style={styles.profilePhoto} />
