@@ -9,16 +9,10 @@ import {
 } from "react-native";
 
 import { useState } from "react";
-import Header from "../../components/Header";
 
 export default function TelaSucessoAnimal ({ navigation }) {
   return (
     <>
-      <Header
-        text={"Cadastro do Animal Sucesso"}
-        backgroundColor={"#fee29b"}
-        topBarColor={"#ffd358"}
-      ></Header>
       <Text
         style={{
           fontFamily: "Courgette Regular",
