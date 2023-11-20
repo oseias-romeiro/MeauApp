@@ -32,10 +32,8 @@ export async function registerForPushNotificationsAsync() {
             alert('Falha ao obter token!');
             return;
         }
-        token = await Notifications.getExpoPushTokenAsync({
-            projectId: Constants.expoConfig.extra.eas.projectId,
-        });
-        console.log(token);
+        token = await Notifications.getExpoPushTokenAsync();
+        console.log("TOKEN: ", token);
     } else {
         alert('Notificação precisa de um dispotiivo físico para funcionar');
     }
@@ -52,4 +50,24 @@ export async function schedulePushNotification(title, body) {
       trigger: { seconds: 2 },
     });
 }
+
+export async function sendPushNotification(to, title, body) {
+    const message = {
+      to: to,
+      sound: 'default',
+      title: title,
+      body: body,
+      //data: { someData: 'goes here' },
+    };
   
+    await fetch('https://exp.host/--/api/v2/push/send', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Accept-encoding': 'gzip, deflate',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(message),
+    });
+}
+
