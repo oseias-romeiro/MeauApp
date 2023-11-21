@@ -101,7 +101,7 @@ const Dashboard = ({ navigation }) => {
             style={styles.button}
           />
           <EntrarButton
-            title="Notifications"
+            title="Notificações"
             onPress={notifications}
             style={styles.button}
           />

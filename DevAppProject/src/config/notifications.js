@@ -79,24 +79,25 @@ export async function sendPushNotification(title, body, sender, reciever) {
         },
         body: JSON.stringify(message),
         });
+
+        saveNotification(title, body, sender, reciever);
+
     }else {
         throw new Error('Token não encontrado!')
     }
 }
 
-export const saveNotification = async (notification) => {
-    const notificationRef = doc(config.db, "notifications", notification.request.identifier);
+export const saveNotification = async (title, body, sender, reciever) => {
+    const notificationRef = doc(config.db, "notifications");
     const notificationDoc = await getDoc(notificationRef);
     if (notificationDoc.exists()) {
         console.log("Notificacao ja existe!");
     } else {
         await setDoc(notificationRef, {
-            title: notification.request.content.title,
-            body: notification.request.content.body,
-            date: notification.date,
-            identifier: notification.request.identifier,
-            sender: notification.request.content.data.sender,
-            reciever: notification.request.content.data.reciever,
+            title: title,
+            body: body,
+            sender: sender,
+            reciever: reciever,
         });
     }
 };
