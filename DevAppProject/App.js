@@ -2,8 +2,7 @@ import { StatusBar } from "expo-status-bar";
 import { StyleSheet, View, Text, Button } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import * as Notifications from 'expo-notifications';
-import { useEffect, useState, useRef } from 'react';
+
 
 import Header from "./src/components/Header/index";
 import Cadastro from './src/screens/Cadastro.js'
@@ -20,8 +19,6 @@ import VisualizacaoAnimaisUsuario from "./src/screens/VisualizacaoAnimaisUsuario
 import DetalhesAnimal from "./src/screens/DetalhesAnimal/index";
 import NotificationsScreen from "./src/screens/Notifications.js/index.js";
 
-import { handleNotification, registerForPushNotificationsAsync, saveNotification } from "./src/config/notifications.js";
-
 const Stack = createNativeStackNavigator();
 
 const CadastroTela = ({ navigation }) => {
@@ -33,32 +30,8 @@ const CadastroTela = ({ navigation }) => {
   );
 };
 
-Notifications.setNotificationHandler({handleNotification: handleNotification,});
 
 export default function App() {
-  const [expoPushToken, setExpoPushToken] = useState('');
-  const [notification, setNotification] = useState(false);
-  const notificationListener = useRef();
-  const responseListener = useRef();
-
-  useEffect(() => {
-    registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
-
-    notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
-      console.log("Notification Listner: ", notification);
-      saveNotification(notification);
-      setNotification(notification);
-    });
-
-    responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
-      console.log("Response Listner: ", response);
-    });
-
-    return () => {
-      Notifications.removeNotificationSubscription(notificationListener.current);
-      Notifications.removeNotificationSubscription(responseListener.current);
-    };
-  }, []);
 
   return (
     <NavigationContainer>

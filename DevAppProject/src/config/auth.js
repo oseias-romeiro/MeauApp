@@ -1,9 +1,14 @@
-import React, { createContext, useState, useContext } from 'react';
+import React, { createContext, useState, useContext, useRef } from 'react';
 import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
-import { where, collection, query, getDocs } from "firebase/firestore";
+import { where, collection, query, getDocs, updateDoc, doc } from "firebase/firestore";
 import { getDownloadURL, ref, getStorage} from "firebase/storage";
 
 import config from '../config/index';
+
+import * as Notifications from 'expo-notifications';
+import { handleNotification, registerForPushNotificationsAsync, saveNotification } from "./notifications.js";
+
+Notifications.setNotificationHandler({handleNotification: handleNotification,});
 
 const AuthContext = createContext();
 
@@ -11,6 +16,12 @@ export const AuthProvider = ({ children }) => {
     const {auth} = config;
     const [user, setUser] = useState(null);
     const [photoURL, setPhotoURL] = useState(null);
+
+    const [expoPushToken, setExpoPushToken] = useState('');
+    const [notification, setNotification] = useState(false);
+    const notificationListener = useRef();
+    const responseListener = useRef();
+
 
     const [signInWithEmailAndPassword] = useSignInWithEmailAndPassword(auth);
 
@@ -36,6 +47,9 @@ export const AuthProvider = ({ children }) => {
                     console.log('user photo url:', url);
                     setPhotoURL(url);
                     
+                    // active notifications
+                    setUpNotifications(user_data);
+
                     return true;
                 }else {
                     console.log('Usuário não encontrado!');
@@ -55,8 +69,37 @@ export const AuthProvider = ({ children }) => {
         setUser(null);
     };
 
+    const setUpNotifications = async(user)=>{
+        registerForPushNotificationsAsync().then(token => {
+            
+            // atualiza token no banco
+            updateDoc(doc(collection(config.db, "users"), user.docId), {token: token}).then(() => {
+                console.log("Token atualizado");
+            }).catch((error) => {
+                console.log("Erro ao atualizar token: ", error);
+            });
+            
+            setExpoPushToken(token)
+        });
+
+        notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
+            console.log("Notification Listner: ", notification);
+            saveNotification(notification);
+            setNotification(notification);
+        });
+    
+        responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
+        console.log("Response Listner: ", response);
+        });
+    
+        return () => {
+            Notifications.removeNotificationSubscription(notificationListener.current);
+            Notifications.removeNotificationSubscription(responseListener.current);
+        };
+    }
+
     return (
-        <AuthContext.Provider value={{ user, photoURL, login, logout}}>
+        <AuthContext.Provider value={{ user, photoURL, login, logout, expoPushToken }}>
             {children}
         </AuthContext.Provider>
     );

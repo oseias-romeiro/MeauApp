@@ -23,10 +23,12 @@ const DetalhesAnimal = ({ route }) => {
   const {user} = useAuth();
 
   const handleAdotar = ()=>{
-    //schedulePushNotification(title="Adoção", body=`${user.nome_perfil} deseja adotar seu pet!`);
-    const token = "ExponentPushToken[4Bl9uVPdxLRIU0qZKJGcLx]";
-    sendPushNotification(token, "Adoção", `${user.nome_perfil} deseja adotar seu pet!`, user.uid, animal.dono);
-    Alert.alert("Solicitação enviada!")
+    //const token = "ExponentPushToken[4Bl9uVPdxLRIU0qZKJGcLx]";
+    sendPushNotification("Adoção", `${user.nome_perfil} deseja adotar seu pet!`, user.uid, animal.dono).then(()=>{
+      Alert.alert("Solicitação enviada!")
+    }).catch((error)=>{
+      Alert.alert("Não foi possivel notificar o dono!")
+    })
   }
 
   useEffect(() => {

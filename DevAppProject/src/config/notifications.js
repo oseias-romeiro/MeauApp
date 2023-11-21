@@ -1,7 +1,7 @@
 import * as Device from 'expo-device';
 import * as Notifications from 'expo-notifications';
 import { Platform } from 'react-native';
-import { doc, getDoc, setDoc } from 'firebase/firestore';
+import { doc, getDoc, setDoc, query, where, getDocs, collection } from 'firebase/firestore';
 import config from './index.js';
 
 export const handleNotification = async () => ({
@@ -52,24 +52,36 @@ export async function schedulePushNotification(title, body) {
     });
 }
 
-export async function sendPushNotification(to, title, body, sender, reciever) {
-    const message = {
-      to: to,
-      sound: 'default',
-      title: title,
-      body: body,
-      data: { sender: sender, reciever: reciever },
-    };
-  
-    await fetch('https://exp.host/--/api/v2/push/send', {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Accept-encoding': 'gzip, deflate',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(message),
-    });
+export async function sendPushNotification(title, body, sender, reciever) {
+    
+    // get token from user by uid field using query
+    const q = query(collection(config.db, 'users'), where('uid', '==', reciever));
+
+    const querySnapshot = await getDocs(q)
+
+    if (querySnapshot.size > 0 && querySnapshot.docs[0].data().token) {
+        const token = querySnapshot.docs[0].data().token;
+
+        const message = {
+        to: token,
+        sound: 'default',
+        title: title,
+        body: body,
+        data: { sender: sender, reciever: reciever },
+        };
+    
+        await fetch('https://exp.host/--/api/v2/push/send', {
+        method: 'POST',
+        headers: {
+            Accept: 'application/json',
+            'Accept-encoding': 'gzip, deflate',
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(message),
+        });
+    }else {
+        throw new Error('Token não encontrado!')
+    }
 }
 
 export const saveNotification = async (notification) => {
