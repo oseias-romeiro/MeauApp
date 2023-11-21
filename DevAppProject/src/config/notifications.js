@@ -1,7 +1,7 @@
 import * as Device from 'expo-device';
 import * as Notifications from 'expo-notifications';
 import { Platform } from 'react-native';
-import { doc, getDoc, setDoc, query, where, getDocs, collection } from 'firebase/firestore';
+import { doc, getDoc, setDoc, query, where, getDocs, collection, addDoc } from 'firebase/firestore';
 import config from './index.js';
 
 export const handleNotification = async () => ({
@@ -88,6 +88,15 @@ export async function sendPushNotification(title, body, sender, reciever) {
 }
 
 export const saveNotification = async (title, body, sender, reciever) => {
+    addDoc(collection(config.db, "notifications"),
+          {
+            title: title,
+            body: body,
+            sender: sender,
+            reciever: reciever
+          }
+    );
+    /*
     const notificationRef = doc(config.db, "notifications");
     const notificationDoc = await getDoc(notificationRef);
     if (notificationDoc.exists()) {
@@ -100,5 +109,6 @@ export const saveNotification = async (title, body, sender, reciever) => {
             reciever: reciever,
         });
     }
+    */
 };
 
