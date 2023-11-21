@@ -25,7 +25,7 @@ const DetalhesAnimal = ({ route }) => {
   const handleAdotar = ()=>{
     //schedulePushNotification(title="Adoção", body=`${user.nome_perfil} deseja adotar seu pet!`);
     const token = "ExponentPushToken[4Bl9uVPdxLRIU0qZKJGcLx]";
-    sendPushNotification(token, "Adoção", `${user.nome_perfil} deseja adotar seu pet!`);
+    sendPushNotification(token, "Adoção", `${user.nome_perfil} deseja adotar seu pet!`, user.uid, animal.dono);
     Alert.alert("Solicitação enviada!")
   }
 

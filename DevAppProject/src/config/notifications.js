@@ -1,7 +1,8 @@
 import * as Device from 'expo-device';
 import * as Notifications from 'expo-notifications';
-import Constants from 'expo-constants';
 import { Platform } from 'react-native';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
+import config from './index.js';
 
 export const handleNotification = async () => ({
     shouldShowAlert: true,
@@ -51,13 +52,13 @@ export async function schedulePushNotification(title, body) {
     });
 }
 
-export async function sendPushNotification(to, title, body) {
+export async function sendPushNotification(to, title, body, sender, reciever) {
     const message = {
       to: to,
       sound: 'default',
       title: title,
       body: body,
-      //data: { someData: 'goes here' },
+      data: { sender: sender, reciever: reciever },
     };
   
     await fetch('https://exp.host/--/api/v2/push/send', {
@@ -70,4 +71,21 @@ export async function sendPushNotification(to, title, body) {
       body: JSON.stringify(message),
     });
 }
+
+export const saveNotification = async (notification) => {
+    const notificationRef = doc(config.db, "notifications", notification.request.identifier);
+    const notificationDoc = await getDoc(notificationRef);
+    if (notificationDoc.exists()) {
+        console.log("Notificacao ja existe!");
+    } else {
+        await setDoc(notificationRef, {
+            title: notification.request.content.title,
+            body: notification.request.content.body,
+            date: notification.date,
+            identifier: notification.request.identifier,
+            sender: notification.request.content.data.sender,
+            reciever: notification.request.content.data.reciever,
+        });
+    }
+};
 

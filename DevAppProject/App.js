@@ -18,7 +18,9 @@ import TelaSucessoAnimal from "./src/screens/TelaSucessoAnimal/index";
 import VisualizacaoAnimais from "./src/screens/VisualizacaoAnimais/index";
 import VisualizacaoAnimaisUsuario from "./src/screens/VisualizacaoAnimaisUsuario/index";
 import DetalhesAnimal from "./src/screens/DetalhesAnimal/index";
-import { handleNotification, registerForPushNotificationsAsync } from "./src/config/notifications.js";
+import NotificationsScreen from "./src/screens/Notifications.js/index.js";
+
+import { handleNotification, registerForPushNotificationsAsync, saveNotification } from "./src/config/notifications.js";
 
 const Stack = createNativeStackNavigator();
 
@@ -43,11 +45,13 @@ export default function App() {
     registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
 
     notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
+      console.log("Notification Listner: ", notification);
+      saveNotification(notification);
       setNotification(notification);
     });
 
     responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
-      console.log(response);
+      console.log("Response Listner: ", response);
     });
 
     return () => {
@@ -70,6 +74,7 @@ export default function App() {
           <Stack.Screen name="VisualizacaoAnimais" component={VisualizacaoAnimais} />
           <Stack.Screen name="MeusAnimais" component={VisualizacaoAnimaisUsuario} />
           <Stack.Screen name="DetalhesAnimal" component={DetalhesAnimal} />
+          <Stack.Screen name="Notifications" component={NotificationsScreen} />
         </Stack.Navigator>
       </AuthProvider>
     </NavigationContainer>
