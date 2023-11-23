@@ -17,7 +17,7 @@ import TelaSucessoAnimal from "./src/screens/TelaSucessoAnimal/index";
 import VisualizacaoAnimais from "./src/screens/VisualizacaoAnimais/index";
 import VisualizacaoAnimaisUsuario from "./src/screens/VisualizacaoAnimaisUsuario/index";
 import DetalhesAnimal from "./src/screens/DetalhesAnimal/index";
-import NotificationsScreen from "./src/screens/Notifications.js/index.js";
+import NotificationsScreen from "./src/screens/Notifications/index.js";
 
 const Stack = createNativeStackNavigator();
 

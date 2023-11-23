@@ -6,7 +6,7 @@ import { getDownloadURL, ref, getStorage} from "firebase/storage";
 import config from '../config/index';
 
 import * as Notifications from 'expo-notifications';
-import { handleNotification, registerForPushNotificationsAsync, saveNotification } from "./notifications.js";
+import { handleNotification, registerForPushNotificationsAsync, saveNotification } from "../services/notifications";
 
 Notifications.setNotificationHandler({handleNotification: handleNotification,});
 
@@ -43,7 +43,7 @@ export const AuthProvider = ({ children }) => {
                     setUser(user_data);
 
                     // set photo url
-                    const url = await getDownloadURL(ref(getStorage(), `profilePhotos/${user_data.email}`))
+                    const url = await getDownloadURL(ref(getStorage(), `profilePhotos/${user_data.email}`));
                     console.log('user photo url:', url);
                     setPhotoURL(url);
                     
@@ -64,33 +64,35 @@ export const AuthProvider = ({ children }) => {
     };
 
     const logout = () => {
-        // Here you can make an API call to log out the user
-        // If the logout is successful, set the user state to null
+        // remove user
         setUser(null);
+        // remove notification
+        Notifications.setNotificationHandler(null);
+        // remove token
+        setExpoPushToken('');
+        // remove token from document user
+        updateDoc(doc(collection(config.db, "users"), user.docId), {token: ''});
     };
 
     const setUpNotifications = async(user)=>{
         registerForPushNotificationsAsync().then(token => {
             
             // atualiza token no banco
-            updateDoc(doc(collection(config.db, "users"), user.docId), {token: token}).then(() => {
-                console.log("Token atualizado");
-            }).catch((error) => {
-                console.log("Erro ao atualizar token: ", error);
-            });
+            updateDoc(doc(collection(config.db, "users"), user.docId), {token: token})
             
             setExpoPushToken(token)
         });
 
         notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
             console.log("Notification Listner: ", notification);
+            // salva a notificação no banco
             saveNotification(notification);
             setNotification(notification);
         });
     
-        responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
-        console.log("Response Listner: ", response);
-        });
+        responseListener.current = Notifications.addNotificationResponseReceivedListener(response => 
+            console.log("Response Listner: ", response)
+        );
     
         return () => {
             Notifications.removeNotificationSubscription(notificationListener.current);

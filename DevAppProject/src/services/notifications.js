@@ -1,8 +1,8 @@
 import * as Device from 'expo-device';
 import * as Notifications from 'expo-notifications';
 import { Platform } from 'react-native';
-import { doc, getDoc, setDoc, query, where, getDocs, collection, addDoc } from 'firebase/firestore';
-import config from './index.js';
+import { query, where, getDocs, collection, addDoc, deleteDoc} from 'firebase/firestore';
+import config from '../config/index';
 
 export const handleNotification = async () => ({
     shouldShowAlert: true,
@@ -42,14 +42,14 @@ export async function registerForPushNotificationsAsync() {
     return token.data;
 }
 
-export async function schedulePushNotification(title, body) {
-    await Notifications.scheduleNotificationAsync({
-      content: {
-        title: title,
-        body: body
-      },
-      trigger: { seconds: 2 },
-    });
+export async function unregisterForPushNotificationsAsync(notificationListener, responseListener) {
+    await Notifications.setNotificationChannelAsync('default', null);
+    Notifications.removeNotificationSubscription(notificationListener.current);
+    Notifications.removeNotificationSubscription(responseListener.current);
+    await Notifications.unregisterForNotificationsAsync();
+    Notifications.removePushTokenSubscription(notificationListener.current);
+    Notifications.removePushTokenSubscription(responseListener.current);
+    Notifications.deleteNotificationChannelAsync("");
 }
 
 export async function sendPushNotification(title, body, sender, reciever) {
@@ -63,11 +63,11 @@ export async function sendPushNotification(title, body, sender, reciever) {
         const token = querySnapshot.docs[0].data().token;
 
         const message = {
-        to: token,
-        sound: 'default',
-        title: title,
-        body: body,
-        data: { sender: sender, reciever: reciever },
+            to: token,
+            sound: 'default',
+            title: title,
+            body: body,
+            data: { sender: sender, reciever: reciever },
         };
     
         await fetch('https://exp.host/--/api/v2/push/send', {
@@ -89,26 +89,20 @@ export async function sendPushNotification(title, body, sender, reciever) {
 
 export const saveNotification = async (title, body, sender, reciever) => {
     addDoc(collection(config.db, "notifications"),
-          {
+        {
             title: title,
             body: body,
             sender: sender,
             reciever: reciever
-          }
+        }
     );
-    /*
-    const notificationRef = doc(config.db, "notifications");
-    const notificationDoc = await getDoc(notificationRef);
-    if (notificationDoc.exists()) {
-        console.log("Notificacao ja existe!");
-    } else {
-        await setDoc(notificationRef, {
-            title: title,
-            body: body,
-            sender: sender,
-            reciever: reciever,
-        });
+};
+
+export const deleteNotification = async (id) => {
+    try {
+        deleteDoc(doc(config.db, "notifications", id));
+    } catch (error) {
+        throw new Error("Erro ao deletar notificação!");
     }
-    */
 };
 

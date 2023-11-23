@@ -12,7 +12,7 @@ import { getDownloadURL, ref } from "firebase/storage";
 import config from "../../config";
 import Header from "../../components/Header";
 import EntrarButton from "../../components/CustomButton";
-import { schedulePushNotification, sendPushNotification } from "../../config/notifications";
+import { sendPushNotification } from "../../services/notifications";
 import { useAuth } from "../../config/auth";
 
 
