@@ -1,6 +1,5 @@
 import React from "react";
 import { View, Text, Button, StyleSheet, ScrollView } from "react-native";
-import Header from "../components/Header";
 import EntrarButton from "../components/CustomButton";
 
 import config from "../config/index";
@@ -60,13 +59,6 @@ const Dashboard = ({ navigation }) => {
 
   return (
     <>
-      <Header
-        text={"Dashboard do aplicativo"}
-        backgroundColor={"#cfe9e5"}
-        topBarColor={"#88c9bf"}
-      >
-        {" "}
-      </Header>
       <ScrollView>
         <View style={styles.container}>
           <Text style={styles.heading}>Dashboard</Text>

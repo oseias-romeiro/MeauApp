@@ -4,7 +4,6 @@ import { collection, getDocs, where, query } from "firebase/firestore";
 import { getDownloadURL, ref } from "firebase/storage";
 import config from "../../config";
 import { getAuth, useAuth } from "firebase/auth";
-import Header from "../../components/Header";
 import AnimalCard from "../../components/AnimalCard";
 
 const VisualizacaoAnimaisUsuario = ({ navigation }) => {
@@ -51,13 +50,6 @@ const VisualizacaoAnimaisUsuario = ({ navigation }) => {
 
   return (
     <>
-      <Header
-        text={"Meus Animais"}
-        backgroundColor={"#cfe9e5"}
-        topBarColor={"#88c9bf"}
-      >
-        {" "}
-      </Header>
       <ScrollView>
         <View>
           <FlatList

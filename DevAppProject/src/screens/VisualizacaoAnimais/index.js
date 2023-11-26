@@ -11,7 +11,6 @@ import {
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { getDownloadURL, ref } from "firebase/storage";
 import config from "../../config";
-import Header from "../../components/Header";
 import AnimalCard from "../../components/AnimalCard";
 
 const VisualizacaoAnimais = ({ navigation }) => {
@@ -48,13 +47,6 @@ const VisualizacaoAnimais = ({ navigation }) => {
 
   return (
     <>
-      <Header
-        text={"Animais disponíveis para doação"}
-        backgroundColor={"#cfe9e5"}
-        topBarColor={"#88c9bf"}
-      >
-        {" "}
-      </Header>
       <ScrollView>
         <View>
           <FlatList

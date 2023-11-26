@@ -5,7 +5,6 @@ import { getDocs, collection, where, query } from 'firebase/firestore';
 import { useAuth } from '../../config/auth';
 import config from '../../config';
 import Container from '../../components/Container';
-import Header from '../../components/Header';
 import styles from './style';
 import { deleteNotification } from '../../services/notifications';
 
@@ -23,7 +22,6 @@ const NotificationsScreen = () => {
 
     return (
         <Container styles={styles.content}>
-            <Header text="Notificações"  backgroundColor={"#cfe9e5"} topBarColor={"#88c9bf"}/>
             <ScrollView>
                 <View>
                     <FlatList

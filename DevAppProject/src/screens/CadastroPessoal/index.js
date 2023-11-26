@@ -7,7 +7,6 @@ import { getStorage, ref, uploadBytesResumable } from 'firebase/storage';
 import * as ImagePicker from 'expo-image-picker';
 
 import Container from "../../components/Container";
-import Header from "../../components/Header";
 import config from '../../config/index';
 import styles from './styles.js';
 
@@ -93,7 +92,6 @@ const CadastroPessoal = ({ navigation }) => {
 
   return (
     <Container>
-      <Header navigation={navigation} text={"Cadastro Pessoal"}  backgroundColor={"#cfe9e5"} topBarColor={"#88c9bf"}/>
       <ScrollView>
         <View style={styles.container}>
       </View>

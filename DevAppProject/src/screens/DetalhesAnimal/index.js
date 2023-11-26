@@ -4,13 +4,11 @@ import {
   Text,
   Image,
   ScrollView,
-  TouchableOpacity,
   Alert,
 } from "react-native";
 import { doc, getDoc } from "firebase/firestore";
 import { getDownloadURL, ref } from "firebase/storage";
 import config from "../../config";
-import Header from "../../components/Header";
 import EntrarButton from "../../components/CustomButton";
 import { sendPushNotification } from "../../services/notifications";
 import { useAuth } from "../../config/auth";
@@ -53,12 +51,6 @@ const DetalhesAnimal = ({ route }) => {
 
   return (
     <>
-      <Header
-        text={"Detalhes do Animal"}
-        backgroundColor={"#cfe9e5"}
-        topBarColor={"#88c9bf"}
-      />
-
       <ScrollView>
         {animal && (
           <View
