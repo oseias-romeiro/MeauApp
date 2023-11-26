@@ -1,9 +1,12 @@
 import { TouchableOpacity, StyleSheet, Text, View } from "react-native";
 import Header from "../components/Header";
 
+
+
 const Cadastro = ({ navigation }) => {
   return (
-    <><Header text={" "} backgroundColor={"#cfe9e5"} topBarColor={"#88c9bf"}></Header><View style={styles.content}>
+    <>
+      <View style={styles.content}>
       <Text style={styles.ops}>Ops!</Text>
       <Text style={styles.textContent}>
         Você não pode realizar esta ação{"\n"}
@@ -11,7 +14,7 @@ const Cadastro = ({ navigation }) => {
       </Text>
       <TouchableOpacity
         style={styles.btnContainer}
-        onPress={() => navigation.navigate("CadastroPessoal")}
+        onPress={() => navigation.navigate("CadastroForm")}
       >
         <Text style={styles.btnText}>FAZER CADASTRO</Text>
       </TouchableOpacity>

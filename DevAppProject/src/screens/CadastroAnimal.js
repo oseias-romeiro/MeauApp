@@ -11,7 +11,6 @@ import {
 } from "react-native";
 
 import { useState } from "react";
-import Header from "../components/Header";
 import config from "../config/index";
 import { addDoc, collection } from "firebase/firestore";
 import { getStorage, ref, uploadBytesResumable } from "firebase/storage";
@@ -95,11 +94,6 @@ const CadastroPetForm = ({ navigation }) => {
 
   return (
     <>
-      <Header
-        text={"Cadastro de Animal"}
-        backgroundColor={"#fee29b"}
-        topBarColor={"#ffd358"}
-      />
       <ScrollView>
         <View style={styles.container}>
           <Pressable

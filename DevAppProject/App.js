@@ -2,6 +2,9 @@ import { StatusBar } from "expo-status-bar";
 import { StyleSheet, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { createDrawerNavigator } from '@react-navigation/drawer';
+import 'react-native-reanimated';
+
 
 import Header from "./src/components/Header/index";
 import Cadastro from './src/screens/Cadastro.js'
@@ -12,12 +15,10 @@ import EditarPerfil from "./src/screens/EditarPerfil";
 import Dashboard from "./src/screens/Dashboard";
 import CadastroAnimal from "./src/screens/CadastroAnimal";
 import { AuthProvider } from "./src/config/auth.js"
-import TelaSucessoAnimal from "./src/screens/TelaSucessoAnimal/index";
-import VisualizacaoAnimais from "./src/screens/VisualizacaoAnimais/index";
-import VisualizacaoAnimaisUsuario from "./src/screens/VisualizacaoAnimaisUsuario/index";
-import DetalhesAnimal from "./src/screens/DetalhesAnimal/index";
+import MyDrawer from "./src/components/Drawer";
 
 const Stack = createNativeStackNavigator();
+
 
 const CadastroTela = ({ navigation }) => {
   return (
@@ -30,22 +31,15 @@ const CadastroTela = ({ navigation }) => {
 
 
 
+
+
+
+
 export default function App() {
   return (
-    <NavigationContainer>
+    <NavigationContainer independent = {true}>
       <AuthProvider>
-        <Stack.Navigator screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="Cadastro" component={CadastroTela} />
-          <Stack.Screen name="CadastroPessoal" component={CadastroPessoal} />
-          <Stack.Screen name="Login" component={LoginScreen} />
-          <Stack.Screen name="Dashboard" component={Dashboard} />
-          <Stack.Screen name="CadastroAnimal" component={CadastroAnimal} />
-          <Stack.Screen name="EditarPerfil" component={EditarPerfil} />
-          <Stack.Screen name="VisualizacaoPerfil" component={VisualizacaoPerfil} />
-          <Stack.Screen name="VisualizacaoAnimais" component={VisualizacaoAnimais} />
-          <Stack.Screen name="MeusAnimais" component={VisualizacaoAnimaisUsuario} />
-          <Stack.Screen name="DetalhesAnimal" component={DetalhesAnimal} />
-        </Stack.Navigator>
+      <MyDrawer />
       </AuthProvider>
     </NavigationContainer>
   );

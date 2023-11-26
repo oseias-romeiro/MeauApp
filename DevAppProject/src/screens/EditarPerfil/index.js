@@ -13,7 +13,6 @@ import { getStorage, ref, uploadBytesResumable } from "firebase/storage";
 import * as ImagePicker from "expo-image-picker";
 
 import config from "../../config/index";
-import Header from "../../components/Header/index";
 import Container from "../../components/Container";
 import styles from "../CadastroPessoal/styles";
 import { useAuth } from "../../config/auth";
@@ -90,12 +89,6 @@ const EditarPerfil = ({ navigation }) => {
 
   return (
     <Container>
-      <Header
-        navigation={navigation}
-        text={"Editar Perfil"}
-        backgroundColor={"#cfe9e5"}
-        topBarColor={"#88c9bf"}
-      />
       <ScrollView>
         <View style={styles.content}>
           <Text style={styles.sectionText}>INFORMAÇÕES PESSOAIS</Text>
