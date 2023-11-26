@@ -1,7 +1,9 @@
 import * as Device from 'expo-device';
 import * as Notifications from 'expo-notifications';
 import { Platform } from 'react-native';
-import { query, where, getDocs, collection, addDoc, deleteDoc} from 'firebase/firestore';
+import { query, where, getDocs, collection, addDoc, deleteDoc, doc} from 'firebase/firestore';
+import Constants from 'expo-constants';
+
 import config from '../config/index';
 
 export const handleNotification = async () => ({
@@ -33,7 +35,9 @@ export async function registerForPushNotificationsAsync() {
             alert('Falha ao obter token!');
             return;
         }
-        token = await Notifications.getExpoPushTokenAsync();
+        token = await Notifications.getExpoPushTokenAsync({
+            projectId: Constants.expoConfig.extra.eas.projectId,
+        });
         console.log("TOKEN: ", token);
     } else {
         alert('Notificação precisa de um dispotiivo físico para funcionar');
@@ -93,12 +97,13 @@ export const saveNotification = async (title, body, sender, reciever) => {
             title: title,
             body: body,
             sender: sender,
-            reciever: reciever
+            reciever: reciever,
         }
     );
 };
 
 export const deleteNotification = async (id) => {
+
     try {
         deleteDoc(doc(config.db, "notifications", id));
     } catch (error) {

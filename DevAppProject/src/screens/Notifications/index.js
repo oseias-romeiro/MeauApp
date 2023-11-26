@@ -7,21 +7,19 @@ import config from '../../config';
 import Container from '../../components/Container';
 import Header from '../../components/Header';
 import styles from './style';
+import { deleteNotification } from '../../services/notifications';
 
 const NotificationsScreen = () => {
     const [notifications, setNotifications] = useState([]);
     const { user } = useAuth();
 
-    useEffect(() => {
-        const getNotifications = async () => {
-            // query where notifications has reciever = user.docId
-            const notificationsQuery = query(collection(config.db, "notifications"), where("reciever", "==", user.uid));
-            const notifications = await getDocs(notificationsQuery);
-            console.log("notifications: ", notifications.docs.map(doc => doc.data()));
-            setNotifications(notifications.docs.map(doc => doc.data()));
-        }
-        getNotifications();
-    }, []);
+    const getNotifications = async () => {
+        // query where notifications has reciever = user.docId
+        const notificationsQuery = query(collection(config.db, "notifications"), where("reciever", "==", user.uid));
+        const notificationsDocs = await getDocs(notificationsQuery);
+        setNotifications(notificationsDocs.docs.map(doc => [doc.data(), doc.id]));
+    }
+    getNotifications();
 
     return (
         <Container styles={styles.content}>
@@ -32,10 +30,10 @@ const NotificationsScreen = () => {
                         data={notifications}
                         renderItem={({ item }) => (
                             <View style={styles.notificationCard}>
-                                <Text style={styles.notificationTitle}>{item.title}</Text>
-                                <Text style={styles.notificationBody}>{item.body}</Text>
+                                <Text style={styles.notificationTitle}>{item[0].title}</Text>
+                                <Text style={styles.notificationBody}>{item[0].body}</Text>
                                 <View style={styles.buttonsLine}>
-                                    <TouchableOpacity style={styles.chatButton}>
+                                    <TouchableOpacity style={styles.chatButton} onPress={ ()=>deleteNotification(item[1]) }>
                                         <Text>Apagar</Text>
                                     </TouchableOpacity>
                                     <TouchableOpacity style={styles.chatButton}>
@@ -44,7 +42,7 @@ const NotificationsScreen = () => {
                                 </View>
                             </View>
                         )}
-                        keyExtractor={(item) => item.id}
+                        keyExtractor={(item) => item[1]}
                     />
                 </View>
             </ScrollView>

@@ -76,11 +76,10 @@ export const AuthProvider = ({ children }) => {
 
     const setUpNotifications = async(user)=>{
         registerForPushNotificationsAsync().then(token => {
-            
             // atualiza token no banco
-            updateDoc(doc(collection(config.db, "users"), user.docId), {token: token})
+            updateDoc(doc(collection(config.db, "users"), user.docId), {token: token});
             
-            setExpoPushToken(token)
+            setExpoPushToken(token);
         });
 
         notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
