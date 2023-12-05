@@ -21,6 +21,7 @@ import Dashboard from '../../screens/Dashboard';
 import CadastroPetForm from '../../screens/CadastroAnimal';
 import EditarPerfil from '../../screens/EditarPerfil';
 import NotificationsScreen from '../../screens/Notifications'
+import ChatScreen from '../../screens/Chat';
 import { screenOptions, styles } from "./styles.js"
 
 const Drawer = createDrawerNavigator();
@@ -127,6 +128,7 @@ export default function MyDrawer() {
         <Drawer.Screen name='MeusAnimais' component={VisualizacaoAnimaisUsuario} />
         <Drawer.Screen name='DetalhesAnimal' component={DetalhesAnimal} />
         <Drawer.Screen name='Notifications' component={NotificationsScreen} />
+        <Drawer.Screen name='Chat' component={ChatScreen} />
       </Drawer.Navigator>
     </NavigationContainer>
   );

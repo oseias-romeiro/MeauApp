@@ -8,7 +8,7 @@ import Container from '../../components/Container';
 import styles from './style';
 import { deleteNotification } from '../../services/notifications';
 
-const NotificationsScreen = () => {
+const NotificationsScreen = ({ navigation }) => {
     const [notifications, setNotifications] = useState([]);
     const { user } = useAuth();
 
@@ -19,6 +19,11 @@ const NotificationsScreen = () => {
         setNotifications(notificationsDocs.docs.map(doc => [doc.data(), doc.id]));
     }
     getNotifications();
+
+    const chat = (chatId) => {
+        console.log("chatId:", chatId);
+        navigation.navigate('Chat', {chatId: chatId});
+    }
 
     return (
         <Container styles={styles.content}>
@@ -32,9 +37,12 @@ const NotificationsScreen = () => {
                                 <Text style={styles.notificationBody}>{item[0].body}</Text>
                                 <View style={styles.buttonsLine}>
                                     <TouchableOpacity style={styles.chatButton} onPress={ ()=>deleteNotification(item[1]) }>
-                                        <Text>Apagar</Text>
+                                        <Text>Rejeitar</Text>
                                     </TouchableOpacity>
                                     <TouchableOpacity style={styles.chatButton}>
+                                        <Text>Aceitar</Text>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity style={styles.chatButton} onPress={ ()=>chat(item[1]) }>
                                         <Text>Chat</Text>
                                     </TouchableOpacity>
                                 </View>
