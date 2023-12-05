@@ -1,44 +1,51 @@
 import React, {useState, useEffect} from 'react';
 import { View, Text, ScrollView, FlatList, Touchable, TouchableOpacity } from 'react-native';
-import { getDocs, collection, where, query } from 'firebase/firestore';
+import { getDocs, collection, where, query, getDoc } from 'firebase/firestore';
 
 import { useAuth } from '../../config/auth';
 import config from '../../config';
 import Container from '../../components/Container';
 import styles from './style';
-import { deleteNotification } from '../../services/notifications';
+
 
 const ListChats = ({ navigation }) => {
     const { user } = useAuth();
     const [chats, setChats] = useState([]);
 
-    const getChats = async () => {
-        // query where notifications has reciever = user.docId
-        const notificationsQuery = query(collection(config.db, "chats"), where("reciever", "==", user.uid));
-        const notificationsDocs = await getDocs(notificationsQuery);
-        setNotifications(notificationsDocs.docs.map(doc => [doc.data(), doc.id]));
-    }
-    getChats();
+    useEffect(() => {
+        const getChats = async () => {
+            // get chats where sender = user.docId or reciever = user.docId
+            const chatsQuery = query(collection(config.db, "chats"), where("users", "array-contains", user.uid));
+            getDocs(chatsQuery).then((chatsDocs) => {
+                let docs = chatsDocs.docs.map(doc => [doc.data(), doc.id]);
+
+                console.log('asidjoasd', docs);
+                setChats(docs);
+            }).catch((error) => {
+                console.log("erro ao pegar chats: ", error);
+            });
+        }
+    
+        return () => getChats();
+    }, []);
 
     const chat = (chatId) => {
         navigation.navigate('Chat', {chatId: chatId});
     }
 
     return (
-        <Container styles={styles.content}>
-            <ScrollView>
-                <View>
+        <Container>
+                <View style={styles.content}>
                     <FlatList
                         data={chats}
                         renderItem={({ item }) => (
-                            <TouchableOpacity style={styles.chatButton} onPress={ ()=>chat(item.id) }>
-                                <Text>{ item.sender }</Text>
+                            <TouchableOpacity onPress={ ()=>chat(item[1]) } style={styles.chatCard}>
+                                <Text>{ item[0].users[1] }</Text>
                             </TouchableOpacity>
                         )}
-                        keyExtractor={(item) => item.id}
+                        keyExtractor={(item) => item[1]}
                     />
                 </View>
-            </ScrollView>
         </Container>
     );
 };

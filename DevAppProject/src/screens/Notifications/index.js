@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import { View, Text, ScrollView, FlatList, Touchable, TouchableOpacity } from 'react-native';
-import { getDocs, collection, where, query } from 'firebase/firestore';
+import { getDocs, collection, where, query, addDoc } from 'firebase/firestore';
 
 import { useAuth } from '../../config/auth';
 import config from '../../config';
@@ -20,9 +20,14 @@ const NotificationsScreen = ({ navigation }) => {
     }
     getNotifications();
 
-    const chat = (chatId) => {
-        console.log("chatId:", chatId);
-        navigation.navigate('Chat', {chatId: chatId});
+    const chat = (sender) => {
+        addDoc(collection(config.db, "chats"), {
+            users: [user.uid, sender],
+            messages: []
+        }).then((docRef) => {
+            console.log("Document written with ID: ", docRef.id);
+            navigation.navigate('Chat', {chatId: docRef.id});
+        });
     }
 
     return (
@@ -42,7 +47,7 @@ const NotificationsScreen = ({ navigation }) => {
                                     <TouchableOpacity style={styles.chatButton}>
                                         <Text>Aceitar</Text>
                                     </TouchableOpacity>
-                                    <TouchableOpacity style={styles.chatButton} onPress={ ()=>chat(item[1]) }>
+                                    <TouchableOpacity style={styles.chatButton} onPress={ ()=>chat(item[0].sender) }>
                                         <Text>Chat</Text>
                                     </TouchableOpacity>
                                 </View>
