@@ -1,9 +1,14 @@
-import React, { createContext, useState, useContext } from 'react';
+import React, { createContext, useState, useContext, useRef } from 'react';
 import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
-import { where, collection, query, getDocs } from "firebase/firestore";
+import { where, collection, query, getDocs, updateDoc, doc } from "firebase/firestore";
 import { getDownloadURL, ref, getStorage} from "firebase/storage";
 
 import config from '../config/index';
+
+import * as Notifications from 'expo-notifications';
+import { handleNotification, registerForPushNotificationsAsync, saveNotification } from "../services/notifications";
+
+Notifications.setNotificationHandler({handleNotification: handleNotification,});
 
 const AuthContext = createContext();
 
@@ -11,6 +16,12 @@ export const AuthProvider = ({ children }) => {
     const {auth} = config;
     const [user, setUser] = useState(null);
     const [photoURL, setPhotoURL] = useState(null);
+
+    const [expoPushToken, setExpoPushToken] = useState('');
+    const [notification, setNotification] = useState(false);
+    const notificationListener = useRef();
+    const responseListener = useRef();
+
 
     const [signInWithEmailAndPassword] = useSignInWithEmailAndPassword(auth);
 
@@ -32,10 +43,13 @@ export const AuthProvider = ({ children }) => {
                     setUser(user_data);
 
                     // set photo url
-                    const url = await getDownloadURL(ref(getStorage(), `profilePhotos/${user_data.email}`))
+                    const url = await getDownloadURL(ref(getStorage(), `profilePhotos/${user_data.email}`));
                     console.log('user photo url:', url);
                     setPhotoURL(url);
                     
+                    // active notifications
+                    setUpNotifications(user_data);
+
                     return true;
                 }else {
                     console.log('Usuário não encontrado!');
@@ -50,13 +64,43 @@ export const AuthProvider = ({ children }) => {
     };
 
     const logout = () => {
-        // Here you can make an API call to log out the user
-        // If the logout is successful, set the user state to null
+        // remove user
         setUser(null);
+        // remove notification
+        Notifications.setNotificationHandler(null);
+        // remove token
+        setExpoPushToken('');
+        // remove token from document user
+        updateDoc(doc(collection(config.db, "users"), user.docId), {token: ''});
     };
 
+    const setUpNotifications = async(user)=>{
+        registerForPushNotificationsAsync().then(token => {
+            // atualiza token no banco
+            updateDoc(doc(collection(config.db, "users"), user.docId), {token: token});
+            
+            setExpoPushToken(token);
+        });
+
+        notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
+            console.log("Notification Listner: ", notification);
+            // salva a notificação no banco
+            saveNotification(notification);
+            setNotification(notification);
+        });
+    
+        responseListener.current = Notifications.addNotificationResponseReceivedListener(response => 
+            console.log("Response Listner: ", response)
+        );
+    
+        return () => {
+            Notifications.removeNotificationSubscription(notificationListener.current);
+            Notifications.removeNotificationSubscription(responseListener.current);
+        };
+    }
+
     return (
-        <AuthContext.Provider value={{ user, photoURL, login, logout}}>
+        <AuthContext.Provider value={{ user, photoURL, login, logout, expoPushToken }}>
             {children}
         </AuthContext.Provider>
     );

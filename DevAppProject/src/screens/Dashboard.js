@@ -53,6 +53,10 @@ const Dashboard = ({ navigation }) => {
     logout();
   };
 
+  const notifications = () => {
+    navigation.navigate("Notifications");
+  }
+
   return (
     <>
       <ScrollView>
@@ -86,6 +90,11 @@ const Dashboard = ({ navigation }) => {
           <EntrarButton
             title="Meus Animais"
             onPress={navigateToMeusAnimais}
+            style={styles.button}
+          />
+          <EntrarButton
+            title="Notificações"
+            onPress={notifications}
             style={styles.button}
           />
           <EntrarButton

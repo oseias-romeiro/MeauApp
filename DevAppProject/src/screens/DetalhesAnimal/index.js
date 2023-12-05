@@ -4,17 +4,30 @@ import {
   Text,
   Image,
   ScrollView,
-  TouchableOpacity,
   Alert,
 } from "react-native";
 import { doc, getDoc } from "firebase/firestore";
 import { getDownloadURL, ref } from "firebase/storage";
 import config from "../../config";
+import EntrarButton from "../../components/CustomButton";
+import { sendPushNotification } from "../../services/notifications";
+import { useAuth } from "../../config/auth";
+
 
 const DetalhesAnimal = ({ route }) => {
   const { animalId } = route.params;
   const [animal, setAnimal] = useState(null);
   const [imageUrl, setImageUrl] = useState(null);
+  const {user} = useAuth();
+
+  const handleAdotar = ()=>{
+    //const token = "ExponentPushToken[4Bl9uVPdxLRIU0qZKJGcLx]";
+    sendPushNotification("Adoção", `${user.nome_perfil} deseja adotar seu pet!`, user.uid, animal.dono).then(()=>{
+      Alert.alert("Solicitação enviada!")
+    }).catch((error)=>{
+      Alert.alert("Não foi possivel notificar o dono!")
+    })
+  }
 
   useEffect(() => {
     const fetchAnimalDetails = async () => {
@@ -107,7 +120,8 @@ const DetalhesAnimal = ({ route }) => {
                 <Text style={{ fontSize: 16, color: "#434343" }}>
                   {animal.descricao}
                 </Text>
-
+                
+                <EntrarButton title="Adotar" onPress={handleAdotar}/>
                 {/* Adicione outros campos aqui */}
               </>
             )}

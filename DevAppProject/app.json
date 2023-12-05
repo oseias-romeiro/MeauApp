@@ -22,7 +22,8 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.oseiasromeiro.DevAppProject"
+      "package": "com.oseiasromeiro.DevAppProject",
+      "googleServicesFile": "./google-services.json"
     },
     "web": {
       "favicon": "./assets/favicon.png"

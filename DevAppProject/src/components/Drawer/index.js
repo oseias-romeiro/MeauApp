@@ -20,6 +20,7 @@ import Cadastro from '../../screens/Cadastro';
 import Dashboard from '../../screens/Dashboard';
 import CadastroPetForm from '../../screens/CadastroAnimal';
 import EditarPerfil from '../../screens/EditarPerfil';
+import NotificationsScreen from '../../screens/Notifications'
 import { screenOptions, styles } from "./styles.js"
 
 const Drawer = createDrawerNavigator();
@@ -84,6 +85,10 @@ const CustomDrawerContentLogin = ({ navigation }) => {
         label={() => (<Text style ={styles.customLabel}>Ver Animais</Text>)} 
         onPress={() => navigation.navigate('VisualizacaoAnimais')}
         style ={styles.drawerItem} />
+      <DrawerItem
+        label={() => (<Text style ={styles.customLabel}>Notificações</Text>)}
+        onPress={() => navigation.navigate('Notifications')}
+        style ={styles.drawerItem} />
       <DrawerItem 
         label={() => (<Text style ={styles.customLabel}>Logout</Text>)} 
         onPress={handleLogout}
@@ -121,6 +126,7 @@ export default function MyDrawer() {
         <Drawer.Screen name='VisualizacaoAnimais' component={VisualizacaoAnimais} />
         <Drawer.Screen name='MeusAnimais' component={VisualizacaoAnimaisUsuario} />
         <Drawer.Screen name='DetalhesAnimal' component={DetalhesAnimal} />
+        <Drawer.Screen name='Notifications' component={NotificationsScreen} />
       </Drawer.Navigator>
     </NavigationContainer>
   );
