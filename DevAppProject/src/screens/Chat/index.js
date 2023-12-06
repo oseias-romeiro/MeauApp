@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import { View, Text, ScrollView, FlatList, Touchable, TouchableOpacity } from 'react-native';
-import { collection, query, addDoc, onSnapshot } from 'firebase/firestore';
+import { collection, query, addDoc, onSnapshot, orderBy } from 'firebase/firestore';
 import { GiftedChat } from 'react-native-gifted-chat';
 
 
@@ -27,7 +27,7 @@ const ChatScreen = ({ route }) => {
     
     useEffect(() => {
         const chatCollection = collection(config.db, 'chats', chatId, 'messages');
-        const q = query(chatCollection);
+        const q = query(chatCollection, orderBy('createdAt', 'desc'));
     
         const unsubscribe = onSnapshot(q, (snapshot) => {
             const chatMessages = snapshot.docs.map((doc) => ({

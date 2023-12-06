@@ -12,22 +12,17 @@ const ListChats = ({ navigation }) => {
     const { user } = useAuth();
     const [chats, setChats] = useState([]);
 
-    useEffect(() => {
-        const getChats = async () => {
-            // get chats where sender = user.docId or reciever = user.docId
-            const chatsQuery = query(collection(config.db, "chats"), where("users", "array-contains", user.uid));
-            getDocs(chatsQuery).then((chatsDocs) => {
-                let docs = chatsDocs.docs.map(doc => [doc.data(), doc.id]);
-
-                console.log('asidjoasd', docs);
-                setChats(docs);
-            }).catch((error) => {
-                console.log("erro ao pegar chats: ", error);
-            });
-        }
-    
-        return () => getChats();
-    }, []);
+    const getChats = async () => {
+        // get chats where sender = user.docId or reciever = user.docId
+        const chatsQuery = query(collection(config.db, "chats"), where("users", "array-contains", user.uid));
+        getDocs(chatsQuery).then((chatsDocs) => {
+            let docs = chatsDocs.docs.map(doc => [doc.data(), doc.id]);
+            setChats(docs);
+        }).catch((error) => {
+            console.log("erro ao pegar chats: ", error);
+        });
+    }
+    getChats();
 
     const chat = (chatId) => {
         navigation.navigate('Chat', {chatId: chatId});

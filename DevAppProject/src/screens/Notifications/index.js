@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import { View, Text, ScrollView, FlatList, Touchable, TouchableOpacity } from 'react-native';
-import { getDocs, collection, where, query, addDoc } from 'firebase/firestore';
+import { getDocs, collection, where, query, addDoc, updateDoc } from 'firebase/firestore';
 
 import { useAuth } from '../../config/auth';
 import config from '../../config';
@@ -30,33 +30,37 @@ const NotificationsScreen = ({ navigation }) => {
         });
     }
 
+    const adocao = (animal, sender) => {
+        updateDoc(collection(config.db, "animais"), animal, {
+            dono: sender
+        });
+    }
+
     return (
         <Container styles={styles.content}>
-            <ScrollView>
-                <View>
-                    <FlatList
-                        data={notifications}
-                        renderItem={({ item }) => (
-                            <View style={styles.notificationCard}>
-                                <Text style={styles.notificationTitle}>{item[0].title}</Text>
-                                <Text style={styles.notificationBody}>{item[0].body}</Text>
-                                <View style={styles.buttonsLine}>
-                                    <TouchableOpacity style={styles.chatButton} onPress={ ()=>deleteNotification(item[1]) }>
-                                        <Text>Rejeitar</Text>
-                                    </TouchableOpacity>
-                                    <TouchableOpacity style={styles.chatButton}>
-                                        <Text>Aceitar</Text>
-                                    </TouchableOpacity>
-                                    <TouchableOpacity style={styles.chatButton} onPress={ ()=>chat(item[0].sender) }>
-                                        <Text>Chat</Text>
-                                    </TouchableOpacity>
-                                </View>
+            <View>
+                <FlatList
+                    data={notifications}
+                    renderItem={({ item }) => (
+                        <View style={styles.notificationCard}>
+                            <Text style={styles.notificationTitle}>{item[0].title}</Text>
+                            <Text style={styles.notificationBody}>{item[0].body}</Text>
+                            <View style={styles.buttonsLine}>
+                                <TouchableOpacity style={styles.chatButton} onPress={ ()=>deleteNotification(item[1]) }>
+                                    <Text>Rejeitar</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity style={styles.chatButton} onPress={ ()=>adocao(item[0].animal, item[0].sender) } >
+                                    <Text>Aceitar</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity style={styles.chatButton} onPress={ ()=>chat(item[0].sender) }>
+                                    <Text>Chat</Text>
+                                </TouchableOpacity>
                             </View>
-                        )}
-                        keyExtractor={(item) => item[1]}
-                    />
-                </View>
-            </ScrollView>
+                        </View>
+                    )}
+                    keyExtractor={(item) => item[1]}
+                />
+            </View>
         </Container>
     );
 };

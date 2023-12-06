@@ -56,7 +56,7 @@ export async function unregisterForPushNotificationsAsync(notificationListener, 
     Notifications.deleteNotificationChannelAsync("");
 }
 
-export async function sendPushNotification(title, body, sender, reciever) {
+export async function sendPushNotification(title, body, sender, reciever, animal) {
     
     // get token from user by uid field using query
     const q = query(collection(config.db, 'users'), where('uid', '==', reciever));
@@ -84,20 +84,21 @@ export async function sendPushNotification(title, body, sender, reciever) {
         body: JSON.stringify(message),
         });
 
-        saveNotification(title, body, sender, reciever);
+        saveNotification(title, body, sender, reciever, animal);
 
     }else {
         throw new Error('Token não encontrado!')
     }
 }
 
-export const saveNotification = async (title, body, sender, reciever) => {
+export const saveNotification = async (title, body, sender, reciever, animal) => {
     addDoc(collection(config.db, "notifications"),
         {
             title: title,
             body: body,
             sender: sender,
             reciever: reciever,
+            animal, animal
         }
     );
 };
