@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
         backgroundColor: "#88c9bf",
         padding: 8,
         borderRadius: 8,
-        width: "48%",
+        width: "30%",
         alignItems: "center",
     },
     notificationCard: {

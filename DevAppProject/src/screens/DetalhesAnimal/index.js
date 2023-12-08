@@ -22,7 +22,7 @@ const DetalhesAnimal = ({ route }) => {
 
   const handleAdotar = ()=>{
     //const token = "ExponentPushToken[4Bl9uVPdxLRIU0qZKJGcLx]";
-    sendPushNotification("Adoção", `${user.nome_perfil} deseja adotar seu pet!`, user.uid, animal.dono).then(()=>{
+    sendPushNotification("Adoção", `${user.nome_perfil} deseja adotar seu pet!`, user.uid, animal.dono, animal.id).then(()=>{
       Alert.alert("Solicitação enviada!")
     }).catch((error)=>{
       Alert.alert("Não foi possivel notificar o dono!")
@@ -36,6 +36,7 @@ const DetalhesAnimal = ({ route }) => {
 
       if (animalDoc.exists()) {
         const animalData = animalDoc.data();
+        animalData.id = animalDoc.id;
         setAnimal(animalData);
         const imageRef = ref(config.storage, `animaisPhoto/${animalId}`);
         const imageURL = await getDownloadURL(imageRef);
