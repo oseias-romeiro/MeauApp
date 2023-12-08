@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import { View, Text, ScrollView, FlatList, Touchable, TouchableOpacity } from 'react-native';
-import { getDocs, collection, where, query, addDoc, updateDoc } from 'firebase/firestore';
+import { getDocs, collection, where, query, addDoc, updateDoc, doc } from 'firebase/firestore';
 
 import { useAuth } from '../../config/auth';
 import config from '../../config';
@@ -30,9 +30,12 @@ const NotificationsScreen = ({ navigation }) => {
         });
     }
 
-    const adocao = (animal, sender) => {
-        updateDoc(collection(config.db, "animais"), animal, {
+    const adocao = (animal, sender, notificationId) => {
+        updateDoc(doc(collection(config.db, "animais"), animal), {
             dono: sender
+        }).then(() => {
+            console.log("animal transferido!");
+            deleteNotification(notificationId);
         });
     }
 
@@ -49,7 +52,7 @@ const NotificationsScreen = ({ navigation }) => {
                                 <TouchableOpacity style={styles.chatButton} onPress={ ()=>deleteNotification(item[1]) }>
                                     <Text>Rejeitar</Text>
                                 </TouchableOpacity>
-                                <TouchableOpacity style={styles.chatButton} onPress={ ()=>adocao(item[0].animal, item[0].sender) } >
+                                <TouchableOpacity style={styles.chatButton} onPress={ ()=>adocao(item[0].animal, item[0].sender, item[1]) } >
                                     <Text>Aceitar</Text>
                                 </TouchableOpacity>
                                 <TouchableOpacity style={styles.chatButton} onPress={ ()=>chat(item[0].sender) }>
