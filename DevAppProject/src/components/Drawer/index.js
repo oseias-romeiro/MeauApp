@@ -89,7 +89,7 @@ const CustomDrawerContentLogin = ({ navigation }) => {
         style ={styles.drawerItem} />
       <DrawerItem
         label={() => (<Text style ={styles.customLabel}>Notificações</Text>)}
-        onPress={() => navigation.navigate('Notifications')}
+        onPress={() => navigation.navigate('Notificações')}
         style ={styles.drawerItem} />
       <DrawerItem
         label={() => (<Text style ={styles.customLabel}>Chats</Text>)}
@@ -132,7 +132,7 @@ export default function MyDrawer() {
         <Drawer.Screen name='VisualizacaoAnimais' component={VisualizacaoAnimais} />
         <Drawer.Screen name='MeusAnimais' component={VisualizacaoAnimaisUsuario} />
         <Drawer.Screen name='DetalhesAnimal' component={DetalhesAnimal} />
-        <Drawer.Screen name='Notifications' component={NotificationsScreen} />
+        <Drawer.Screen name='Notificações' component={NotificationsScreen} />
         <Drawer.Screen name='Chat' component={ChatScreen} />
         <Drawer.Screen name='ListChats' component={ListChats} />
       </Drawer.Navigator>

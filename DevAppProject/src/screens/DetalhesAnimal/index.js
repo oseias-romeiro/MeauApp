@@ -36,6 +36,7 @@ const DetalhesAnimal = ({ route }) => {
 
       if (animalDoc.exists()) {
         const animalData = animalDoc.data();
+        animalData.id = animalDoc.id;
         setAnimal(animalData);
         const imageRef = ref(config.storage, `animaisPhoto/${animalId}`);
         const imageURL = await getDownloadURL(imageRef);
