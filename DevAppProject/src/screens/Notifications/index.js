@@ -1,12 +1,12 @@
-import React, {useState, useEffect} from 'react';
-import { View, Text, ScrollView, FlatList, Touchable, TouchableOpacity } from 'react-native';
-import { getDocs, collection, where, query, addDoc, updateDoc, doc } from 'firebase/firestore';
+import React, {useState} from 'react';
+import { View, Text, FlatList, TouchableOpacity } from 'react-native';
+import { getDocs, collection, where, query, updateDoc, doc, setDoc, deleteDoc } from 'firebase/firestore';
 
 import { useAuth } from '../../config/auth';
 import config from '../../config';
 import Container from '../../components/Container';
 import styles from './style';
-import { deleteNotification } from '../../services/notifications';
+import { deleteNotification, sendPushNotification } from '../../services/notifications';
 
 const NotificationsScreen = ({ navigation }) => {
     const [notifications, setNotifications] = useState([]);
@@ -16,27 +16,57 @@ const NotificationsScreen = ({ navigation }) => {
         // query where notifications has reciever = user.docId
         const notificationsQuery = query(collection(config.db, "notifications"), where("reciever", "==", user.uid));
         const notificationsDocs = await getDocs(notificationsQuery);
-        setNotifications(notificationsDocs.docs.map(doc => [doc.data(), doc.id]));
+        setNotifications(notificationsDocs.docs.map(doc => {
+            let data = doc.data();
+            data.id = doc.id;
+            return data;
+        }));
     }
     getNotifications();
 
-    const chat = (sender) => {
-        addDoc(collection(config.db, "chats"), {
+    const chat = (sender, id) => {
+        const chatRef = doc(config.db, 'chats', id);
+      
+        setDoc(chatRef, {
             users: [user.uid, sender],
             messages: []
-        }).then((docRef) => {
-            console.log("Document written with ID: ", docRef.id);
-            navigation.navigate('Chat', {chatId: docRef.id});
-        });
-    }
+        })
+            .then(() => {
+                console.log('Document written with ID: ', id);
+                navigation.navigate('Chat', { chatId: id });
+            })
+            .catch((error) => {
+                console.error('Error writing document: ', error);
+            });
+    };
+      
 
-    const adocao = (animal, sender, notificationId) => {
-        updateDoc(doc(collection(config.db, "animais"), animal), {
+    const adocao = (animalid, sender, reciever, id) => {
+        // sobrescreve o dono do animal
+        updateDoc(doc(collection(config.db, "animais"), animalid), {
             dono: sender
         }).then(() => {
             console.log("animal transferido!");
-            deleteNotification(notificationId);
+            deleteNotification(id);
         });
+        // apaga o chat
+        deleteDoc(doc(config.db, "chats", id));
+        // avisa o novo dono do animal
+        sendPushNotification("Adotado", `${user.nome_perfil} concordou com a adoção, parabéns!`, user.uid, reciever, animalid)
+            .then(()=>{
+                console.log("Solicitação enviada!")
+            }).catch((error)=>{
+                console.log(user.uid, reciever, animalid);
+                console.log("Não foi possivel notificar o dono!", error)
+            })
+    }
+
+    const rejeitar = (id) => {
+        // apaga a notificação
+        deleteNotification(id);
+        // apaga o chat
+        deleteDoc(doc(config.db, "chats", id));
+        console.log("Pedido rejeitado!");
     }
 
     return (
@@ -46,22 +76,30 @@ const NotificationsScreen = ({ navigation }) => {
                     data={notifications}
                     renderItem={({ item }) => (
                         <View style={styles.notificationCard}>
-                            <Text style={styles.notificationTitle}>{item[0].title}</Text>
-                            <Text style={styles.notificationBody}>{item[0].body}</Text>
-                            <View style={styles.buttonsLine}>
-                                <TouchableOpacity style={styles.chatButton} onPress={ ()=>deleteNotification(item[1]) }>
-                                    <Text>Rejeitar</Text>
+                            <Text style={styles.notificationTitle}>{item.title}</Text>
+                            <Text style={styles.notificationBody}>{item.body}</Text>
+                            <View style={styles.buttonsLine}>{
+                                item.title == 'Adotado' ?
+                                <TouchableOpacity style={styles.deleteButton} onPress={ ()=>deleteNotification(item.id) }>
+                                    <Text>Apagar</Text>
                                 </TouchableOpacity>
-                                <TouchableOpacity style={styles.chatButton} onPress={ ()=>adocao(item[0].animal, item[0].sender, item[1]) } >
-                                    <Text>Aceitar</Text>
-                                </TouchableOpacity>
-                                <TouchableOpacity style={styles.chatButton} onPress={ ()=>chat(item[0].sender) }>
-                                    <Text>Chat</Text>
-                                </TouchableOpacity>
+                                :
+                                <>
+                                    <TouchableOpacity style={styles.chatButton} onPress={ ()=>rejeitar(item.id) }>
+                                        <Text>Rejeitar</Text>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity style={styles.chatButton} onPress={ ()=>adocao(item.animal, item.sender, item.reciever, item.id) } >
+                                        <Text>Aceitar</Text>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity style={styles.chatButton} onPress={ ()=>chat(item.sender, item.id) }>
+                                        <Text>Chat</Text>
+                                    </TouchableOpacity>
+                                </>
+                                }
                             </View>
                         </View>
                     )}
-                    keyExtractor={(item) => item[1]}
+                    keyExtractor={(item) => item.id}
                 />
             </View>
         </Container>

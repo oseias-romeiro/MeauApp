@@ -18,6 +18,13 @@ const styles = StyleSheet.create({
         width: "30%",
         alignItems: "center",
     },
+    deleteButton: {
+        backgroundColor: "#88c9bf",
+        padding: 8,
+        borderRadius: 8,
+        width: "100%",
+        alignItems: "center",
+    },
     notificationCard: {
         backgroundColor: "#cfe9e5",
         padding: 16,
