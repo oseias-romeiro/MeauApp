@@ -38,7 +38,7 @@ const NotificationsScreen = ({ navigation }) => {
             .catch((error) => {
                 console.error('Error writing document: ', error);
             });
-      };
+    };
       
 
     const adocao = (animalid, sender, reciever, id) => {
@@ -78,7 +78,12 @@ const NotificationsScreen = ({ navigation }) => {
                         <View style={styles.notificationCard}>
                             <Text style={styles.notificationTitle}>{item.title}</Text>
                             <Text style={styles.notificationBody}>{item.body}</Text>
-                            <View style={styles.buttonsLine}>{item.title == 'Adotado' ? '' : 
+                            <View style={styles.buttonsLine}>{
+                                item.title == 'Adotado' ?
+                                <TouchableOpacity style={styles.deleteButton} onPress={ ()=>deleteNotification(item.id) }>
+                                    <Text>Apagar</Text>
+                                </TouchableOpacity>
+                                :
                                 <>
                                     <TouchableOpacity style={styles.chatButton} onPress={ ()=>rejeitar(item.id) }>
                                         <Text>Rejeitar</Text>
