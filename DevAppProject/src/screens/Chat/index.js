@@ -1,6 +1,5 @@
-import React, {useState, useEffect} from 'react';
-import { View, Text, ScrollView, FlatList, Touchable, TouchableOpacity } from 'react-native';
-import { collection, query, addDoc, onSnapshot, orderBy } from 'firebase/firestore';
+import React, {useState} from 'react';
+import { collection, query, addDoc, orderBy, getDocs } from 'firebase/firestore';
 import { GiftedChat } from 'react-native-gifted-chat';
 
 
@@ -24,22 +23,24 @@ const ChatScreen = ({ route }) => {
         });
     }
 
-    
-    useEffect(() => {
-        const chatCollection = collection(config.db, 'chats', chatId, 'messages');
-        const q = query(chatCollection, orderBy('createdAt', 'desc'));
-    
-        const unsubscribe = onSnapshot(q, (snapshot) => {
+    const chatCollection = collection(config.db, 'chats', chatId, 'messages');
+    const q = query(chatCollection, orderBy('createdAt', 'desc'));
+
+    const getChat = async () => {
+        try {
+            const snapshot = await getDocs(q);
+            
             const chatMessages = snapshot.docs.map((doc) => ({
                 ...doc.data(),
                 createdAt: doc.data().createdAt.toDate(),
             }));
+            
             setMessages(chatMessages);
-        });
-    
-        return () => unsubscribe();
-    }, []);
-    
+        } catch (error) {
+            console.error('Erro ao obter mensagens do chat:', error);
+        }
+    };
+    getChat();
 
     return (
         <Container>

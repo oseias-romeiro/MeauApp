@@ -41,9 +41,9 @@ const NotificationsScreen = ({ navigation }) => {
       };
       
 
-    const adocao = (animal, sender, id) => {
+    const adocao = (animalid, sender, reciever, id) => {
         // sobrescreve o dono do animal
-        updateDoc(doc(collection(config.db, "animais"), animal), {
+        updateDoc(doc(collection(config.db, "animais"), animalid), {
             dono: sender
         }).then(() => {
             console.log("animal transferido!");
@@ -52,12 +52,21 @@ const NotificationsScreen = ({ navigation }) => {
         // apaga o chat
         deleteDoc(doc(config.db, "chats", id));
         // avisa o novo dono do animal
-        sendPushNotification("Adotado", `${user.nome_perfil} concordou com a adoção, parabéns!`, user.uid, animal.dono, animal.id)
+        sendPushNotification("Adotado", `${user.nome_perfil} concordou com a adoção, parabéns!`, user.uid, reciever, animalid)
             .then(()=>{
                 console.log("Solicitação enviada!")
             }).catch((error)=>{
-                console.log("Não foi possivel notificar o dono!")
+                console.log(user.uid, reciever, animalid);
+                console.log("Não foi possivel notificar o dono!", error)
             })
+    }
+
+    const rejeitar = (id) => {
+        // apaga a notificação
+        deleteNotification(id);
+        // apaga o chat
+        deleteDoc(doc(config.db, "chats", id));
+        console.log("Pedido rejeitado!");
     }
 
     return (
@@ -69,16 +78,19 @@ const NotificationsScreen = ({ navigation }) => {
                         <View style={styles.notificationCard}>
                             <Text style={styles.notificationTitle}>{item.title}</Text>
                             <Text style={styles.notificationBody}>{item.body}</Text>
-                            <View style={styles.buttonsLine}>
-                                <TouchableOpacity style={styles.chatButton} onPress={ ()=>deleteNotification(item.id) }>
-                                    <Text>Rejeitar</Text>
-                                </TouchableOpacity>
-                                <TouchableOpacity style={styles.chatButton} onPress={ ()=>adocao(item.animal, item.sender, item.id) } >
-                                    <Text>Aceitar</Text>
-                                </TouchableOpacity>
-                                <TouchableOpacity style={styles.chatButton} onPress={ ()=>chat(item.sender, item.id) }>
-                                    <Text>Chat</Text>
-                                </TouchableOpacity>
+                            <View style={styles.buttonsLine}>{item.title == 'Adotado' ? '' : 
+                                <>
+                                    <TouchableOpacity style={styles.chatButton} onPress={ ()=>rejeitar(item.id) }>
+                                        <Text>Rejeitar</Text>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity style={styles.chatButton} onPress={ ()=>adocao(item.animal, item.sender, item.reciever, item.id) } >
+                                        <Text>Aceitar</Text>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity style={styles.chatButton} onPress={ ()=>chat(item.sender, item.id) }>
+                                        <Text>Chat</Text>
+                                    </TouchableOpacity>
+                                </>
+                                }
                             </View>
                         </View>
                     )}
