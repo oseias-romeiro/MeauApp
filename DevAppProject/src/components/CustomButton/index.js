@@ -21,10 +21,10 @@ const styles = StyleSheet.create ({
         width: 232,
         height: 40,
         textAlign: 'center',
-        alignSelf:'center',
-        paddingTop:10,
-        
-    },
+        alignSelf: 'center',
+        paddingTop: 10,
+        marginBottom: 20, // Adicione margem inferior para separar os botões
+      },
 
     buttonText: {
         textAlign: 'center',
