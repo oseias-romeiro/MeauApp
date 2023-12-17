@@ -1,11 +1,13 @@
 import React, { useState } from "react";
-import { View, TextInput, StyleSheet } from "react-native";
+import { View, TextInput } from "react-native";
 
-import EntrarButton from "../components/CustomButton/index";
-import AppButton from "../components/SocialMediaButton/index";
-import { useAuth } from "../config/auth";
+import EntrarButton from "../../components/CustomButton/index";
+import AppButton from "../../components/SocialMediaButton/index";
+import { useAuth } from "../../config/auth";
 
-const LoginScreen = ({ navigation }) => {
+import styles from "./styles";
+
+export default Login = ({ navigation }) => {
   const { login } = useAuth();
 
   const [email, setEmail] = useState("");
@@ -57,21 +59,3 @@ const LoginScreen = ({ navigation }) => {
     </>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    width: "100%",
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 50,
-  },
-  input: {
-    width: 300,
-    height: 40,
-    borderBottomWidth: 1,
-    marginBottom: 20,
-    padding: 10,
-  },
-});
-
-export default LoginScreen;

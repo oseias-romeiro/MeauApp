@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, FlatList, TouchableOpacity, ScrollView } from "react-native";
+import { View, FlatList, TouchableOpacity } from "react-native";
 import { collection, getDocs, where, query } from "firebase/firestore";
 import { getDownloadURL, ref } from "firebase/storage";
 import config from "../../config";
-import { getAuth, useAuth } from "firebase/auth";
+import { getAuth } from "firebase/auth";
 import AnimalCard from "../../components/AnimalCard";
 
-const VisualizacaoAnimaisUsuario = ({ navigation }) => {
+
+export default MyAnimals = ({ navigation }) => {
   const [animais, setAnimais] = useState([]);
   const auth = getAuth();
   const user = auth.currentUser;
@@ -67,4 +68,3 @@ const VisualizacaoAnimaisUsuario = ({ navigation }) => {
   );
 };
 
-export default VisualizacaoAnimaisUsuario;

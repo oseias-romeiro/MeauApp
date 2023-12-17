@@ -8,7 +8,7 @@ import config from '../../config';
 import Container from '../../components/Container';
 
 
-const ChatScreen = ({ route }) => {
+export default ChatScreen = ({ route }) => {
     const { user } = useAuth();
     const [messages, setMessages] = useState([]);
     const { chatId } = route.params;
@@ -52,5 +52,3 @@ const ChatScreen = ({ route }) => {
         </Container>
     );
 };
-
-export default ChatScreen;

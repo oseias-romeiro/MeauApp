@@ -8,7 +8,7 @@ import Container from '../../components/Container';
 import styles from './style';
 
 
-const ListChats = ({ navigation }) => {
+export default ListChats = ({ navigation }) => {
     const { user } = useAuth();
     const [chats, setChats] = useState([]);
 
@@ -69,5 +69,3 @@ const ListChats = ({ navigation }) => {
         </Container>
     );
 };
-
-export default ListChats;

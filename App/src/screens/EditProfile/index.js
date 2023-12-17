@@ -14,10 +14,10 @@ import * as ImagePicker from "expo-image-picker";
 
 import config from "../../config/index";
 import Container from "../../components/Container";
-import styles from "../CadastroPessoal/styles";
+import styles from "../CreateUser/styles";
 import { useAuth } from "../../config/auth";
 
-const EditarPerfil = ({ navigation }) => {
+export default EditProfile = ({ navigation }) => {
   const { user, login, photoURL } = useAuth();
 
   const [nome_completo, setNomeCompleto] = useState(user.nome_completo);
@@ -174,5 +174,3 @@ const EditarPerfil = ({ navigation }) => {
     </Container>
   );
 };
-
-export default EditarPerfil;

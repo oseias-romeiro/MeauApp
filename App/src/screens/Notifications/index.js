@@ -8,7 +8,7 @@ import Container from '../../components/Container';
 import styles from './style';
 import { deleteNotification, sendPushNotification } from '../../services/notifications';
 
-const NotificationsScreen = ({ navigation }) => {
+export default NotifyList = ({ navigation }) => {
     const [notifications, setNotifications] = useState([]);
     const { user } = useAuth();
 
@@ -104,5 +104,3 @@ const NotificationsScreen = ({ navigation }) => {
         </Container>
     );
 };
-
-export default NotificationsScreen;

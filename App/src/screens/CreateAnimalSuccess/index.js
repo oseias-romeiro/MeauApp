@@ -1,16 +1,7 @@
 import React from "react";
-import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  StyleSheet,
-  Button,
-} from "react-native";
+import { Text, TouchableOpacity } from "react-native";
 
-import { useState } from "react";
-
-export default function TelaSucessoAnimal ({ navigation }) {
+export default CreateAnimalSuccess = ({ navigation }) => {
   return (
     <>
       <Text

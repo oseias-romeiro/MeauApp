@@ -7,20 +7,20 @@ import 'firebase/auth';
 
 import { useAuth } from '../../config/auth.js'
 
-import VisualizacaoAnimaisUsuario from '../../screens/VisualizacaoAnimaisUsuario';
-import VisualizacaoAnimais from '../../screens/VisualizacaoAnimais';
-import DetalhesAnimal from '../../screens/DetalhesAnimal';
-import TelaSucessoAnimal from '../../screens/TelaSucessoAnimal';
-import LoginScreen from '../../screens/Login';
-import VisualizacaoPerfil from '../../screens/VisualizacaoPerfil';
-import CadastroPessoal from '../../screens/CadastroPessoal';
-import Cadastro from '../../screens/Cadastro';
-import CadastroPetForm from '../../screens/CadastroAnimal';
-import EditarPerfil from '../../screens/EditarPerfil';
-import NotificationsScreen from '../../screens/Notifications'
+import MyAnimals from '../../screens/MyAnimals';
+import Animals from '../../screens/Animals';
+import AnimalView from '../../screens/AnimalView';
+import CreateAnimalSuccess from '../../screens/CreateAnimalSuccess';
+import Login from '../../screens/Login';
+import Profile from '../../screens/Profile';
+import CadastroPessoal from '../../screens/CreateUser';
+import Ops from '../../screens/Ops';
+import CreateAnimal from '../../screens/CreateAnimal';
+import EditProfile from '../../screens/EditProfile';
+import NotifyList from '../../screens/Notifications'
 import ChatScreen from '../../screens/Chat';
 import ListChats from '../../screens/Chat/listChats';
-import { screenOptions, styles } from "./styles.js"
+import { screenOptions, styles } from "./styles.js";
 
 const Drawer = createDrawerNavigator();
 
@@ -38,7 +38,7 @@ const CustomDrawerContentLogout = ({ navigation }) => {
       />
       <DrawerItem 
       label={() => (<Text style ={styles.customLabel}>Cadastro</Text>)} 
-      onPress={() => navigation.navigate('CadastroForm')}
+      onPress={() => navigation.navigate('CreateUser')}
       style ={styles.drawerItem}
       />
     </DrawerContentScrollView>
@@ -60,27 +60,27 @@ const CustomDrawerContentLogin = (props) => {
       </View>
       <DrawerItem 
         label={() => (<Text style ={styles.customLabel}>Visualização do Perfil</Text>)} 
-        onPress={() => props.navigation.navigate('VisualizacaoPerfil')}
+        onPress={() => props.navigation.navigate('Profile')}
         style ={styles.drawerItem} />
       <DrawerItem 
         label= {() => (<Text style ={styles.customLabel}>Cadastro do Animal</Text>)} 
-        onPress={() => props.navigation.navigate('CadastroAnimal')}
+        onPress={() => props.navigation.navigate('CreateAnimal')}
         style ={styles.drawerItem} />
       <DrawerItem 
         label={() => (<Text style ={styles.customLabel}>Editar Perfil</Text>)} 
-        onPress={() => props.navigation.navigate('EditarPerfil')}
+        onPress={() => props.navigation.navigate('EditProfile')}
         style ={styles.drawerItem} />
       <DrawerItem 
         label={() => (<Text style ={styles.customLabel}>Meus Animais</Text>)} 
-        onPress={() => props.navigation.navigate('MeusAnimais')}
+        onPress={() => props.navigation.navigate('MyAnimals')}
         style ={styles.drawerItem} />
       <DrawerItem 
         label={() => (<Text style ={styles.customLabel}>Ver Animais</Text>)} 
-        onPress={() => props.navigation.navigate('VisualizacaoAnimais')}
+        onPress={() => props.navigation.navigate('Animals')}
         style ={styles.drawerItem} />
       <DrawerItem
         label={() => (<Text style ={styles.customLabel}>Notificações</Text>)}
-        onPress={() => props.navigation.navigate('Notificações')}
+        onPress={() => props.navigation.navigate('NotifyList')}
         style ={styles.drawerItem} />
       <DrawerItem
         label={() => (<Text style ={styles.customLabel}>Chats</Text>)}
@@ -101,19 +101,19 @@ export default function MyDrawer() {
   return (
     <NavigationContainer independent={true}>
       <Drawer.Navigator screenOptions={screenOptions} drawerContent={(props) => ( user && user.nome_perfil!="" ? <CustomDrawerContentLogin {...props} user={user} logout={logout} /> : <CustomDrawerContentLogout {...props} />)}>
-        <Drawer.Screen name="Cadastro" component={Cadastro} />
-        <Drawer.Screen name="Login" component={LoginScreen} />
-        <Drawer.Screen name="CadastroForm" component={CadastroPessoal} />
-        <Drawer.Screen name="VisualizacaoPerfil" component={VisualizacaoPerfil} />
-        <Drawer.Screen name="CadastroAnimal" component={CadastroPetForm} />
-        <Drawer.Screen name="EditarPerfil" component={EditarPerfil} />
-        <Drawer.Screen name='SucessoAnimal' component={TelaSucessoAnimal} />
-        <Drawer.Screen name='VisualizacaoAnimais' component={VisualizacaoAnimais} />
-        <Drawer.Screen name='MeusAnimais' component={VisualizacaoAnimaisUsuario} />
-        <Drawer.Screen name='DetalhesAnimal' component={DetalhesAnimal} />
-        <Drawer.Screen name='Notificações' component={NotificationsScreen} />
+        <Drawer.Screen name="Ops" component={Ops} />
+        <Drawer.Screen name="Login" component={Login} />
+        <Drawer.Screen name="Cadastro" component={CadastroPessoal} />
+        <Drawer.Screen name="Perfil" component={Profile} />
+        <Drawer.Screen name="Cadastro Animal" component={CreateAnimal} />
+        <Drawer.Screen name="Editar Perfil" component={EditProfile} />
+        <Drawer.Screen name='Sucesso Animal' component={CreateAnimalSuccess} />
+        <Drawer.Screen name='Animais' component={Animals} />
+        <Drawer.Screen name='Meus Animais' component={MyAnimals} />
+        <Drawer.Screen name='Detalhes Animal' component={AnimalView} />
+        <Drawer.Screen name='Notificações' component={NotifyList} />
         <Drawer.Screen name='Chat' component={ChatScreen} />
-        <Drawer.Screen name='ListChats' component={ListChats} />
+        <Drawer.Screen name='Chats' component={ListChats} />
       </Drawer.Navigator>
     </NavigationContainer>
   );

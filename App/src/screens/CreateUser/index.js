@@ -6,11 +6,11 @@ import { addDoc, collection } from "firebase/firestore"
 import { getStorage, ref, uploadBytesResumable } from 'firebase/storage';
 import * as ImagePicker from 'expo-image-picker';
 
-import Container from "../../components/Container";
+import Container from "../../components/Container/index.js";
 import config from '../../config/index';
 import styles from './styles.js';
 
-const CadastroPessoal = ({ navigation }) => {
+const CreateUser = ({ navigation }) => {
   const [nome_completo, setNomeCompleto] = useState("");
   const [idade, setIdade] = useState("");
   const [email, setEmail] = useState("");
@@ -179,4 +179,4 @@ const CadastroPessoal = ({ navigation }) => {
   );
 };
 
-export default CadastroPessoal;
+export default CreateUser;

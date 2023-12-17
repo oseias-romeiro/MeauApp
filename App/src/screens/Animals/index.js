@@ -1,19 +1,12 @@
 import React, { useEffect, useState } from "react";
-import {
-  View,
-  Text,
-  FlatList,
-  TouchableOpacity,
-  Image,
-  StyleSheet,
-  ScrollView
-} from "react-native";
+import {View, FlatList, TouchableOpacity} from "react-native";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { getDownloadURL, ref } from "firebase/storage";
+
 import config from "../../config";
 import AnimalCard from "../../components/AnimalCard";
 
-const VisualizacaoAnimais = ({ navigation }) => {
+export default Animals = ({ navigation }) => {
   const [animais, setAnimais] = useState([]);
 
   useEffect(() => {
@@ -63,7 +56,3 @@ const VisualizacaoAnimais = ({ navigation }) => {
     </View>
   );
 };
-
-
-
-export default VisualizacaoAnimais;

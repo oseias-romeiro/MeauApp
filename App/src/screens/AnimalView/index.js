@@ -14,7 +14,7 @@ import { sendPushNotification } from "../../services/notifications";
 import { useAuth } from "../../config/auth";
 
 
-const DetalhesAnimal = ({ route }) => {
+export default AnimalView = ({ route }) => {
   const { animalId } = route.params;
   const [animal, setAnimal] = useState(null);
   const [imageUrl, setImageUrl] = useState(null);
@@ -131,5 +131,3 @@ const DetalhesAnimal = ({ route }) => {
     </>
   );
 };
-
-export default DetalhesAnimal;
