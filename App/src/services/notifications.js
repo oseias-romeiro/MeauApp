@@ -63,31 +63,37 @@ export async function sendPushNotification(title, body, sender, reciever, animal
 
     const querySnapshot = await getDocs(q)
 
-    if (querySnapshot.size > 0 && querySnapshot.docs[0].data().token) {
-        const token = querySnapshot.docs[0].data().token;
-
-        const message = {
-            to: token,
-            sound: 'default',
-            title: title,
-            body: body,
-            data: { sender: sender, reciever: reciever },
-        };
-    
-        await fetch('https://exp.host/--/api/v2/push/send', {
-        method: 'POST',
-        headers: {
-            Accept: 'application/json',
-            'Accept-encoding': 'gzip, deflate',
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(message),
-        });
-
+    if (querySnapshot.size > 0) {
+        
+        // ave notification to database
         saveNotification(title, body, sender, reciever, animal);
 
+        // send notification
+        if (querySnapshot.docs[0].data().token){
+            const token = querySnapshot.docs[0].data().token;
+
+            const message = {
+                to: token,
+                sound: 'default',
+                title: title,
+                body: body,
+                data: { sender: sender, reciever: reciever },
+            };
+        
+            await fetch('https://exp.host/--/api/v2/push/send', {
+                method: 'POST',
+                headers: {
+                    Accept: 'application/json',
+                    'Accept-encoding': 'gzip, deflate',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(message),
+            });
+        }else {
+            console.error("Token não encontrado!")
+        }
     }else {
-        throw new Error('Token não encontrado!')
+        throw new Error('Erro ao persistir notificação!')
     }
 }
 

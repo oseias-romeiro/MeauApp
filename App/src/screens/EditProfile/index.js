@@ -6,6 +6,7 @@ import {
   TextInput,
   Pressable,
   Image,
+  Alert,
 } from "react-native";
 import { updateEmail, updatePassword } from "firebase/auth";
 import { doc, collection, updateDoc } from "firebase/firestore";
@@ -70,14 +71,26 @@ export default EditProfile = ({ navigation }) => {
                       blob
                     ).then((snapshot) => {
                       login(email, senha).then((res) => {
-                        if (res) navigation.goBack();
+                        if (res){
+                          Alert.alert("Sucesso!", "Perfil atualizado com sucesso!");
+                          navigation.navigate("Perfil");
+                        }else {
+                          Alert.alert("Erro!", "Houve uma falha com os dados!");
+                          logout();
+                        }
                       });
                     });
                   });
                 });
               } else {
                 login(email, senha).then((res) => {
-                  if (res) navigation.goBack();
+                  if (res){
+                    Alert.alert("Sucesso!", "Perfil atualizado com sucesso!");
+                    navigation.navigate("Perfil");
+                  }else {
+                    Alert.alert("Erro!", "Houve uma falha com os dados!");
+                    logout();
+                  }
                 });
               }
             });

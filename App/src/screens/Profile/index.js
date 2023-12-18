@@ -46,10 +46,6 @@ export default Profile = ({ navigation }) => {
                 <Text style={styles.title}>{"NOME DE USUÁRIO"}</Text>
                 <Text style={styles.textContent}>{user.nome_perfil}</Text>
               </View>
-              <View style={styles.campo}>
-                <Text style={styles.title}>{"HISTÓRICO"}</Text>
-                <Text style={styles.textContent}>{"Adotou 1 gato"}</Text>
-              </View>
             </View>
             <View>
               <TouchableOpacity

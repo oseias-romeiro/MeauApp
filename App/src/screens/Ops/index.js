@@ -13,7 +13,7 @@ export default Ops = ({ navigation }) => {
       </Text>
       <TouchableOpacity
         style={styles.btnContainer}
-        onPress={() => navigation.navigate("CadastroForm")}
+        onPress={() => navigation.navigate("Cadastro")}
       >
         <Text style={styles.btnText}>FAZER CADASTRO</Text>
       </TouchableOpacity>

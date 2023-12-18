@@ -46,7 +46,7 @@ export default Animals = ({ navigation }) => {
         renderItem={({ item }) => (
           <TouchableOpacity
             onPress={() => {
-              navigation.navigate("DetalhesAnimal", { animalId: item.id });
+              navigation.navigate("Detalhes Animal", { animalId: item.id });
             }}
           >
             <AnimalCard animal={item} />

@@ -18,7 +18,7 @@ export default Login = ({ navigation }) => {
       if (response) {
         navigation.reset({
           index: 0,
-          routes: [{ name: 'VisualizacaoPerfil' }],
+          routes: [{ name: 'Perfil' }],
         });
       }
     });

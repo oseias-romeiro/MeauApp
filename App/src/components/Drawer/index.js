@@ -13,7 +13,7 @@ import AnimalView from '../../screens/AnimalView';
 import CreateAnimalSuccess from '../../screens/CreateAnimalSuccess';
 import Login from '../../screens/Login';
 import Profile from '../../screens/Profile';
-import CadastroPessoal from '../../screens/CreateUser';
+import CreateUser from '../../screens/CreateUser';
 import Ops from '../../screens/Ops';
 import CreateAnimal from '../../screens/CreateAnimal';
 import EditProfile from '../../screens/EditProfile';
@@ -38,7 +38,7 @@ const CustomDrawerContentLogout = ({ navigation }) => {
       />
       <DrawerItem 
       label={() => (<Text style ={styles.customLabel}>Cadastro</Text>)} 
-      onPress={() => navigation.navigate('CreateUser')}
+      onPress={() => navigation.navigate('Cadastro')}
       style ={styles.drawerItem}
       />
     </DrawerContentScrollView>
@@ -49,7 +49,10 @@ const CustomDrawerContentLogin = (props) => {
 
   const handleLogout = async () => {
     props.logout();
-    props.navigation.navigate('Login');
+    props.navigation.reset({
+      index: 0,
+      routes: [{name: 'Login'}],
+    });
   }
 
   return (
@@ -60,31 +63,31 @@ const CustomDrawerContentLogin = (props) => {
       </View>
       <DrawerItem 
         label={() => (<Text style ={styles.customLabel}>Visualização do Perfil</Text>)} 
-        onPress={() => props.navigation.navigate('Profile')}
+        onPress={() => props.navigation.navigate('Perfil')}
         style ={styles.drawerItem} />
       <DrawerItem 
         label= {() => (<Text style ={styles.customLabel}>Cadastro do Animal</Text>)} 
-        onPress={() => props.navigation.navigate('CreateAnimal')}
+        onPress={() => props.navigation.navigate('Cadastro Animal')}
         style ={styles.drawerItem} />
       <DrawerItem 
         label={() => (<Text style ={styles.customLabel}>Editar Perfil</Text>)} 
-        onPress={() => props.navigation.navigate('EditProfile')}
+        onPress={() => props.navigation.navigate('Editar Perfil')}
         style ={styles.drawerItem} />
       <DrawerItem 
         label={() => (<Text style ={styles.customLabel}>Meus Animais</Text>)} 
-        onPress={() => props.navigation.navigate('MyAnimals')}
+        onPress={() => props.navigation.navigate('Meus Animais')}
         style ={styles.drawerItem} />
       <DrawerItem 
         label={() => (<Text style ={styles.customLabel}>Ver Animais</Text>)} 
-        onPress={() => props.navigation.navigate('Animals')}
+        onPress={() => props.navigation.navigate('Animais')}
         style ={styles.drawerItem} />
       <DrawerItem
         label={() => (<Text style ={styles.customLabel}>Notificações</Text>)}
-        onPress={() => props.navigation.navigate('NotifyList')}
+        onPress={() => props.navigation.navigate('Notificações')}
         style ={styles.drawerItem} />
       <DrawerItem
         label={() => (<Text style ={styles.customLabel}>Chats</Text>)}
-        onPress={() => props.navigation.navigate('ListChats')}
+        onPress={() => props.navigation.navigate('Chats')}
         style ={styles.drawerItem} />
       <DrawerItem 
         label={() => (<Text style ={styles.customLabel}>Logout</Text>)} 
@@ -103,7 +106,7 @@ export default function MyDrawer() {
       <Drawer.Navigator screenOptions={screenOptions} drawerContent={(props) => ( user && user.nome_perfil!="" ? <CustomDrawerContentLogin {...props} user={user} logout={logout} /> : <CustomDrawerContentLogout {...props} />)}>
         <Drawer.Screen name="Ops" component={Ops} />
         <Drawer.Screen name="Login" component={Login} />
-        <Drawer.Screen name="Cadastro" component={CadastroPessoal} />
+        <Drawer.Screen name="Cadastro" component={CreateUser} />
         <Drawer.Screen name="Perfil" component={Profile} />
         <Drawer.Screen name="Cadastro Animal" component={CreateAnimal} />
         <Drawer.Screen name="Editar Perfil" component={EditProfile} />

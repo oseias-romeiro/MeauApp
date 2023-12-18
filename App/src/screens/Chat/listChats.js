@@ -36,12 +36,7 @@ export default ListChats = ({ navigation }) => {
             console.error('Erro ao obter chats:', error);
         }
     };
-      
     getChats();
-
-    const chat = (chatId) => {
-        navigation.navigate('Chat', {chatId: chatId});
-    }
 
     const getUserName = async (userUID) => {
         const q = query(collection(config.db, "users"), where("uid", "==", userUID));
@@ -59,7 +54,7 @@ export default ListChats = ({ navigation }) => {
                     <FlatList
                         data={chats}
                         renderItem={({ item }) => (
-                            <TouchableOpacity onPress={ ()=>chat(item.id) } style={styles.chatCard}>
+                            <TouchableOpacity onPress={ ()=>navigation.navigate('Chat', {chatId: item.id}) } style={styles.chatCard}>
                                 <Text>{ item.users[1] != user.uid ? item.username1 : item.username0 }</Text>
                             </TouchableOpacity>
                         )}

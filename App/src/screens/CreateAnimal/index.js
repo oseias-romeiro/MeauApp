@@ -6,7 +6,8 @@ import {
   Button,
   TextInput,
   Pressable,
-  ScrollView
+  ScrollView,
+  Image
 } from "react-native";
 
 import { useState } from "react";
@@ -44,7 +45,7 @@ export default CreateAnimal = ({ navigation }) => {
 
     console.log(result);
 
-    if (!result.cancelled) {
+    if (!result.canceled) {
       setImagemPerfilAnimal(result.assets[0].uri);
     }
   };
@@ -53,43 +54,38 @@ export default CreateAnimal = ({ navigation }) => {
     const user = auth.currentUser;
     console.log(user);
 
-    if (user) {
-      const animalData = {
-        nomePet: nomePet,
-        tipo: tipo,
-        idade: idade,
-        raca: raca,
-        adocao: adocao,
-        vacinado: vacinado,
-        peso: peso,
-        descricao: descricao,
-        sexo: sexo,
-        porte: porte,
-        dono: user.uid,
-      };
-      try {
-        const docRef = await addDoc(
-          collection(config.db, "animais"),
-          animalData
+    const animalData = {
+      nomePet: nomePet,
+      tipo: tipo,
+      idade: idade,
+      raca: raca,
+      adocao: adocao,
+      vacinado: vacinado,
+      peso: peso,
+      descricao: descricao,
+      sexo: sexo,
+      porte: porte,
+      dono: user.uid,
+    };
+    try {
+      const docRef = await addDoc(
+        collection(config.db, "animais"),
+        animalData
+      );
+      if (imagemPerfilAnimal) {
+        const response = await fetch(imagemPerfilAnimal);
+        const blob = await response.blob();
+        await uploadBytesResumable(
+          ref(getStorage(), `animaisPhoto/${docRef.id}`),
+          blob
         );
-        if (imagemPerfilAnimal) {
-          const response = await fetch(imagemPerfilAnimal);
-          const blob = await response.blob();
-          await uploadBytesResumable(
-            ref(getStorage(), `animaisPhoto/${docRef.id}`),
-            blob
-          );
-        }
-        Alert.alert("Animal criado com sucesso!");
-        navigation.navigate("Dashboard");
-      } catch (e) {
-        console.error("Erro ao cadastrar animal:", e);
-        Alert.alert("Falha ao cadastrar o animal!");
-        navigation.navigate("Dashboard");
       }
-    } else {
-      Alert.alert("Usuário não autenticado, por favor se autentique");
-      navigation.navigate("Login");
+      Alert.alert("Animal cadastrado com sucesso!");
+      navigation.navigate("Perfil");
+    } catch (e) {
+      console.error("Erro ao cadastrar animal:", e);
+      Alert.alert("Falha ao cadastrar o animal!");
+      navigation.navigate("Perfil");
     }
   };
 
@@ -101,9 +97,14 @@ export default CreateAnimal = ({ navigation }) => {
             style={styles.btnImage}
             onPress={selecionarImagemPerfilAnimal}
           >
-            <Text style={styles.btnImageText}>
-              Adicionar foto de perfil de Animal
-            </Text>
+            {imagemPerfilAnimal ? 
+              <Image source={{ uri: imagemPerfilAnimal }} style={{ width: 128, height: 128 }} />
+            :
+              <Text style={styles.btnImageText}>
+                Adicionar foto de perfil do Animal
+              </Text>
+            }
+            
           </Pressable>
 
           <TextInput

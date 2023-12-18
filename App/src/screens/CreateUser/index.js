@@ -10,7 +10,7 @@ import Container from "../../components/Container/index.js";
 import config from '../../config/index';
 import styles from './styles.js';
 
-const CreateUser = ({ navigation }) => {
+export default CreateUser = ({ navigation }) => {
   const [nome_completo, setNomeCompleto] = useState("");
   const [idade, setIdade] = useState("");
   const [email, setEmail] = useState("");
@@ -179,4 +179,3 @@ const CreateUser = ({ navigation }) => {
   );
 };
 
-export default CreateUser;
