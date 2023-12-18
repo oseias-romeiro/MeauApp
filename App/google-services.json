@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "324464858480",
+    "project_id": "meauapp-261c7",
+    "storage_bucket": "meauapp-261c7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:324464858480:android:8ca39a34d034772e29ebb5",
+        "android_client_info": {
+          "package_name": "br.unb.meauapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDgYLl9tNqi-9EW1k_PmHRo1hlnPOymJ4M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
