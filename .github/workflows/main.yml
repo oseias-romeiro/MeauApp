@@ -23,8 +23,11 @@ jobs:
           eas-version: latest
           token: ${{ secrets.EXPO_BUILD }}
 
+      - name: Workdir
+        run: cd ./App/
+      
       - name: Install dependencies
-        run: cd App && npm ci
+        run: npm ci
 
       - name: Build on EAS
-        run: cd App && npx eas build -p android --profile preview --non-interactive
+        run: npx eas build -p android --profile preview --non-interactive
